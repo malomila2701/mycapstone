@@ -26,14 +26,16 @@
         <div class="main">
 
             <div class="container">
-                <h1>---
-                    <img src="images/company_logo.png" alt="" style="padding-top: 70px; height: auto;"> ---</h1>
-                <div class="signin-content">
-                    <h1>OUTIL HR <br> GESTION DES CONGES <br> DU PERSONNEL</h1>
 
+                <main class="main-section">
+                    <img src="images/capstone_logo_main.png" alt="" class="img_small">
+                    <h1><br>STAFF LEAVE<br> MANAGEMENT TOOL </h1>
+                </main>
+
+                <aside class="side-section">
                     <div class="signin-form">
                         <h2 class="form-title">Login</h2>
-                        <form action="FirstServlet" method="post">
+                        <form action="FirstServlet" id="loginForm" method="post">
                             <div class="form-group">
                                 <label for="username">
                                     <i class="zmdi zmdi-account"></i></label> 
@@ -45,29 +47,52 @@
                                 <input type="password" name="password" id="password"
                                        placeholder="Password" required />
                             </div>
-
-
+                            
+                            <span style="display:flex; flex-direction: row; align-items: center;">
+                            <input type="checkbox" id="rememberMe" name="rememberMe" style="margin-right: 5px; width: 10px; height:10px;">
+                            <label for="rememberMe" style="font-size:0.8rem; color: #999;">Remember me</label><br><br>
+                            </span>
+                            
                             <%
                                 String error = (String) request.getAttribute("login_error");
                                 if (error != null) {
                             %>
-                            <p style="color:red;"><%= error %></p>
+                            <p style="color:red;"><%= error%></p>
                             <%
                                 }
                             %>
-
-
                             <button type="submit" id="form-submit"> Log in</button>
 
                         </form>
-                    </div>             
-                </div>
+                    </div> 
+                </aside>
             </div>
         </div>
 
 
-        <script>
 
+        <script>
+            const loginForm = document.getElementById('loginForm');
+            const usernameInput = document.getElementById('username');
+            const rememberMeCheckbox = document.getElementById('rememberMe');
+
+            // Check on page load if username is stored
+            window.addEventListener('load', () => {
+                const savedUsername = localStorage.getItem('username');
+                if (savedUsername) {
+                    usernameInput.value = savedUsername;
+                    rememberMeCheckbox.checked = true;
+                }
+            });
+
+            // Handle form submission
+            loginForm.addEventListener('submit', (e) => {
+                if (rememberMeCheckbox.checked) {
+                    localStorage.setItem('username', usernameInput.value);
+                } else {
+                    localStorage.removeItem('username');
+                }
+            });
         </script>
     </body>
 </html>

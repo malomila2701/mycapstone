@@ -37,11 +37,10 @@
         <%                String selectedAvatar = "../images/avatar1.jpg";
         %> 
 
-        <!-- Leave type modal -->
+        <!-- Pop-up détails de chaque requête -->
         <div id="leaveModal" class="modal">
 
             <div class="modal-content">
-
                 <main class="details-section">
                     <span style="display:flex; flex-direction:row;">
                         <img src="<%= selectedAvatar%>" alt="User Avatar" class="avatar" style="margin-left: 15px;"/>
@@ -50,7 +49,6 @@
                             <label class="modallabel-id" id="modalId"> ID: #</label>
                         </span>
                     </span>
-
                     <form action="FirstServlet" method="post">
                         <div class="form-group">
                             <label for="modalStartDate"> Start Date:</label> 
@@ -71,7 +69,6 @@
                                     <path d="M10 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H10ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V12ZM11.25 10.005c0-.417.338-.755.755-.755h2a.755.755 0 1 1 0 1.51h-2a.755.755 0 0 1-.755-.755ZM6.005 11.25a.755.755 0 1 0 0 1.51h4a.755.755 0 1 0 0-1.51h-4Z" />
                                     <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
                                     </svg>
-
                                 </span>
                                 <input type="text" id="modalEndDate" readonly />
                             </div>
@@ -82,9 +79,9 @@
 
                         </div>
                     </form>
-
+                    <!-- Actions -->
                     <div class="modal-actions" id="actionsDiv"></div>
-                    <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdateLeaveStatusServlet">
+                    <form id="statusForm" method="POST">
                         <input type="hidden" name="holidayid" id="leaveId">
                         <input type="hidden" name="status" id="leaveStatus">
                     </form>
@@ -328,89 +325,106 @@
 
             let selectedEventId = null;
             const detailsAction = document.querySelector('.detailsAction');
+            const form = document.getElementById("statusForm");
 
             // Open modal for each user button
             document.querySelectorAll('.detailsBtn').forEach(btn => {
-                btn.addEventListener('click', () => {
+            btn.addEventListener('click', () => {
 
-                    //UserId
-                    const personalId = btn.dataset.userid.trim();
+            //UserId
+            const personalId = btn.dataset.userid.trim();
                     selectedEventId = btn.dataset.holidayid;
-
                     console.log("personalId:", personalId);
                     console.log("Stored ID:", selectedEventId);
-
                     const status = btn.dataset.status;
                     const actionsDiv = document.querySelector('.modal-actions');
-
                     actionsDiv.innerHTML = "";
-
+                    if (nature === "Holiday") {
+            form.action = "/UpdateLeaveStatusServlet";
                     // Conditional buttons
                     if (status === "Pending") {
-                        actionsDiv.innerHTML = `
+            actionsDiv.innerHTML = `
                 <button class="modal-btn" id="approveLeaveBtn" onclick="submitStatus('Approved')">Approve</button>
                 <button class="modal-btn" id="rejectLeaveBtn" onclick="submitStatus('Rejected')">Reject</button>
                 <button class="modal-btn" id="cancelLeaveBtn" onclick="leaveModal.style.display = 'none'">Cancel</button>
             `;
-                    } else if (status === "Approved" || "Rejected") {
-                        actionsDiv.innerHTML = `
+            } else if (status === "Approved" || "Rejected") {
+            actionsDiv.innerHTML = `
                 <button class="modal-btn" id="cancelLeave" onclick="leaveModal.style.display = 'none'">Cancel</button>
             `;
-
-                    } else {
-                        actionsDiv.innerHTML = `
+            } else {
+            actionsDiv.innerHTML = `
                 <button disabled>No actions available</button>
             `;
-                    }
+            }
+            } else (nature === "Permission") {
+            form.action = "/UpdatePermissionStatusServlet";
+                    // Conditional buttons
+                    if (status === "Pending") {
+            actionsDiv.innerHTML = `
+                <button class="modal-btn" id="approveLeaveBtn" onclick="submitStatus('Approved')">Approve</button>
+                <button class="modal-btn" id="rejectLeaveBtn" onclick="submitStatus('Rejected')">Reject</button>
+                <button class="modal-btn" id="cancelLeaveBtn" onclick="leaveModal.style.display = 'none'">Cancel</button>
+            `;
+            } else if (status === "Approved" || "Rejected") {
+            actionsDiv.innerHTML = `
+                <button class="modal-btn" id="cancelLeave" onclick="leaveModal.style.display = 'none'">Cancel</button>
+            `;
+            } else {
+            actionsDiv.innerHTML = `
+                <button disabled>No actions available</button>
+            `;
+            }
+            }
 
-                    // Fill side section from button data
-                    document.getElementById('modalId').textContent = "ID : #" + btn.dataset.userid || "N/A";
+            // Fill side section from button data
+            document.getElementById('modalId').textContent = "ID : #" + btn.dataset.userid || "N/A";
                     document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
                     document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
                     document.getElementById('modalStartDate').value = btn.dataset.startdate || "N/A";
                     document.getElementById('modalEndDate').value = btn.dataset.enddate || "N/A";
-
                     // Afficher la div du calendrier
                     document.getElementById('leaveModal').style.display = 'block';
-
-
                     // Initialiser ou mettre à jour FullCalendar
                     var calendarEl = document.getElementById('calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
-                        initialView: 'dayGridMonth',
-                        firstDay: 1,
-                        showNonCurrentDates: false,
-                        hiddenDays: [0],
-                        // FullCalendar appellera automatiquement cette URL en ajoutant l'ID
-                        eventSources: [
-
-                            // All holidays 
-                            {
-                                url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
-                                method: 'GET'},
-
-                            // User-specific holidays
-                            {
-                                url: '<%= request.getContextPath()%>/CalendarAdminUserLeaveServlet',
-                                method: 'GET',
-                                extraParams: {
-                                    userId: personalId}
-                            }
-                        ],
-                        eventDidMount: function (info) {
+                    initialView: 'dayGridMonth',
+                            firstDay: 1,
+                            showNonCurrentDates: false,
+                            hiddenDays: [0],
+                            // FullCalendar appellera automatiquement cette URL en ajoutant l'ID
+                            eventSources: [
+                                    
+                                    //Permissions
+                                    {
+                                    url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
+                                            method: 'GET'},
+                                    // All holidays 
+                                    {
+                                    url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
+                                            method: 'GET'},
+                                    // User-specific holidays
+                                    {
+                                    url: '<%= request.getContextPath()%>/CalendarAdminUserLeaveServlet',
+                                            method: 'GET',
+                                            extraParams: {
+                                            userId: personalId}
+                                    }
+                            ],
+                            eventDidMount: function (info) {
                             if (info.event.id === selectedEventId) {
-                                console.log("FULL EVENT:", info.event);
-                                info.el.classList.add("pop-event");
+                            console.log("FULL EVENT:", info.event);
+                                    info.el.classList.add("pop-event");
                             }
-                        }
+                            }
                     });
                     calendar.render();
-                });
             });
+            }
+            );
 
 
             function submitStatus(newStatus) {
-
                 console.log("Submitting ID:", selectedEventId);
 
                 // SAFETY CHECK
