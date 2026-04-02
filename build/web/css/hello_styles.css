@@ -1,0 +1,116 @@
+/* @extend display-flex; */
+display-flex, .display-flex, .display-flex-center, .signin-content {
+    display: flex;
+    display: -webkit-flex;
+}
+
+body {
+    font-family: Monaco, sans-serif;
+    background-color: #eef;
+    padding:20px;
+}
+
+.main {
+    padding-top: 55px;
+}
+
+.container {
+    width: 950px;
+    background: #ffffff;
+    align-items: center;
+    justify-items: center;
+    margin: 0 auto;
+    -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -o-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -ms-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -o-border-radius: 20px;
+    -ms-border-radius: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+}
+
+
+h1 {
+    text-align: center;
+    color: #333333;
+    padding-top: 15px;
+    margin-right: 5px;
+    gap: 0;
+    padding-right: 30px;
+    font-size: 30px;
+}
+
+.form-title {
+    color: #f5cf15;
+}
+
+.signin-content {
+    overflow:hidden;
+    justify-content: center;
+    line-height: 1.4;
+}
+
+
+.signin-form{
+    overflow: hidden;
+    margin-bottom: 100px;
+    padding-left: 10px;
+    position: relative;
+    bottom: 10px;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+    overflow: hidden;
+    &:last-child {
+        margin-bottom: 0px;
+    }
+}
+
+input {
+    width: 100%;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #999;
+    padding: 6px 30px;
+    font-family: Poppins, sans-serif;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+}
+input:focus {
+    outline:none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+input[type='text'] {
+    font-family: Monaco, sans-serif;
+    font-size: 16px;
+    color: black
+}
+
+#form-submit {
+    display: inline-block;
+    width: 270px;
+    background: #0099ff;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 39px;
+    cursor: pointer;
+    &:hover {
+        background: #34495e;
+        color: #0099ff;
+    }
+}
+
+
