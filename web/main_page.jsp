@@ -24,7 +24,7 @@
         <div class="layout">
             <aside class="sidebar">
 
-                <img src="images/mycapstone_logo.png" alt="" class="img_small">
+                <img src="images/capstone_logo_login.png" alt="" class="img_small">
                 <p>MENU</p>
                 <!-- Overview side button-->
                 <button class="tab" id="homeTab" onclick="loadPage('main_overview.jsp', this)" data-url="main_overview.jsp">
