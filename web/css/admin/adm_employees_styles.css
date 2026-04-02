@@ -1,0 +1,124 @@
+* {
+    white-space: nowrap;
+}
+
+html,body {
+    margin:0 0 20% 0;
+    overflow-y:visible;
+}
+
+tbody {
+    font-family: Arial, sans-serif;
+    background: white;
+}
+
+
+.card {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 30px;
+    background: #fff;
+}
+.table-cards table {
+    margin: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.table-cards {
+    width: 70%;
+    border-collapse: separate;
+    border-spacing: 0 10px; /* space between rows */
+}
+.table-cards tbody tr td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.table-cards tbody tr td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.table-cards #checkbox {
+    position: absolute;
+}
+
+.table-cards td {
+    height: 180px;
+    background: #eef;
+    font-size: 16px;
+    color: #555;
+}
+
+.button {
+    padding: 2px 10px;
+    text-decoration: none;
+    background:whitesmoke;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #333;
+    margin-right: 5px;
+}
+.card #edit-btn{
+    display:inline-block;
+    transition: transform 0.2s ease;
+}
+.card:hover:not(:has(#remove-btn:hover)) #edit-btn {
+  transform: scale(1.1);
+  background: #0078d7;
+  color:white;
+}
+#remove-btn {
+    border:none;
+    background: white;
+    cursor: pointer;
+}
+#remove-btn i {
+  color: #555;
+  transition: color 0.2s ease;
+}
+#remove-btn i:hover {
+  color: crimson;
+}
+
+.table-cards .empty-message {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 18px;
+    color: blue;
+}
+
+
+.details {
+    flex: 1;
+}
+
+.details h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.details .title {
+    margin: 2px 0 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+.details p {
+    display:flex;
+    flex-direction: column;
+    margin: 4px 0;
+    font-size: 13px;
+    border-right: 1px dashed #999;
+    padding-right: 10px;
+}
+.details p:nth-child(1n) {
+    padding-left: 4px;
+}
+/* Remove the line on the last column */
+.details p:nth-child(3n) {
+    border-right: none;
+}
+

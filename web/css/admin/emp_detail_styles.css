@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    background: lightgray;
+    overflow: hidden;
+
+}
+
+.layout {
+    display: flex;
+    min-height: 95vh;
+    background-color: lightgray;
+    overflow: hidden;
+    -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -o-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -ms-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -o-border-radius: 20px;
+    -ms-border-radius: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar {
+    top: 0;
+    left: 0;
+    min-height: 100%;
+    min-width: 250px;
+    background-color: lightgray;
+    overflow-x: hidden;
+    z-index: 1000;
+}
+
+.panel {
+    flex: 1;
+    background-color: white;
+    overflow: hidden;
+
+}
+
+.avatar {
+    margin-top: 30px;
+    margin-left: 90px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+
+}
+.name {
+    margin-left: 90px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+}
+
+.role {
+    color: #333;
+    font-style: italic;
+}
