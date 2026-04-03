@@ -23,13 +23,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      # ✅ STEP 1: Download CopyLibs JAR
-      - name: Download NetBeans CopyLibs
-        run: |
-          mkdir -p ant-lib
-          curl -L -o ant-lib/copylibs.jar \
-          https://repo1.maven.org/maven2/org/netbeans/modules/org-netbeans-modules-java-j2seproject-copylibstask/RELEASE82/org-netbeans-modules-java-j2seproject-copylibstask-RELEASE82.jar
-
       # ✅ STEP 2: Run tests (optional)
       - name: Run tests
         run: ant -Dlibs.CopyLibs.classpath=ant-lib/copylibs.jar test
