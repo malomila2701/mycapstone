@@ -225,6 +225,45 @@ public class userdataDAO {
     }
     
     
+    
+    
+    
+    
+    public List<UserPermission> getAdminPermissionAll() {
+        List<UserPermission> userList = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin");
+
+            PreparedStatement ps2 = con2.prepareStatement("SELECT permissions.user_id, permissions.permission_id, permissions.start_date, permissions.motif, permissions.end_date, permissions.start_time, permissions.end_time, permissions.status, users.user_id, users.fullname "
+                    + "FROM permissions "
+                    + "INNER JOIN users ON permissions.user_id = users.user_id "
+                    + "ORDER BY permissions.end_date;");
+            ResultSet rs2 = ps2.executeQuery();
+
+            while (rs2.next()) {
+                UserPermission p = new UserPermission(
+                        rs2.getInt("user_id"),
+                        rs2.getInt("permission_id"),
+                        rs2.getString("fullname"),
+                        rs2.getDate("start_date"),
+                        rs2.getDate("end_date"),
+                        rs2.getTime("start_time"),
+                        rs2.getTime("end_time"),
+                        rs2.getString("status"),
+                        rs2.getString("motif")
+                );
+                userList.add(p);
+            }
+
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error("ERROR PERMISSION ADMIN REQUESTS (ALL): " + e.getMessage());
+        }
+
+        return userList;
+    }
+    
+    
 
     public List<EmployeeInfo> getEmployeeInfo() {
         List<EmployeeInfo> employeesList = new ArrayList<>();

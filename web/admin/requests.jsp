@@ -4,6 +4,7 @@
     Author     : HP
 --%>
 
+<%@page import="javafiles.UserPermission"%>
 <%@page import="javafiles.UserLeave"%>
 <%@page import="javafiles.UserPending"%>
 <%@page import="java.util.List"%>
@@ -32,6 +33,7 @@
             userdataDAO dao = new userdataDAO();
             List<UserLeave> daoAll = dao.getAdminAll();
             List<UserPending> daoPending = dao.getAdminPending();
+            List<UserPermission> daoPermission = dao.getAdminPermissionAll();
         %>
 
         <%                String selectedAvatar = "../images/avatar1.jpg";
@@ -115,12 +117,16 @@
                         </span>
                         <input type="text" placeholder="Search by Name or ID">
                     </div>
+                    <select id="typeFilter" style="margin-right: 10px;">
+                        <option value="leave">Leave</option>
+                        <option value="permission">Permission</option>
+                    </select>
                     <select id="dateFilter" style="margin-right: 10px;">
                         <option value="today">Today</option>
                         <option value="last_week">Last week</option>
                         <option value="older">More than 2 weeks ago</option>
                     </select>
-                    <select id="dateStatus">
+                    <select id="statusFilter">
                         <option value="all">All Status</option>
                         <option value="approved">Approved</option>
                         <option value="pending">Pending</option>
@@ -133,10 +139,97 @@
 
             </div>
 
-
+            <!-- Horizontal Line between request toolbar and tables-->
             <div class="bar"></div>
-            <!-- table PENDING --> 
-            <table class ="reqtable" cellspacing="0" id="pendingtable" style="display:none">
+
+
+            <!-- table for PERMISSIONS requests -->
+            <table class ="reqtable" cellspacing="0" id="permissiontable">
+                <%
+                    if (daoPermission == null || daoPermission.isEmpty()) {
+                %>
+                <tbody>
+                    <tr>
+                        <td colspan="1" style="text-align: center; color: red;">No pending holidays found.</td>
+                    </tr>
+                    <%
+                    } else {
+                        for (UserPermission p : daoPermission) {
+                    %>
+
+                    <tr>
+                        <td>
+
+                            <!-- Left: Avatar + Name/Type -->
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <!-- Avatar -->
+                                <img src="<%= selectedAvatar%>" alt="User Avatar" style="width: 50px; height: 50px; border-radius: 50%;"/>
+
+                                <!-- Name + Holiday Type -->
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-weight: 600;"><%=p.getFullName()%></span>
+                                    <span style=" font-size: 0.9rem; font-weight: normal;">Holiday from <%= p.getStartDate()%> to <%= p.getEndDate()%></span>
+                                    <span style=" font-size: 0.8rem; color: lightslategray">Permission</span>
+                                </div>
+                            </div>
+
+
+                            <!-- Right: Status + Details Button -->
+                            <div style="display: flex; align-items: center; gap: 10px;">
+
+
+                                <% String status = p.getStatus();
+                                    String cssClass = "";
+                                    if ("rejected".equalsIgnoreCase(status)) {
+                                        cssClass = "status-rejected";
+                                    } else if ("approved".equalsIgnoreCase(status)) {
+                                        cssClass = "status-approved";
+                                    } else if ("pending".equalsIgnoreCase(status)) {
+                                        cssClass = "status-pending";
+                                    }%>
+                                <!-- Status with vertical separator -->
+                                <div style="border-left: 1px solid #ccc; padding-left: 10px; display: flex; align-items: center; min-width: 80px; height: 35px; justify-content: center;">
+                                    <span class="status <%= cssClass%>"> 
+                                        <%= p.getStatus()%> </span>
+                                </div>
+
+                                <!-- Details Button with vertical separator -->
+                                <div style="border-left: 1px solid #ccc; padding-left: 10px; display: flex; align-items: center; justify-content: center;">
+                                    <button class="detailsBtn" 
+
+                                            data-userid="<%= p.getUserId()%>" 
+                                            data-holidayid="<%= p.getPermissionId()%>" 
+                                            data-username="<%= p.getFullName()%>"
+                                            data-startdate="<%= p.getStartDate()%>"
+                                            data-enddate="<%= p.getEndDate()%>"
+                                            data-starttime="<%= p.getStartTime()%>"
+                                            data-endtime="<%= p.getEndTime()%>"
+                                            data-motif="<%= p.getMotif()%>"
+                                            data-status="<%= p.getStatus()%>">
+
+                                        <span class="icon-home">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="20" height="20">
+                                            <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                                            <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                    <%
+                            }
+                        }
+                    %>
+                </tbody>
+            </table>
+
+
+
+            <!-- table for PENDING requests --> 
+            <table class ="reqtable" cellspacing="0" id="pendingtable">
                 <%
                     if (daoPending == null || daoPending.isEmpty()) {
                 %>
@@ -219,7 +312,7 @@
 
             <!--
             table
-            ALL 
+            ALL REQUESTS
             -->  
             <table class ="reqtable" cellspacing="0" id="alltable">
                 <%
@@ -306,33 +399,65 @@
 
         <script src="../scripts/utils.js"></script>
         <script>
-            const filter = document.getElementById('dateStatus');
+            const typeFilter = document.getElementById('typeFilter');
+            const statusfilter = document.getElementById('statusFilter');
+
             const tablePending = document.getElementById('pendingtable');
             const tableAll = document.getElementById('alltable');
+            const tablePermission = document.getElementById('permissiontable');
 
-            filter.addEventListener('change', function () {
-                if (this.value === 'pending') {
-                    tablePending.style.display = 'table';
-                    tableAll.style.display = 'none';
-                } else if (this.value === 'all') {
-                    tablePending.style.display = 'none';
-                    tableAll.style.display = 'table';
+            let currentTable = null;
+
+            function showTable(newTable) {
+                if (currentTable === newTable)
+                    return;
+
+                // Fade OUT current table
+                if (currentTable) {
+                    const oldTable = currentTable;
+
+                    oldTable.style.opacity = '0';
+
+                    setTimeout(() => {
+                        oldTable.style.display = 'none';
+                    }, 300); // match CSS duration
                 }
-            });
 
+                // Fade IN new table
+                if (newTable) {
+                    newTable.style.display = 'table';
+                    newTable.style.opacity = '0';
+
+                    requestAnimationFrame(() => {
+                        newTable.style.opacity = '1';
+                    });
+                }
+
+                currentTable = newTable;
+            }
+
+            // Event listeners
+            statusfilter.addEventListener('change', updateTable);
+            typeFilter.addEventListener('change', updateTable);
+
+            // Default table on load
+            window.addEventListener('DOMContentLoaded', () => {
+                statusfilter.value = 'pending';
+                typeFilter.value = 'leave';
+                updateTable();
+            });
         </script>
         <script>
 
             let selectedEventId = null;
             const detailsAction = document.querySelector('.detailsAction');
             const form = document.getElementById("statusForm");
-
             // Open modal for each user button
             document.querySelectorAll('.detailsBtn').forEach(btn => {
-            btn.addEventListener('click', () => {
+                btn.addEventListener('click', () => {
 
-            //UserId
-            const personalId = btn.dataset.userid.trim();
+                    //UserId
+                    const personalId = btn.dataset.userid.trim();
                     selectedEventId = btn.dataset.holidayid;
                     console.log("personalId:", personalId);
                     console.log("Stored ID:", selectedEventId);
@@ -340,103 +465,101 @@
                     const actionsDiv = document.querySelector('.modal-actions');
                     actionsDiv.innerHTML = "";
                     if (nature === "Holiday") {
-            form.action = "/UpdateLeaveStatusServlet";
-                    // Conditional buttons
-                    if (status === "Pending") {
-            actionsDiv.innerHTML = `
+                        form.action = "/UpdateLeaveStatusServlet";
+                        // Conditional buttons
+                        if (status === "Pending") {
+                            actionsDiv.innerHTML = `
                 <button class="modal-btn" id="approveLeaveBtn" onclick="submitStatus('Approved')">Approve</button>
                 <button class="modal-btn" id="rejectLeaveBtn" onclick="submitStatus('Rejected')">Reject</button>
                 <button class="modal-btn" id="cancelLeaveBtn" onclick="leaveModal.style.display = 'none'">Cancel</button>
             `;
-            } else if (status === "Approved" || "Rejected") {
-            actionsDiv.innerHTML = `
+                        } else if (status === "Approved" || "Rejected") {
+                            actionsDiv.innerHTML = `
                 <button class="modal-btn" id="cancelLeave" onclick="leaveModal.style.display = 'none'">Cancel</button>
             `;
-            } else {
-            actionsDiv.innerHTML = `
+                        } else {
+                            actionsDiv.innerHTML = `
                 <button disabled>No actions available</button>
             `;
-            }
-            } else (nature === "Permission") {
-            form.action = "/UpdatePermissionStatusServlet";
-                    // Conditional buttons
-                    if (status === "Pending") {
-            actionsDiv.innerHTML = `
+                        }
+                    }
+                    else (nature === "Permission") {
+                        form.action = "/UpdatePermissionStatusServlet";
+                        // Conditional buttons
+                        if (status === "Pending") {
+                            actionsDiv.innerHTML = `
                 <button class="modal-btn" id="approveLeaveBtn" onclick="submitStatus('Approved')">Approve</button>
                 <button class="modal-btn" id="rejectLeaveBtn" onclick="submitStatus('Rejected')">Reject</button>
                 <button class="modal-btn" id="cancelLeaveBtn" onclick="leaveModal.style.display = 'none'">Cancel</button>
             `;
-            } else if (status === "Approved" || "Rejected") {
-            actionsDiv.innerHTML = `
+                        } else if (status === "Approved" || "Rejected") {
+                            actionsDiv.innerHTML = `
                 <button class="modal-btn" id="cancelLeave" onclick="leaveModal.style.display = 'none'">Cancel</button>
             `;
-            } else {
-            actionsDiv.innerHTML = `
+                        } else {
+                            actionsDiv.innerHTML = `
                 <button disabled>No actions available</button>
             `;
-            }
-            }
+                        }
+                    }
 
-            // Fill side section from button data
-            document.getElementById('modalId').textContent = "ID : #" + btn.dataset.userid || "N/A";
+                    // Fill side section from button data
+                    document.getElementById('modalId').textContent = "ID : #" + btn.dataset.userid || "N/A";
                     document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
                     document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
                     document.getElementById('modalStartDate').value = btn.dataset.startdate || "N/A";
                     document.getElementById('modalEndDate').value = btn.dataset.enddate || "N/A";
+
+                    document.getElementById('leaveId').value = selectedEventId;
+                    document.getElementById('leaveStatus').value = newStatus;
+                    document.getElementById('statusForm').submit();
+
                     // Afficher la div du calendrier
                     document.getElementById('leaveModal').style.display = 'block';
                     // Initialiser ou mettre à jour FullCalendar
                     var calendarEl = document.getElementById('calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                            firstDay: 1,
-                            showNonCurrentDates: false,
-                            hiddenDays: [0],
-                            // FullCalendar appellera automatiquement cette URL en ajoutant l'ID
-                            eventSources: [
-                                    
-                                    //Permissions
-                                    {
-                                    url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
-                                            method: 'GET'},
-                                    // All holidays 
-                                    {
-                                    url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
-                                            method: 'GET'},
-                                    // User-specific holidays
-                                    {
-                                    url: '<%= request.getContextPath()%>/CalendarAdminUserLeaveServlet',
-                                            method: 'GET',
-                                            extraParams: {
-                                            userId: personalId}
-                                    }
-                            ],
-                            eventDidMount: function (info) {
+                        initialView: 'dayGridMonth',
+                        firstDay: 1,
+                        showNonCurrentDates: false,
+                        hiddenDays: [0],
+                        // FullCalendar appellera automatiquement cette URL en ajoutant l'ID
+                        eventSources: [
+
+                            //Permissions
+                            {
+                                url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
+                                method: 'GET'},
+                            // All holidays 
+                            {
+                                url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
+                                method: 'GET'},
+                            // User-specific holidays
+                            {
+                                url: '<%= request.getContextPath()%>/CalendarAdminUserLeaveServlet',
+                                method: 'GET',
+                                extraParams: {
+                                    userId: personalId}
+                            }
+                        ],
+                        eventDidMount: function (info) {
                             if (info.event.id === selectedEventId) {
-                            console.log("FULL EVENT:", info.event);
-                                    info.el.classList.add("pop-event");
+                                console.log("FULL EVENT:", info.event);
+                                info.el.classList.add("pop-event");
                             }
-                            }
+                        }
                     });
                     calendar.render();
-            });
+                });
             }
             );
-
-
             function submitStatus(newStatus) {
                 console.log("Submitting ID:", selectedEventId);
-
                 // SAFETY CHECK
                 if (!selectedEventId) {
                     alert("No event selected!");
                     return;
                 }
-
-                document.getElementById('leaveId').value = selectedEventId;
-                document.getElementById('leaveStatus').value = newStatus;
-
-                document.getElementById('statusForm').submit();
             }
 
         </script>
