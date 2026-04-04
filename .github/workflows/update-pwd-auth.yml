@@ -1,0 +1,32 @@
+## YAML Template.
+---
+
+permissions:
+  contents: write
+  
+on:
+  push:
+    branches:
+      - sample_v1-forMAC
+      
+
+jobs:
+  update:
+     if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Replace pwd auth for JDBC connx in all files
+        run: |
+find . -type f -exec sed -i 's#"jdbc:mysql://localhost:3306/capstone_project", "root", "admin"#"jdbc:mysql://localhost:3306/capstone_project", "root", "admin123"#g' {} +
+     
+      
+      - name: Commit and push changes
+  run: |
+    git config --global user.name "github-actions"
+    git config --global user.email "github-actions@github.com"
+    git add .
+    git commit -m "Automated replacement of JDBC password" || echo "No changes"
+    git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:sample_v1-forMAC
