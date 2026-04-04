@@ -6,11 +6,10 @@
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/src/java/javafiles/userdataDAO.java</file>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/web/hello.jsp</file>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/web/css/hello_styles.css</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/web/main_overview.jsp</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/web/css/overview_styles.css</file>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/web/admin/requests.jsp</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/src/java/javafiles/UpdateLeaveStatusServlet.java</file>
-            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/src/java/javafiles/UpdatePermissionStatusServlet.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/web/css/admin/adm_rq_styles.css</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/src/java/javafiles/UserPermission.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/src/java/javafiles/UserLeave.java</file>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1/.github/workflows/test.yml</file>
         </group>
     </open-files>
