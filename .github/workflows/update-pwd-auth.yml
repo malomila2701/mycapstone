@@ -27,4 +27,5 @@ jobs:
         git config --global user.email "github@github.com"
         git add .
         git commit -m "Automated replacement of JDBC password" || echo "No changes"
+        git pull --rebase https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main || true
         git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
