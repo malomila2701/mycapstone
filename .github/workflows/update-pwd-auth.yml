@@ -20,7 +20,8 @@ jobs:
     - name: Replace JDBC password
       run: |
         find . -type f -name "*.java" -o -name "*.properties" \
-          -exec sed -i 's/jdbc:mysql:\/\/localhost:3306\/projet", "root", "xxx/jdbc:mysql:\/\/localhost:3306\/ptojet", "root", "xxx123/g' {} +
+          -exec sed -i 's#jdbc:mysql://localhost:3306/capstone_project", "root", "admin#jdbc:mysql://localhost:3306/capstone_project", "root", "admin123#g' {} +
+
 
     - name: Commit and push changes
       run: |
