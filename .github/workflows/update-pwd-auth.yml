@@ -17,9 +17,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Replace pwd auth for JDBC connx in all files
+    - name: Replace JDBC password
       run: |
-        find . -type f -exec sed -i 's#"jdbc:mysql://localhost:3306/projet", "root", "xxx"#"jdbc:mysql://localhost:3306/ptojet", "root", "xxx123"#g' {} +
+        find . -type f -name "*.java" -o -name "*.properties" \
+          -exec sed -i 's/jdbc:mysql:\/\/localhost:3306\/projet", "root", "xxx/jdbc:mysql:\/\/localhost:3306\/ptojet", "root", "xxx123/g' {} +
 
     - name: Commit and push changes
       run: |
