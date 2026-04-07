@@ -38,17 +38,7 @@ function setActiveTab(element) {
     element.classList.add("active");
 }
 
-//Load jsp pages into Main frame
-document.getElementById("contentFrame").addEventListener("load", function () {
-    let currentSrc = this.contentWindow.location.pathname; // e.g. "/project/home.jsp"
 
-    document.querySelectorAll(".tab").forEach(tab => {
-        let url = tab.getAttribute("data-url");
-        if (currentSrc.endsWith(url)) {
-            setActiveTab(tab);
-        }
-    });
-});
 
 dropdownBtn.addEventListener("click", function () {
     // deactivate all tabs
