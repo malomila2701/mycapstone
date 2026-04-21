@@ -44,6 +44,7 @@
             <nav class="topnav">
                 <a href="dashboard.jsp" target="adminFrame">Dashboard</a>
                 <a href="requests.jsp" target="adminFrame">Requests</a>
+                <a href="permissions.jsp" target="adminFrame">Permissions</a>
                 <a href="employees.jsp" target="adminFrame">Employees</a>
                 <a href="calendar.jsp" target="adminFrame">Calendar</a>
                 <a href="#">Reports</a>

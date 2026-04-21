@@ -34,45 +34,16 @@ public class CalendarAdminUserLeaveServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         String userIdParam = request.getParameter("userId");
-        logger.info("userIdParam1 = " + userIdParam);
-        if (userIdParam == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing userId");
-            return;
-        }
+        int userId = Integer.parseInt(userIdParam);
 
-        int userId;
+        try (java.sql.Connection conn = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin"); java.sql.PreparedStatement ps = conn.prepareStatement(
+                "SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.end_date, holidays.type, holidays.status, holidays.motif, users.user_id, users.fullname AS fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? AND status IN ('pending', 'rejected');")) {
 
-        try {
-            userId = Integer.parseInt(userIdParam);
-            logger.info("userIdParam = " + userIdParam);
-        } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid userId");
-            return;
-        }
+            JSONArray events = new JSONArray();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/capstone_project", "root", "admin")) {
-
-            JSONArray events = getUserLeaveEvents(userId, conn);
-
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(events.toString());
-
-        } catch (Exception e) {
-            logger.error("Error displaying Calendar Leaves: " + e.getMessage());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public JSONArray getUserLeaveEvents(int userId, Connection conn) throws SQLException {
-        String sql = "SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.end_date, holidays.type, holidays.status, holidays.motif, users.user_id, users.fullname AS fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id=? AND status IN ('pending', 'rejected');";
-       
-        JSONArray events = new JSONArray();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -89,7 +60,7 @@ public class CalendarAdminUserLeaveServlet extends HttpServlet {
                     event.put("start", sdf.format(rs.getDate("start_date")));
                     event.put("end", sdf.format(cal.getTime()));
                     event.put("allDay", true);
-                    
+
                     // color by status
                     String status = rs.getString("status");
                     if ("approved".equalsIgnoreCase(status)) {
@@ -102,9 +73,16 @@ public class CalendarAdminUserLeaveServlet extends HttpServlet {
 
                     events.put(event);
                 }
-            }
-        }
+                response.setContentType("application/json");
+                response.getWriter().write(events.toString());
 
-        return events;
+            } catch (java.sql.SQLException e1) {
+                logger.error("Error linkage to db: " + e1.getMessage());
+            }
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            logger.error("Error displaying Calendar Leaves: " + e.getMessage());
+        }
     }
 }
