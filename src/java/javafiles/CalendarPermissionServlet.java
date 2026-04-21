@@ -29,12 +29,12 @@ public class CalendarPermissionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        HttpSession session = request.getSession(false);
-        int userId = (Integer) session.getAttribute("user_id"); // stocké à la connexion
+        String userIdParam = request.getParameter("userId");
+        int userId = Integer.parseInt(userIdParam);
 
         try (java.sql.Connection conn = java.sql.DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/capstone_project", "root", "admin"); java.sql.PreparedStatement ps = conn.prepareStatement(
-                        "SELECT * FROM permissions WHERE user_id=? and status IN ('approved', 'pending', 'rejected')")) {
+                        "SELECT * FROM permissions WHERE user_id= ? and status IN ('approved', 'pending', 'rejected')")) {
 
             java.sql.ResultSet rs = null;
             ps.setInt(1, userId);

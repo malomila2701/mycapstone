@@ -135,13 +135,13 @@ input[type='text'] {
 /**SideSECTION of MODAL */
 .side-section {
     width:100%;
+    height:100%;
     margin: 0;
-    margin-right: 10px;
 }
 
 #calendar{
     width: 350px;
-    min-height: 400px;
+    min-height: 420px;
 }
 /* remove outer borders */
 .fc-theme-standard th {
