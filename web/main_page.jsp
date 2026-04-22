@@ -26,6 +26,8 @@
 
                 <img src="images/capstone_logo_login.png" alt="" class="img_small">
                 <p>MENU</p>
+
+
                 <!-- Overview side button-->
                 <button class="tab" id="homeTab" onclick="loadPage('main_overview.jsp', this)" data-url="main_overview.jsp">
                     <span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -34,30 +36,47 @@
                     </span>
                     <span class="entries">Overview</span>
                 </button>
+
+
                 <!--Make request side button -->
                 <div class="dropdown">
                     <button class="tab2">
-                        <span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                            <path fill-rule="evenodd" d="M2.106 6.447A2 2 0 0 0 1 8.237V16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.236a2 2 0 0 0-1.106-1.789l-7-3.5a2 2 0 0 0-1.788 0l-7 3.5Zm1.48 4.007a.75.75 0 0 0-.671 1.342l5.855 2.928a2.75 2.75 0 0 0 2.46 0l5.852-2.927a.75.75 0 1 0-.67-1.341l-5.853 2.926a1.25 1.25 0 0 1-1.118 0l-5.856-2.928Z" clip-rule="evenodd" />
+                        <span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <path fill-rule="evenodd" d="M5.478 5.559A1.5 1.5 0 0 1 6.912 4.5H9A.75.75 0 0 0 9 3H6.912a3 3 0 0 0-2.868 2.118l-2.411 7.838a3 3 0 0 0-.133.882V18a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0 0 17.088 3H15a.75.75 0 0 0 0 1.5h2.088a1.5 1.5 0 0 1 1.434 1.059l2.213 7.191H17.89a3 3 0 0 0-2.684 1.658l-.256.513a1.5 1.5 0 0 1-1.342.829h-3.218a1.5 1.5 0 0 1-1.342-.83l-.256-.512a3 3 0 0 0-2.684-1.658H3.265l2.213-7.191Z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M12 2.25a.75.75 0 0 1 .75.75v6.44l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 1.06-1.06l1.72 1.72V3a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                             </svg>
+
                         </span>
                         <span class="entries">Make a request</span>
                     </button>
                     <div class="content"> 
                         <button onclick="loadPage('main_requests.jsp', this)" data-url="main_overview.jsp" style="cursor: pointer;">Leave</button>
-                        <button onclick="loadPage('permission.jsp'), this" data-url="permission.jsp" style="cursor: pointer;" >Permission</button>
+                        <button onclick="loadPage('main_permissions.jsp', this)" data-url="permissions.jsp" style="cursor: pointer;" >Permission</button>
                     </div>
                 </div>
-                    <button class="tab" id="chartsTab" onclick="loadPage('charts.jsp', this)" data-url="charts.jsp">
-                        <span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                            <path d="M12 9a1 1 0 0 1-1-1V3c0-.552.45-1.007.997-.93a7.004 7.004 0 0 1 5.933 5.933c.078.547-.378.997-.93.997h-5Z" />
-                            <path d="M8.003 4.07C8.55 3.994 9 4.449 9 5v5a1 1 0 0 0 1 1h5c.552 0 1.008.45.93.997A7.001 7.001 0 0 1 2 11a7.002 7.002 0 0 1 6.003-6.93Z" />
-                            </svg>
-                        </span>
-                        <span class="entries">Charts</span>
-                    </button>
 
-                
+
+                <button class="tab" id="historyTab" onclick="loadPage('history.jsp', this)" data-url="history.jsp">
+                    <span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                        <path d="M5.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H6a.75.75 0 0 1-.75-.75V12ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM7.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H8a.75.75 0 0 1-.75-.75V12ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V10ZM10 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H10ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H12ZM11.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H12a.75.75 0 0 1-.75-.75V12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V10ZM14 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H14Z" />
+                        <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
+                        </svg>
+
+
+                    </span>
+                    <span class="entries">History</span>
+                </button>
+
+                <button class="tab" id="chartsTab" onclick="loadPage('charts.jsp', this)" data-url="charts.jsp">
+                    <span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                        <path d="M15.5 2A1.5 1.5 0 0 0 14 3.5v13a1.5 1.5 0 0 0 1.5 1.5h1a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 16.5 2h-1ZM9.5 6A1.5 1.5 0 0 0 8 7.5v9A1.5 1.5 0 0 0 9.5 18h1a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 10.5 6h-1ZM3.5 10A1.5 1.5 0 0 0 2 11.5v5A1.5 1.5 0 0 0 3.5 18h1A1.5 1.5 0 0 0 6 16.5v-5A1.5 1.5 0 0 0 4.5 10h-1Z" />
+                        </svg>
+
+                    </span>
+                    <span class="entries">Charts</span>
+                </button>
+
+
                 <!--Admin section -->
                 <%
                     String role = (String) session.getAttribute("role");
@@ -79,27 +98,27 @@
 
         <script src="scripts/utils.js"></script>
         <script>
-            const content = document.querySelector(.content);          
-            document.querySelectorAll(".topnav a").forEach(link => {
-                link.addEventListener("click", function (e) {
-                    e.preventDefault();
+                    const content = document.querySelector(".content");
+                    document.querySelectorAll(".topnav a").forEach(link => {
+                        link.addEventListener("click", function (e) {
+                            e.preventDefault();
 
-                    const url = this.getAttribute("href");
-                    if (!url || url === "#")
-                        return;
+                            const url = this.getAttribute("href");
+                            if (!url || url === "#")
+                                return;
 
-                    loader.style.display = "block";
-                    iframe.classList.remove("loaded");
-                    iframe.style.opacity = 0;
+                            loader.style.display = "block";
+                            iframe.classList.remove("loaded");
+                            iframe.style.opacity = 0;
 
-                    iframe.src = url;
-                });
-            });
+                            iframe.src = url;
+                        });
+                    });
 
-            iframe.onload = function () {
-                loader.style.display = "none";
-                iframe.classList.add("visible");
-            };
+                    iframe.onload = function () {
+                        loader.style.display = "none";
+                        iframe.classList.add("visible");
+                    };
         </script>
     </body>
 </html>

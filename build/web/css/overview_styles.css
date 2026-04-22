@@ -1,8 +1,7 @@
 body{
     font-family:Arial, sans-serif;
     font-size: 0.9rem;
-    background: #E3FFE7;
-    background: linear-gradient(79deg, rgba(227, 255, 231, 0.64) 0%, rgba(238, 238, 255, 0.77) 72%);
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
     color: #666;
     height: 100%;
     margin:0 0 0 17%;
@@ -14,8 +13,13 @@ body{
     justify-content: space-between;
     align-items: center; /* keeps items vertically centered */
     margin-top: 0;
+    padding-top: 5px;
+    margin-bottom:0;
     margin-left: 0;
     width: 100%; /* use full width of parent */
+    
+    
+    height: 5%;
 }
 .header-left {
     font-family: Segoe, sans-serif;
@@ -25,7 +29,6 @@ body{
 }
 .search-box {
     width: 250px;
-    margin-top: 10px;
     margin-right: 200px;
 }
 .search-box input {
@@ -41,22 +44,10 @@ body{
 .search-box input:focus {
     border-color: #0078d7; /* highlight color when focused */
 }
-.header-right{
-    margin-right: 10px;
-}
-#top-header .header-right{
-    margin-right: 0;
-    
-    border: none;
-    border-left: 2px solid red;
-    border-bottom: 2px solid red;
-    border-bottom-left-radius: 16px;
-    padding-left: 2%;
-    padding-bottom: 10px;
-}
 .header_btn{
     display: flex;
     position: relative;
+    align-content: center;
     gap: 10px;
 }
 .header_icon {
@@ -65,10 +56,9 @@ body{
     background-color: white;
     color: black;
     align-items: center;
-    justify-content: center;
-    padding: 5px;
+    padding: 8px;
     border: none;
-    border-radius: 20px;
+    border-radius: 16px;
     cursor: pointer;
 
     transition: transform 0.2s ease;
@@ -121,11 +111,13 @@ body{
 Main SECTION
 */
 .dashboard {
-    margin-top: 15px;
     display: grid;
     grid-template-columns: 2.5fr 1.5fr; /* middle wider, right narrower */
     gap: 20px;
     align-items: start; /* prevents equal height stretching */
+    
+    margin-top: 1%;
+    height:93%;
 }
 
 .banner {
@@ -136,7 +128,7 @@ Main SECTION
 #welcome {
     display: grid;
     margin-bottom: 10px;
-    padding: 15px;
+    padding: 20px;
     /*background: #0078d7;*/
     background: #215f91;
     background: linear-gradient(175deg,rgba(33, 95, 145, 1) 0%, rgba(0, 82, 145, 1) 35%, rgba(0, 170, 204, 1) 100%);
@@ -161,7 +153,7 @@ Main SECTION
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     height: 80px;
-    width: 180px;
+    width: 200px;
     text-align: center;
     align-items: center;
     color: #333;
@@ -213,13 +205,13 @@ Main SECTION
     color: #666;
     background-color: white;
 }
-#latest_b {
-    margin-top: 10px;
-}
 #pending_banner .header, #latest_banner .header{
-    padding: 12px;
+    align-items: center;
+    padding: 20px;
     outline: none;
     font-size: 1.1rem;
+    
+    width:100%;
 }
 
 .reqtable {
@@ -237,12 +229,14 @@ Main SECTION
 
 /* Tableau des congés en attente */
 #pending_banner .header-left{
+    width: 80%;
+    padding-left: 2%;
     display:flex;
-    margin-left: 7px;
 }
 #pending_banner .header-right{
+    width: 20%;
     align-content: center;
-    margin-right: 15px;
+    margin-right: 3%;
 }
 #pending_t td {
     display:flex;
@@ -252,11 +246,13 @@ Main SECTION
 /* Tableau des derniers congés */
 #latest_banner .header-left{
     display:flex;
-    margin-left: 7px;
+    padding-left: 2%;
+    width: 70%;
 }
 #latest_banner .header-right{
+    width: 28%;
+    margin-right:0;
     align-content: center;
-    margin-right: 30px;
 }
 
 /**
@@ -272,6 +268,15 @@ Main SECTION
     border-radius: 16px;
     padding: 8px;
 }
+.icon-btn-header {
+    display: flex;
+    margin-right: 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+    padding: 8px;
+    background: #eef;
+}
 .icon-home {
     background: transparent;
     width: 17px;
@@ -281,6 +286,7 @@ Main SECTION
 /**Add Request Button*/
 #new-leave-btn{
     width: 120px;
+    border-radius: 10px;
     background-color: #eef;
     transition: transform 0.2s ease;
 }
@@ -294,6 +300,13 @@ Main SECTION
 #details-btn{
     position: relative;
     right: 10px;
+}
+#latest_banner svg, #pending_banner svg {
+    transition: transform 0.2s ease;
+}
+#latest_banner svg:hover, #pending_banner svg:hover  {
+    transform: scale(1.2);
+    fill: #0078d7;
 }
 
 .status {
@@ -313,7 +326,7 @@ Main SECTION
 }
 
 .bar {
-    width: 93%;
+    width: 95%;
     margin: 0 auto;
     height: 1px;
     background-color: lightslategray;
@@ -371,9 +384,9 @@ Side SECTION
     display: flex;
     position: relative;
     right: 2%;
-    border-radius: 14px;       /* rounded corners */
+    border-radius: 16px;       /* rounded corners */
     padding: 10px;
-    outline: 3px solid white;/* outer border */
+    
     flex-direction: column;
     align-self: start; /* keeps it aligned at the top only */
     width:100%;
@@ -384,7 +397,32 @@ Side SECTION
 */
 #calendar{
     overflow:hidden;
-    height: 380px;
+    height: 415px;
+}
+.fc-toolbar {
+    padding: 5px;
+}
+.fc-toolbar-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #555;
+}
+.fc-button {
+    background-color: white !important;
+    border: 1px solid #ccc !important;
+    color: #333 !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease;
+}
+.fc-button:hover {
+    background-color: #0078d7 !important;
+    color: white !important;
+}
+.fc-col-header {
+    color: #555;                 /* text color */
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
 }
 /* remove outer borders */
 .fc-theme-standard .fc-scrollgrid,

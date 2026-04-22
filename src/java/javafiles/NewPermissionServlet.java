@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,7 +52,7 @@ public class NewPermissionServlet extends HttpServlet {
 
             conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
 
-            String sql = "INSERT INTO permissions(user_id, start_date, end_date, start_time, end_time, motif, status) values (?,?,?,?,?,?, 'pending')";
+            String sql = "INSERT INTO permissions(user_id, start_date, end_date, start_time, end_time, created_at, motif, status) values (?,?,?,?,?,CURRENT_TIMESTAMP,?, 'pending')";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userId);
             stmt.setString(2, date);
@@ -62,7 +63,7 @@ public class NewPermissionServlet extends HttpServlet {
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
-                request.setAttribute("responseMessage", "User registered successfully!");
+                request.setAttribute("responseMessage", "Permission request created successfully!");
                 request.setAttribute("responseStatus", "success");
             } else {
                 request.setAttribute("responseMessage", "Registration failed.");
@@ -70,11 +71,11 @@ public class NewPermissionServlet extends HttpServlet {
             }
 
             stmt.close();
-            request.getRequestDispatcher("permission.jsp").forward(request, response);
+            request.getRequestDispatcher("main_permissions.jsp").forward(request, response);
 
-        } catch (IOException | ClassNotFoundException | SQLException | ServletException | ParseException e) {
+        } catch (IOException | ClassNotFoundException | SQLException | ServletException  e) {
             logger.error("NEW PERMISSION ERROR : " + e.getMessage());
-            request.getRequestDispatcher("permission.jsp").forward(request, response);
+            request.getRequestDispatcher("main_permissions.jsp").forward(request, response);
         } finally {
             try {
                 if (stmt != null) {
@@ -92,16 +93,8 @@ public class NewPermissionServlet extends HttpServlet {
     }
 
     // Convert "hh:mm a" (e.g. "12:00 PM") into java.sql.Time
-    public static java.sql.Time convertToSqlTime(String amPmTime) throws ParseException {
-        // Parse AM/PM format
-        SimpleDateFormat parser = new SimpleDateFormat("hh:mm a");
-        java.util.Date date = parser.parse(amPmTime);
-
-        // Format into 24-hour "HH:mm:ss"
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        String time24 = formatter.format(date);
-
-        // Convert to java.sql.Time for DB insertion
-        return java.sql.Time.valueOf(time24);
-    }
+    public static java.sql.Time convertToSqlTime(String time) {
+    LocalTime localTime = LocalTime.parse(time); // "08:00"
+    return java.sql.Time.valueOf(localTime);
+}
 }
