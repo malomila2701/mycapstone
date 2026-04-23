@@ -46,13 +46,8 @@ public class FirstServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // Database URL, username, and password
-        String dbURL = "jdbc:mysql://localhost:3306/capstone_project";
-        String dbUser = "root";
-        String dbPassword = "admin";
-
         try {
-            java.sql.Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+            java.sql.Connection conn = DBConnection.connect();
 
             String sql = "SELECT * FROM users WHERE username = ? and password = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -97,6 +92,8 @@ public class FirstServlet extends HttpServlet {
             request.setAttribute("error", "server");
             request.getRequestDispatcher("hello.jsp").forward(request, response);
             logger.error("Error Log in: " + e.getMessage());
+        } catch (Exception ex) {
+            System.getLogger(FirstServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
 

@@ -39,18 +39,13 @@ public class NewPermissionServlet extends HttpServlet {
         String start_time = request.getParameter("eventStartTime");
         String end_time = request.getParameter("eventEndTime");
 
-        // Database URL, username, and password
-        String dbURL = "jdbc:mysql://localhost:3306/capstone_project";
-        String dbUser = "root";
-        String dbPassword = "admin";
-
         java.sql.Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+            conn = DBConnection.connect();
 
             String sql = "INSERT INTO permissions(user_id, start_date, end_date, start_time, end_time, created_at, motif, status) values (?,?,?,?,?,CURRENT_TIMESTAMP,?, 'pending')";
             stmt = conn.prepareStatement(sql);
@@ -76,6 +71,8 @@ public class NewPermissionServlet extends HttpServlet {
         } catch (IOException | ClassNotFoundException | SQLException | ServletException  e) {
             logger.error("NEW PERMISSION ERROR : " + e.getMessage());
             request.getRequestDispatcher("main_permissions.jsp").forward(request, response);
+        } catch (Exception ex) {
+            System.getLogger(NewPermissionServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } finally {
             try {
                 if (stmt != null) {
@@ -94,7 +91,7 @@ public class NewPermissionServlet extends HttpServlet {
 
     // Convert "hh:mm a" (e.g. "12:00 PM") into java.sql.Time
     public static java.sql.Time convertToSqlTime(String time) {
-    LocalTime localTime = LocalTime.parse(time); // "08:00"
+    LocalTime localTime = LocalTime.parse(time); 
     return java.sql.Time.valueOf(localTime);
 }
 }

@@ -37,8 +37,7 @@ public class CalendarHolidaysServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/capstone_project", "root", "admin"); PreparedStatement ps = conn.prepareStatement("SELECT *, users.fullname AS fullname FROM holidays JOIN users ON holidays.user_id = users.user_id WHERE status IN ('approved')")) {
+        try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement("SELECT *, users.fullname AS fullname FROM holidays JOIN users ON holidays.user_id = users.user_id WHERE status IN ('approved')")) {
 
             ResultSet rs = null;
 

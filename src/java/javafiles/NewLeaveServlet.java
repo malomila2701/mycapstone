@@ -36,18 +36,13 @@ public class NewLeaveServlet extends HttpServlet {
         String type = request.getParameter("eventType");
         String motif = request.getParameter("eventDescription");
 
-        // Database URL, username, and password
-        String dbURL = "jdbc:mysql://localhost:3306/capstone_project";
-        String dbUser = "root";
-        String dbPassword = "admin";
-
         java.sql.Connection conn = null;
         PreparedStatement stmt = null;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+            conn = DBConnection.connect();
 
             String sql = "INSERT INTO holidays(user_id, start_date, end_date, type, motif, status) values (?,?,?,?,?, 'pending')";
             stmt = conn.prepareStatement(sql);
@@ -72,6 +67,8 @@ public class NewLeaveServlet extends HttpServlet {
         } catch (IOException | ClassNotFoundException | SQLException | ServletException e) {
             logger.error("NEW LEAVE ERROR : " + e.getMessage());
             request.getRequestDispatcher("main_requests.jsp").forward(request, response);
+        } catch (Exception ex) {
+            System.getLogger(NewLeaveServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } finally {
             try {
                 if (stmt != null) {

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import javafiles.DBConnection;
 import javafiles.NewPermissionServlet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,8 +34,7 @@ public class NotificationServlet extends HttpServlet {
         int unreadCount = 0;
         JSONArray notificationsArray = new JSONArray();
 
-        try (java.sql.Connection conn = java.sql.DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/capstone_project", "root", "admin")) {
+        try (java.sql.Connection conn = DBConnection.connect()) {
             String sql = "SELECT id, message, created_at FROM notifications WHERE status = 'unread' ORDER BY created_at DESC";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();

@@ -22,11 +22,11 @@ public class userdataDAO {
 
     private static final Logger logger = LogManager.getLogger(userdataDAO.class.getName());
 
-    public boolean newEvent(int userId, String eventStart, String eventEnd, String eventType, String eventDescription) {
+    public boolean newEvent(int userId, String eventStart, String eventEnd, String eventType, String eventDescription) throws Exception {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin");
+            Connection con = DBConnection.connect();
             PreparedStatement ps = con.prepareStatement("INSERT INTO holidays(user_id, start_date, end_date ,motif, type, status) VALUES (?,?,?,?,?,'pending') ");
 
             ps.setInt(1, userId);
@@ -56,7 +56,7 @@ public class userdataDAO {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin");
+            Connection con = DBConnection.connect();
             PreparedStatement ps = con.prepareStatement("SELECT end_date FROM holidays WHERE user_id= ? "
                     + "AND status IN ('approved', 'rejected') ORDER BY end_date DESC LIMIT 1");
 
@@ -81,12 +81,13 @@ public class userdataDAO {
      *
      * @param userId
      * @return
+     * @throws java.lang.Exception
      */
-    public List<UserPending> getPending(int userId) {
+    public List<UserPending> getPending(int userId) throws Exception {
         List<UserPending> pendingList = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin");
+            Connection con2 = DBConnection.connect();
             PreparedStatement ps2 = con2.prepareStatement("SELECT *, users.fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? AND status='pending' ORDER BY end_date DESC LIMIT 3");
 
             ps2.setInt(1, userId);
@@ -119,12 +120,12 @@ public class userdataDAO {
      * @param userId
      * @return
      */
-    public List<UserLeave> getUserLeave(int userId) {
+    public List<UserLeave> getUserLeave(int userId) throws Exception {
         List<UserLeave> leaveList = new ArrayList<>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin");
+            Connection con = DBConnection.connect();
             PreparedStatement ps = con.prepareStatement("SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.end_date, holidays.type, holidays.status, holidays.motif, users.user_id, users.fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? "
                     + "ORDER BY end_date DESC LIMIT 3");
 
@@ -159,11 +160,11 @@ public class userdataDAO {
      *
      * @return
      */
-    public List<UserLeave> getAdminAll() {
+    public List<UserLeave> getAdminAll() throws Exception {
         List<UserLeave> userList = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin");
+            Connection con2 = DBConnection.connect();
 
             PreparedStatement ps2 = con2.prepareStatement("SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.motif, holidays.type, holidays.end_date, holidays.status,users.user_id, users.fullname "
                     + "FROM holidays "
@@ -197,11 +198,11 @@ public class userdataDAO {
      *
      * @return
      */
-    public List<UserPending> getAdminPending() {
+    public List<UserPending> getAdminPending() throws Exception {
         List<UserPending> allList = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin");
+            Connection con2 = DBConnection.connect();
             PreparedStatement ps1 = con2.prepareStatement("SELECT *,users.fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE holidays.status = 'pending' ORDER BY holidays.end_date;");
             ResultSet rs1 = ps1.executeQuery();
 
@@ -229,11 +230,11 @@ public class userdataDAO {
     
     
     
-    public List<UserPermission> getAdminPermissionAll() {
+    public List<UserPermission> getAdminPermissionAll() throws Exception {
         List<UserPermission> userList = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin");
+            Connection con2 = DBConnection.connect();
 
             PreparedStatement ps2 = con2.prepareStatement("SELECT permissions.user_id, permissions.permission_id, permissions.start_date, permissions.motif, permissions.end_date, permissions.start_time, permissions.end_time, permissions.status, users.user_id, users.fullname "
                     + "FROM permissions "
@@ -265,12 +266,12 @@ public class userdataDAO {
     
     
 
-    public List<EmployeeInfo> getEmployeeInfo() {
+    public List<EmployeeInfo> getEmployeeInfo() throws Exception {
         List<EmployeeInfo> employeesList = new ArrayList<>();
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con3 = DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin");
+            Connection con3 = DBConnection.connect();
             PreparedStatement pst = con3.prepareStatement("SELECT users.user_id, users.fullname, users.email, users.role, holidays.start_date, holidays.end_date, holidays.type,"
                     + "holidays.status FROM users LEFT JOIN holidays ON holidays.user_id = users.user_id AND "
                     + "holidays.holidays_id = (SELECT MAX(holidays_id) FROM holidays WHERE user_id = users.user_id)");

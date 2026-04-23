@@ -43,8 +43,7 @@ public class CalendarUserLeaveServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         int userId = (Integer) session.getAttribute("user_id"); // stocké à la connexion
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/capstone_project", "root", "admin"); PreparedStatement ps = conn.prepareStatement(
+        try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement(
                         "SELECT * FROM holidays WHERE user_id=? and status IN ('approved', 'pending', 'rejected')")) {
 
             ResultSet rs = null;

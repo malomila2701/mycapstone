@@ -30,8 +30,7 @@ public class UpdatePermissionStatusServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("holidayid"));
         String status = request.getParameter("status");
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/capstone_project", "root", "admin")) {
+        try (Connection conn = DBConnection.connect()) {
             String sql = "UPDATE permissions SET status=? WHERE permission_id=?";
             java.sql.PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, status);

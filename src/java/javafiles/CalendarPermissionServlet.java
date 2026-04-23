@@ -32,8 +32,7 @@ public class CalendarPermissionServlet extends HttpServlet {
         String userIdParam = request.getParameter("userId");
         int userId = Integer.parseInt(userIdParam);
 
-        try (java.sql.Connection conn = java.sql.DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/capstone_project", "root", "admin"); java.sql.PreparedStatement ps = conn.prepareStatement(
+        try (java.sql.Connection conn = DBConnection.connect(); java.sql.PreparedStatement ps = conn.prepareStatement(
                         "SELECT * FROM permissions WHERE user_id= ? and status IN ('approved', 'pending', 'rejected')")) {
 
             java.sql.ResultSet rs = null;
