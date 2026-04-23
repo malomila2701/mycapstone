@@ -38,7 +38,8 @@ public class CalendarAdminUserLeaveServlet extends HttpServlet {
         String userIdParam = request.getParameter("userId");
         int userId = Integer.parseInt(userIdParam);
 
-        try (java.sql.Connection conn = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/capstone_project", "root", "admin"); java.sql.PreparedStatement ps = conn.prepareStatement(
+        try (java.sql.Connection conn = DBConnection.connect(); 
+                java.sql.PreparedStatement ps = conn.prepareStatement(
                 "SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.end_date, holidays.type, holidays.status, holidays.motif, users.user_id, users.fullname AS fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? AND status IN ('pending', 'rejected');")) {
 
             JSONArray events = new JSONArray();
