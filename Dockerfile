@@ -1,9 +1,10 @@
-FROM frekele/ant:1.10.14-jdk17 AS build
-WORKDIR /app
-COPY . .
-RUN ant clean dist
-
 FROM tomcat:9-jdk17
+
+# supprimer l’app par défaut
 RUN rm -rf /usr/local/tomcat/webapps/ROOT
-COPY --from=build /app/dist/*.war /usr/local/tomcat/webapps/ROOT.war
-EXPOSE 8080
+
+# copier ton WAR
+COPY dist/capstone_v1.war /usr/local/tomcat/webapps/ROOT.war
+
+# lancer tomcat
+CMD ["catalina.sh", "run"]
