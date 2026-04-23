@@ -4,6 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1_onMAC/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1_onMAC/Dockerfile</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1_onMAC/src/java/javafiles/FirstServlet.java</file>
+            <file>file:/C:/Users/HP/Documents/NetBeansProjects/capstone_v1_onMAC/src/java/javafiles/DBConnection.java</file>
         </group>
     </open-files>
 </project-private>
