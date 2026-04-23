@@ -1,8 +1,7 @@
-FROM eclipse-temurin:17-jdk AS build
+FROM frekele/ant:1.10.14-jdk17 AS build
 WORKDIR /app
 COPY . .
-RUN apt-get update && apt-get install -y ant && \
-    ant -buildfile build.xml clean jar
+RUN ant clean dist
 
 FROM tomcat:9-jdk17
 RUN rm -rf /usr/local/tomcat/webapps/ROOT
