@@ -203,7 +203,7 @@ Main SECTION
 #pending_banner, #latest_banner {
     margin-top: 17px;
     color: #666;
-    background-color: white;
+    background-color: whitesmoke;
 }
 #pending_banner .header, #latest_banner .header{
     align-items: center;
@@ -556,6 +556,9 @@ h1 {
 }
 .drop_icon::before {
     content: "+";
+}
+.drop_icon::after {
+    color: white;
 }
 /* Contenu animé */
 .content {
