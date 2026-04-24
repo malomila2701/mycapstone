@@ -301,6 +301,9 @@ Main SECTION
     position: relative;
     right: 10px;
 }
+#latest_banner svg {
+    fill: #0078d7;
+}
 #latest_banner svg, #pending_banner svg {
     transition: transform 0.2s ease;
 }
