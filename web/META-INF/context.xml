@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/capstone_v1">
+<Context>
 <Environment name="JDBC_URL" 
                  value="jdbc:mysql://localhost:3306/capstone_project" 
                  type="java.lang.String" override="false"/>
