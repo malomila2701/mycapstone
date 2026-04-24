@@ -1,2 +1,2 @@
-dblocal.properties
-web/META-INF/context.xml
+/dblocal.properties
+/web/META-INF/context.xml
