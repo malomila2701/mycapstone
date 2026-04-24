@@ -203,7 +203,7 @@ Main SECTION
 #pending_banner, #latest_banner {
     margin-top: 17px;
     color: #666;
-    background-color: whitesmoke;
+    background-color: white;
 }
 #pending_banner .header, #latest_banner .header{
     align-items: center;
@@ -301,9 +301,7 @@ Main SECTION
     position: relative;
     right: 10px;
 }
-#latest_banner svg {
-    fill: #0078d7;
-}
+
 #latest_banner svg, #pending_banner svg {
     transition: transform 0.2s ease;
 }
@@ -400,7 +398,7 @@ Side SECTION
 */
 #calendar{
     overflow:hidden;
-    height: 415px;
+    height: 420px;
 }
 .fc-toolbar {
     padding: 5px;
