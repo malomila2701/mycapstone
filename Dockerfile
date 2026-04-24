@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Clean et Build (génère le WAR)
-RUN ant clean jar
+RUN ant clean dist
 
 # --- Image finale avec Tomcat ---
 FROM tomcat:9-jdk17
