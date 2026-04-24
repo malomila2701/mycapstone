@@ -24,7 +24,7 @@
         <div class="layout">
             <aside class="sidebar">
 
-                <img src="${pageContext.request.contextPath}/images/capstone_logo_login.png" alt="" class="img_small">
+                <img src="${pageContext.request.contextPath}/images/logo_sidebar.png" alt="" class="img_small">
                 <p>MENU</p>
 
 
