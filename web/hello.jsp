@@ -28,7 +28,7 @@
                             <div class="container">
 
                                 <main class="main-section">
-                                    <img src="images/capstone_logo_main.png" alt="" class="img_small"/>
+                                    <img src="${pageContext.request.contextPath}/images/capstone_logo_main.png" alt="" class="img_small"/>
                                     <h1><br>STAFF LEAVE<br> MANAGEMENT TOOL </h1>
                                                 </main>
 

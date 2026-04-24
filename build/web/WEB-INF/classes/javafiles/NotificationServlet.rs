@@ -1,2 +1,1 @@
-NotificationServlet$NotificationServlet
 NotificationServlet
