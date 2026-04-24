@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/capstone_v1">
 <Environment name="JDBC_URL" 
-                 value="jdbc:mysql://localhost:3306/your_local_db" 
+                 value="jdbc:mysql://localhost:3306/capstone_project" 
                  type="java.lang.String" override="false"/>
     <Environment name="DB_USER" 
                  value="root" 
                  type="java.lang.String" override="false"/>
     <Environment name="DB_PASS" 
-                 value="your_local_password" 
+                 value="admin" 
                  type="java.lang.String" override="false"/>
 </Context>
