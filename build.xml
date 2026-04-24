@@ -69,3 +69,14 @@
 
     -->
 </project>
+
+<property file="local.properties"/>
+
+<!-- Dans la target run -->
+<target name="run" depends="compile">
+    <java jar="dist/votre-app.jar" fork="true">
+        <env key="JDBC_URL" value="${JDBC_URL}"/>
+        <env key="DB_USER" value="${DB_USER}"/>
+        <env key="DB_PASS" value="${DB_PASS}"/>
+    </java>
+</target>
