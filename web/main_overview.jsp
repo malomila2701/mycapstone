@@ -230,17 +230,19 @@
 
                             <span style="
                                   font-weight: bold;
-                                  font-size: 1rem;
-                                  align-content: center;">
+                                  font-size: 1rem;">
 
                                 Pending Requests</span>
                         </div>
                         <div class="header-right">
-                            <span style="text-align: center;"> 
-                                <button class="icon-btn" id="new-leave-btn"><span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" class="size-5">
-                                        <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-                                        </svg></span>
-                                    New Request </button></span>
+
+                            <button class="icon-btn" id="new-leave-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white">
+                                <path fill-rule="evenodd" d="M5.478 5.559A1.5 1.5 0 0 1 6.912 4.5H9A.75.75 0 0 0 9 3H6.912a3 3 0 0 0-2.868 2.118l-2.411 7.838a3 3 0 0 0-.133.882V18a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0 0 17.088 3H15a.75.75 0 0 0 0 1.5h2.088a1.5 1.5 0 0 1 1.434 1.059l2.213 7.191H17.89a3 3 0 0 0-2.684 1.658l-.256.513a1.5 1.5 0 0 1-1.342.829h-3.218a1.5 1.5 0 0 1-1.342-.83l-.256-.512a3 3 0 0 0-2.684-1.658H3.265l2.213-7.191Z" clip-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M12 2.25a.75.75 0 0 1 .75.75v6.44l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 1.06-1.06l1.72 1.72V3a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                                </svg>
+                                <span id="new-leave-label">New Request</span>
+                            </button>
                         </div>
                     </div>
 
@@ -270,7 +272,7 @@
                             %>
 
                             <tr>
-                                <td style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+                                <td style="display: flex; justify-content: space-between; align-items: center; padding:10px;">
 
                                     <!-- Left: Avatar + Name/Type -->
                                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -300,10 +302,8 @@
                                             </span>
                                         </button>
                                     </div>
-
                                 </td>
                             </tr>
-
                             <%
                                     }
                                 }
@@ -325,8 +325,7 @@
 
                             <span style="
                                   font-weight: bold;
-                                  font-size: 1rem;
-                                  align-content: center;">
+                                  font-size: 1rem;">
 
                                 Latest Requests</span>
                         </div>
@@ -429,11 +428,26 @@
                 <div class="agenda-card">
                     <h3>Agenda</h3>
                     <div class="agenda-item" id="agenda-item-holiday">
-                        <h4>Next National Holiday:</h4>
-                        <p>Easter Monday ( Apr 6 )</p>
+                        <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                            <div>
+                                <h4>Next National Holiday:</h4>
+                                <p>Easter Monday ( Apr 6 )</p>
+                            </div>
+                            <div class="icon-btn">
+                                <span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="darkred" class="size-10">
+                                <path d="M16.881 4.345A23.112 23.112 0 0 1 8.25 6H7.5a5.25 5.25 0 0 0-.88 10.427 21.593 21.593 0 0 0 1.378 3.94c.464 1.004 1.674 1.32 2.582.796l.657-.379c.88-.508 1.165-1.593.772-2.468a17.116 17.116 0 0 1-.628-1.607c1.918.258 3.76.75 5.5 1.446A21.727 21.727 0 0 0 18 11.25c0-2.414-.393-4.735-1.119-6.905ZM18.26 3.74a23.22 23.22 0 0 1 1.24 7.51 23.22 23.22 0 0 1-1.41 7.992.75.75 0 1 0 1.409.516 24.555 24.555 0 0 0 1.415-6.43 2.992 2.992 0 0 0 .836-2.078c0-.807-.319-1.54-.836-2.078a24.65 24.65 0 0 0-1.415-6.43.75.75 0 1 0-1.409.516c.059.16.116.321.17.483Z" />
+                                </svg></span>
+
+                            </div>
+                        </div>
+
                     </div>
                     <div class="agenda-item">
                         <h4>History 12</h4>
+                        <p>Lecture on Cold War (10:00 AM - 11:30 AM)</p>
+                    </div>
+                    <div class="agenda-item">
+                        <h4>History 11</h4>
                         <p>Lecture on Cold War (10:00 AM - 11:30 AM)</p>
                     </div>
                     <div class="agenda-item">

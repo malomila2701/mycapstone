@@ -4,7 +4,7 @@ body{
     background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
     color: #666;
     height: 100%;
-    margin:0 0 0 17%;
+    margin:0 0 0 16%;
     overflow-x: hidden;
 }
 
@@ -17,8 +17,8 @@ body{
     margin-bottom:0;
     margin-left: 0;
     width: 100%; /* use full width of parent */
-    
-    
+
+
     height: 5%;
 }
 .header-left {
@@ -112,12 +112,12 @@ Main SECTION
 */
 .dashboard {
     display: grid;
-    grid-template-columns: 2.5fr 1.5fr; /* middle wider, right narrower */
-    gap: 20px;
+    grid-template-columns: 2.5fr 1.45fr; /* middle wider, right narrower */
+    gap: 30px;
     align-items: start; /* prevents equal height stretching */
-    
+
     margin-top: 1%;
-    height:93%;
+    height:100%;
 }
 
 .banner {
@@ -140,7 +140,7 @@ Main SECTION
 .cards-section {
     display: grid;
     flex-direction: row;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     /*margin-top: 15px;
     margin-left: 15px;*/
 }
@@ -153,7 +153,7 @@ Main SECTION
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     height: 80px;
-    width: 200px;
+    width: 230px;
     text-align: center;
     align-items: center;
     color: #333;
@@ -200,31 +200,27 @@ Main SECTION
     font-size: 0.8rem;
 }
 
+.reqtable {
+    width: 100%;
+    margin: 0;
+    background: #ffffff;
+    border-collapse: collapse;
+}
+.reqtable td:hover {
+    background: whitesmoke;
+}
 #pending_banner, #latest_banner {
     margin-top: 17px;
     color: #666;
-    background-color: white;
+    background-color: white;    
 }
 #pending_banner .header, #latest_banner .header{
     align-items: center;
     padding: 20px;
     outline: none;
     font-size: 1.1rem;
-    
-    width:100%;
-}
 
-.reqtable {
-    width: 100%;
-}
-.reqtable table {
-    margin: 0;
-    border-collapse: collapse;
-    background: #ffffff;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-}
-.reqtable td:hover {
-    background: whitesmoke;
+    width:100%;
 }
 
 /* Tableau des congés en attente */
@@ -232,6 +228,8 @@ Main SECTION
     width: 80%;
     padding-left: 2%;
     display:flex;
+    align-items: center;
+    gap: 8px;
 }
 #pending_banner .header-right{
     width: 20%;
@@ -245,12 +243,14 @@ Main SECTION
 
 /* Tableau des derniers congés */
 #latest_banner .header-left{
-    display:flex;
+    width: 80%;
     padding-left: 2%;
-    width: 70%;
+    display:flex;
+    align-items: center;
+    gap: 8px;
 }
 #latest_banner .header-right{
-    width: 28%;
+    width: 20%;
     margin-right:0;
     align-content: center;
 }
@@ -275,7 +275,7 @@ Main SECTION
     cursor: pointer;
     border-radius: 16px;
     padding: 8px;
-    background: #eef;
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
 }
 .icon-home {
     background: transparent;
@@ -284,17 +284,28 @@ Main SECTION
 }
 
 /**Add Request Button*/
-#new-leave-btn{
+#new-leave-btn {
     width: 120px;
     border-radius: 10px;
-    background-color: #eef;
-    transition: transform 0.2s ease;
+    border: 1px solid #444;
+    background: #34495e;
+    transition: background 0.2s ease;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 6px;
+    }
+#new-leave-btn svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
 }
-#new-leave-btn:hover{
-    background-color: #0078d7;
-    color:white;
-    transform: scale(1.1);
-    fill: white;
+#new-leave-label {
+    color: white;
+    font-size: 0.75rem;
+    white-space: nowrap;
 }
 
 #details-btn{
@@ -305,9 +316,8 @@ Main SECTION
 #latest_banner svg, #pending_banner svg {
     transition: transform 0.2s ease;
 }
-#latest_banner svg:hover, #pending_banner svg:hover  {
+#latest_banner svg:hover{
     transform: scale(1.2);
-    fill: #0078d7;
 }
 
 .status {
@@ -384,10 +394,10 @@ Side SECTION
     background: white;
     display: flex;
     position: relative;
-    right: 2%;
+    right: 4%;
     border-radius: 16px;       /* rounded corners */
     padding: 10px;
-    
+
     flex-direction: column;
     align-self: start; /* keeps it aligned at the top only */
     width:100%;
@@ -460,13 +470,14 @@ Side SECTION
 }
 
 .agenda-item {
-    background: #f9f9f9;
+    background: whitesmoke;
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 10px;
 }
 #agenda-item-holiday{
-    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+   background: transparent;
+   border: 1px solid rgba(0,0,0,0.2);
 }
 
 .agenda-item h4 {
@@ -592,6 +603,7 @@ h1 {
     max-height: 300px;
     overflow: visible;
 }
+
 
 
 

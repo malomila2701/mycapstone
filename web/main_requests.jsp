@@ -157,18 +157,31 @@
 
 
 
-        <div class="header">
+        <div class="header" id="top-header">
             <div class="header-left">
+                <div class="search-box">
+                    <input type="text" placeholder="Search">
+                </div>
             </div>
             <div class="header-right">
                 <div class="header_btn">
+                    <button class="header_icon" id="notificationBtn" onclick="toggleDropdown()">
+                        <span class="icon-home" style="width: 20px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                            <path d="M4.214 3.227a.75.75 0 0 0-1.156-.955 8.97 8.97 0 0 0-1.856 3.825.75.75 0 0 0 1.466.316 7.47 7.47 0 0 1 1.546-3.186ZM16.942 2.272a.75.75 0 0 0-1.157.955 7.47 7.47 0 0 1 1.547 3.186.75.75 0 0 0 1.466-.316 8.971 8.971 0 0 0-1.856-3.825Z" />
+                            <path fill-rule="evenodd" d="M10 2a6 6 0 0 0-6 6c0 1.887-.454 3.665-1.257 5.234a.75.75 0 0 0 .515 1.076 32.91 32.91 0 0 0 3.256.508 3.5 3.5 0 0 0 6.972 0 32.903 32.903 0 0 0 3.256-.508.75.75 0 0 0 .515-1.076A11.448 11.448 0 0 1 16 8a6 6 0 0 0-6-6Zm0 14.5a2 2 0 0 1-1.95-1.557 33.54 33.54 0 0 0 3.9 0A2 2 0 0 1 10 16.5Z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="notification-dot"></span>
+                        </span>
+                    </button>
+                    <ul id="notificationList" class="dropdown"></ul>
+
                     <button class="header_icon">
-                        <span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <span class="icon-home" style="width: 20px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 0 1 8.82 1h2.36a1 1 0 0 1 .98.804l.331 1.652a6.993 6.993 0 0 1 1.929 1.115l1.598-.54a1 1 0 0 1 1.186.447l1.18 2.044a1 1 0 0 1-.205 1.251l-1.267 1.113a7.047 7.047 0 0 1 0 2.228l1.267 1.113a1 1 0 0 1 .206 1.25l-1.18 2.045a1 1 0 0 1-1.187.447l-1.598-.54a6.993 6.993 0 0 1-1.929 1.115l-.33 1.652a1 1 0 0 1-.98.804H8.82a1 1 0 0 1-.98-.804l-.331-1.652a6.993 6.993 0 0 1-1.929-1.115l-1.598.54a1 1 0 0 1-1.186-.447l-1.18-2.044a1 1 0 0 1 .205-1.251l1.267-1.114a7.05 7.05 0 0 1 0-2.227L1.821 7.773a1 1 0 0 1-.206-1.25l1.18-2.045a1 1 0 0 1 1.187-.447l1.598.54A6.992 6.992 0 0 1 7.51 3.456l.33-1.652ZM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />
                             </svg></span>
                     </button>
-                    <button class="header_icon">
-                        <span class="label" style="margin-left: 10px; margin-right: 5px;">Déconnexion</span>
+                    <button class="header_icon" style="margin-right: 5px; border: 2px solid #ccc">
+                        <span class="label" style="margin-left: 7px; margin-right: 5px;">Deconnexion</span>
                         <span class="icon-home">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 2a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5A.75.75 0 0 1 10 2ZM5.404 4.343a.75.75 0 0 1 0 1.06 6.5 6.5 0 1 0 9.192 0 .75.75 0 1 1 1.06-1.06 8 8 0 1 1-11.313 0 .75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
@@ -259,21 +272,52 @@
                     <div id="nextStep">
                         <div>
                             <h3 style=" margin:0; padding: 7px; font-size:1.1rem; color:#333;">Step 2: Leave Details</h3>
-                            <form id="eventForm" action="NewLeaveServlet" method="post">
+                            <form id="nextStep_form" action="NewLeaveServlet" method="post">
 
-                                <label for="eventStart">Start Date:</label>
-                                <input type="text" id="eventStart" name ="eventStart" readonly>
-
-                                <label for="eventEnd">Selected Date:</label>
-                                <input type="text" id="eventEnd" name="eventEnd" readonly>
-
-                                <label for="eventType">Event Type:</label>
-                                <input type="text" id="eventType" name="eventType" readonly>
-
-                                <label for="eventDescription">Reason:</label>
-                                <textarea 
+                                <div class="form-group">
+                                    <label for="eventStart"> Start Date:</label> 
+                                    <div class="input-wrapper">
+                                        <span class="icon-form"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                            <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
+                                            <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" name="eventStart" id="eventStart" readonly />
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="eventEnd"> End Date:</label> 
+                                    <div class="input-wrapper">
+                                        <span class="icon-form"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                            <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
+                                            <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" name="eventEnd" id="eventEnd" readonly />
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="eventType"> Leave Type:</label> 
+                                    <div class="input-wrapper">
+                                        <span class="icon-form"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                            <path d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
+                                            <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <input type="text" name="eventType" id="eventType" readonly />
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="eventDescription"> Reason:</label> 
+                                    <div class="input-wrapper">
+                                        <textarea 
                                     id="eventDescription" name ="eventDescription" 
                                     rows="2"></textarea>
+                                    </div>
+                                </div>
 
                                 <button type="submit" id="submitBtn" disabled class="btn-disabled">Create Event</button>
                             </form>
@@ -287,20 +331,20 @@
         <script src="scripts/utils.js"></script>
 
         <script>
-            const textarea = document.getElementById("eventDescription");
-            const submitBtn = document.getElementById("submitBtn");
+                        const textarea = document.getElementById("eventDescription");
+                        const submitBtn = document.getElementById("submitBtn");
 
-            textarea.addEventListener("input", () => {
-                if (textarea.value.trim().length > 0) {
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove("btn-disabled");
-                    submitBtn.classList.add("btn-enabled");
-                } else {
-                    submitBtn.disabled = true;
-                    submitBtn.classList.remove("btn-enabled");
-                    submitBtn.classList.add("btn-disabled");
-                }
-            });
+                        textarea.addEventListener("input", () => {
+                            if (textarea.value.trim().length > 0) {
+                                submitBtn.disabled = false;
+                                submitBtn.classList.remove("btn-disabled");
+                                submitBtn.classList.add("btn-enabled");
+                            } else {
+                                submitBtn.disabled = true;
+                                submitBtn.classList.remove("btn-enabled");
+                                submitBtn.classList.add("btn-disabled");
+                            }
+                        });
         </script>
     </body>
 </html>
