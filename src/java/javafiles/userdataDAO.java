@@ -35,9 +35,8 @@ public class userdataDAO {
             ps.setString(4, eventDescription);
             ps.setString(5, eventType);
 
-            
             int rows = ps.executeUpdate();
-            return rows>0;
+            return rows > 0;
         } catch (ClassNotFoundException | SQLException e) {
             logger.error("ERROR CREATING A NEW REQUEST: " + e.getMessage());
             return false;
@@ -83,7 +82,7 @@ public class userdataDAO {
      * @return
      * @throws java.lang.Exception
      */
-    public List<UserPending> getPending(int userId) throws Exception {
+    public List<UserPending> getLeavePending(int userId) throws Exception {
         List<UserPending> pendingList = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -106,11 +105,39 @@ public class userdataDAO {
                 );
                 pendingList.add(h);
             }
-
         } catch (ClassNotFoundException | SQLException e) {
             logger.error("ERROR PENDING OV: " + e.getMessage());
         }
+        return pendingList;
+    }
 
+    public List<UserPermission> getPermissionPending(int userId) throws Exception {
+        List<UserPermission> pendingList = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con2 = DBConnection.connect();
+            PreparedStatement ps2 = con2.prepareStatement("SELECT *, users.fullname FROM permissions INNER JOIN users ON permissions.user_id = users.user_id WHERE users.user_id= ? AND status='pending' ORDER BY end_date DESC LIMIT 3");
+
+            ps2.setInt(1, userId);
+            ResultSet rs2 = ps2.executeQuery();
+
+            while (rs2.next()) {
+                UserPermission h = new UserPermission(
+                        rs2.getInt("user_id"),
+                        rs2.getInt("permission_id"),
+                        rs2.getString("fullname"),
+                        rs2.getDate("start_date"),
+                        rs2.getDate("end_date"),
+                        rs2.getTime("start_time"),
+                        rs2.getTime("end_time"),
+                        rs2.getString("status"),
+                        rs2.getString("motif")
+                );
+                pendingList.add(h);
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error("ERROR INDIVIDUAL PENDING PERMISSION: " + e.getMessage());
+        }
         return pendingList;
     }
 
@@ -127,7 +154,7 @@ public class userdataDAO {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DBConnection.connect();
             PreparedStatement ps = con.prepareStatement("SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.end_date, holidays.type, holidays.status, holidays.motif, users.user_id, users.fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? "
-                    + "ORDER BY end_date DESC LIMIT 3");
+                    + "AND status IN ('approved','rejected') ORDER BY end_date DESC LIMIT 3");
 
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
@@ -153,6 +180,42 @@ public class userdataDAO {
             logger.error("ERROR RETRIEVING INDIVIDUAL USER LEAVES: " + e.getMessage());
         }
         return leaveList;
+    }
+
+    public List<UserPermission> getUserPermission(int userId) throws Exception {
+        List<UserPermission> permList = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DBConnection.connect();
+            PreparedStatement ps = con.prepareStatement("SELECT permissions.user_id, permissions.permission_id, permissions.start_date, permissions.end_date, permissions.start_time, permissions.end_time, permissions.status, permissions.motif, users.user_id, users.fullname FROM permissions INNER JOIN users ON permissions.user_id = users.user_id WHERE users.user_id= ? "
+                    + "AND status IN ('approved', 'rejected') ORDER BY end_date DESC LIMIT 3");
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                UserPermission h = new UserPermission(
+                        rs.getInt("user_id"),
+                        rs.getInt("permission_id"),
+                        rs.getString("fullname"),
+                        rs.getDate("start_date"),
+                        rs.getDate("end_date"),
+                        rs.getTime("start_time"),
+                        rs.getTime("end_time"),
+                        rs.getString("status"),
+                        rs.getString("motif")
+                );
+                permList.add(h);
+            }
+
+            rs.close();
+            ps.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error("ERROR RETRIEVING INDIVIDUAL USER PERMISSION: " + e.getMessage());
+        }
+        return permList;
     }
 
     /**
@@ -224,12 +287,7 @@ public class userdataDAO {
         }
         return allList;
     }
-    
-    
-    
-    
-    
-    
+
     public List<UserPermission> getAdminPermissionAll() throws Exception {
         List<UserPermission> userList = new ArrayList<>();
         try {
@@ -263,8 +321,6 @@ public class userdataDAO {
 
         return userList;
     }
-    
-    
 
     public List<EmployeeInfo> getEmployeeInfo() throws Exception {
         List<EmployeeInfo> employeesList = new ArrayList<>();

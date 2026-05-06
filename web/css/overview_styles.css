@@ -1,3 +1,8 @@
+*:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 body{
     font-family:Arial, sans-serif;
     font-size: 0.9rem;
@@ -113,7 +118,7 @@ Main SECTION
 .dashboard {
     display: grid;
     grid-template-columns: 2.5fr 1.45fr; /* middle wider, right narrower */
-    gap: 30px;
+    gap: 25px;
     align-items: start; /* prevents equal height stretching */
 
     margin-top: 1%;
@@ -153,15 +158,14 @@ Main SECTION
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     height: 80px;
-    width: 230px;
+    width: 95%;
     text-align: center;
     align-items: center;
     color: #333;
 }
-
 #newLeave_card {
     background:lightgray;
-    color:#34495e;
+    color:white;
     cursor: pointer;
     transition: background 0.3s;
 }
@@ -212,7 +216,7 @@ Main SECTION
 #pending_banner, #latest_banner {
     margin-top: 17px;
     color: #666;
-    background-color: white;    
+    background-color: white;
 }
 #pending_banner .header, #latest_banner .header{
     align-items: center;
@@ -268,6 +272,13 @@ Main SECTION
     border-radius: 16px;
     padding: 8px;
 }
+.icon-btn-td {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;   /* control spacing */
+    margin: 0;
+}
 .icon-btn-header {
     display: flex;
     margin-right: 15px;
@@ -296,7 +307,7 @@ Main SECTION
     justify-content: center;
     gap: 8px;
     padding: 8px 6px;
-    }
+}
 #new-leave-btn svg {
     flex-shrink: 0;
     width: 16px;
@@ -369,10 +380,10 @@ Main SECTION
 .waiting span {
     width: 8px;
     height: 8px;
-    margin: 3px;
+    margin: 2px;
     background-color: orange;
     border-radius: 50%;
-    animation: blink 2s infinite both;
+    animation: blink 2s infinite;
 }
 @keyframes blink {
     0%, 80%, 100% {
@@ -476,8 +487,8 @@ Side SECTION
     margin-bottom: 10px;
 }
 #agenda-item-holiday{
-   background: transparent;
-   border: 1px solid rgba(0,0,0,0.2);
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.2);
 }
 
 .agenda-item h4 {
@@ -545,23 +556,6 @@ h1 {
 /* Masquer l’input */
 .item input {
     display: none;
-}
-/* Title */
-.title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 18px;
-    background: lightgray;
-    color:#34495e;
-    cursor: pointer;
-    font-weight: normal;
-    font-size: 1.1rem;
-    transition: backgrtransound 0.3s;
-}
-.title:hover {
-    background: #34495e;
-    color: #0099ff;
 }
 .drop_icon::before {
     content: "+";
@@ -651,3 +645,48 @@ h1 {
     transform: rotateY(180deg);
 }
 */
+
+
+.dd {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    width: 240px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 9999;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+/* body */
+.dd-body {
+    padding: 12px 14px;
+}
+.dd .title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+}
+.dd .label {
+    font-size: 0.8rem;
+    color: #666;
+}
+/* footer */
+.dd-footer {
+    border-top: 1px solid #eee;
+    padding: 8px 12px;
+    text-align: center;
+}
+.view-all-link {
+    font-size: 13px;
+    color: #0078d7;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+.view-all-link:hover {
+    text-decoration: underline;
+}
