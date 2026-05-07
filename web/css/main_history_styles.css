@@ -1,0 +1,283 @@
+*:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+
+/**
+BOUTONS
+&
+ICONES
+*/
+.icon-btn {
+    display: flex;
+    margin-right: 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+    padding: 8px;
+}
+.icon-btn-td {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;   /* control spacing */
+    margin: 0;
+    
+    background: #ccc;
+    border-radius: 16px;
+    border:none;
+    cursor: pointer;
+}
+#details-btn{
+    position: relative;
+    right: 10px;
+}
+
+#latest_banner svg {
+    transition: transform 0.2s ease;
+}
+#latest_banner svg:hover{
+    transform: scale(1.2);
+}
+.icon-btn-header {
+    display: flex;
+    margin-right: 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+    padding: 8px;
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+}
+.icon-home {
+    background: transparent;
+    width: 17px;
+    height: 17px;
+}
+
+
+/**
+BODY
+*/
+
+
+
+body{
+    font-family:Arial, sans-serif;
+    font-size: 0.9rem;
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+    color: #666;
+    height: 100vh;
+    margin:0 0 0 16%;
+    overflow-x: hidden;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* keeps items vertically centered */
+    margin-top: 0;
+    padding-top: 5px;
+    margin-bottom:0;
+    margin-left: 0;
+    width: 100%; /* use full width of parent */
+
+
+    height: 5%;
+}
+.header-left {
+    font-family: Segoe, sans-serif;
+    color: #34495e;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.search-box {
+    width: 250px;
+    margin-right: 200px;
+}
+.search-box input {
+    width: 100%;
+    color: brown;
+    padding: 6px 9px;
+    border: 2px solid #ccc;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.search-box input:focus {
+    border-color: #0078d7; /* highlight color when focused */
+}
+.header_btn{
+    display: flex;
+    position: relative;
+    align-content: center;
+    gap: 10px;
+}
+.header_icon {
+    position: relative;
+    display: inline-flex;
+    background-color: white;
+    color: black;
+    align-items: center;
+    padding: 8px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+.header_icon:hover {
+    transform: scale(1.1);
+}
+.header_icon .notification-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: none; /* caché par défaut */
+}
+.dropdown {
+    display: none; /* caché par défaut */
+    position: absolute;
+    right: 0;
+    top: 100%; /* juste sous le bouton */
+    margin-top: 5px;
+    background: #fff;
+    border: 1px solid #ccc;
+    width: 250px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 100;
+    padding: 0;
+}
+
+.dropdown li {
+    list-style: none;
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.dropdown li:last-child {
+    border-bottom: none;
+}
+
+/**
+*
+*
+*
+Main SECTION
+*/
+.dashboard {
+    display: grid;
+    grid-template-columns: 2.5fr 1.45fr; /* middle wider, right narrower */
+    gap: 25px;
+    align-items: start; /* prevents equal height stretching */
+
+    margin-top: 1%;
+    height:100%;
+}
+
+.banner {
+    grid-column: 1 / -1; /* spans all columns */
+    border-radius: 14px;
+}
+#welcome {
+    display: grid;
+    margin-bottom: 10px;
+    padding: 20px;
+    /*background: #0078d7;*/
+    background: #215f91;
+    background: linear-gradient(175deg,rgba(33, 95, 145, 1) 0%, rgba(0, 82, 145, 1) 35%, rgba(0, 170, 204, 1) 100%);
+    color: #fff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.card {
+    display: grid;
+    position: relative;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    height: 80px;
+    width: 95%;
+    text-align: center;
+    align-items: center;
+    color: #333;
+}
+
+
+.reqtable {
+    width: 100%;
+    margin: 0;
+    background: #ffffff;
+    border-collapse: collapse;
+}
+.reqtable td:hover {
+    background: whitesmoke;
+}
+#pending_banner, #latest_banner {
+    margin-top: 17px;
+    color: #666;
+    background-color: white;
+}
+#pending_banner .header, #latest_banner .header{
+    align-items: center;
+    padding: 20px;
+    outline: none;
+    font-size: 1.1rem;
+
+    width:100%;
+}
+
+/* Tableau des derniers congés */
+#latest_banner .header-left{
+    width: 80%;
+    padding-left: 2%;
+    display:flex;
+    align-items: center;
+    gap: 8px;
+}
+#latest_banner .header-right{
+    width: 20%;
+    margin-right:0;
+    align-content: center;
+}
+
+.status {
+    font-weight: 400;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+.status-rejected {
+    color: red;
+}
+.status-approved {
+    color: green;
+}
+.status-pending {
+    color: orange;
+}
+
+.bar {
+    width: 95%;
+    margin: 0 auto;
+    height: 1px;
+    background-color: lightslategray;
+}
+
+.avatar {
+    align-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+

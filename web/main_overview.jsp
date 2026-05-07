@@ -523,7 +523,7 @@
                                                 <span style="font-size:0.8rem; color:lightslategray;"><%= h.getType()%></span>
                                             </div>
                                         </div>
-                                        <div style="display:flex; align-items:center; gap:4px;">
+                                        <div style="display:flex; align-items:center; gap:10px;">
                                             <div style="border-left:1px solid #ccc; padding-left:10px; display:flex; align-items:center; min-width:80px; height:35px; justify-content:center;">
                                                 <span class="status <%= cssClass%>"><%= h.getStatus()%></span>
                                             </div>
@@ -639,7 +639,7 @@
                                         } // end for UserPermission
                                     }
                                 } // end else
-%>
+                            %>
                         </tbody>
                     </table>
                 </div>
@@ -664,10 +664,12 @@
                                 <p>Easter Monday ( Apr 6 )</p>
                             </div>
                             <div class="icon-btn">
-                                <span class="icon-home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="darkred" class="size-10">
-                                    <path d="M16.881 4.345A23.112 23.112 0 0 1 8.25 6H7.5a5.25 5.25 0 0 0-.88 10.427 21.593 21.593 0 0 0 1.378 3.94c.464 1.004 1.674 1.32 2.582.796l.657-.379c.88-.508 1.165-1.593.772-2.468a17.116 17.116 0 0 1-.628-1.607c1.918.258 3.76.75 5.5 1.446A21.727 21.727 0 0 0 18 11.25c0-2.414-.393-4.735-1.119-6.905ZM18.26 3.74a23.22 23.22 0 0 1 1.24 7.51 23.22 23.22 0 0 1-1.41 7.992.75.75 0 1 0 1.409.516 24.555 24.555 0 0 0 1.415-6.43 2.992 2.992 0 0 0 .836-2.078c0-.807-.319-1.54-.836-2.078a24.65 24.65 0 0 0-1.415-6.43.75.75 0 1 0-1.409.516c.059.16.116.321.17.483Z" />
-                                    </svg></span>
-
+                                <span class="icon-home">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#215f91" class="size-5">
+                                    <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 0 1-.134 1.051 2.494 2.494 0 0 0-.93 2.437 2.494 2.494 0 0 0 2.437-.93.75.75 0 1 1 1.186.918 3.995 3.995 0 0 1-4.482 1.332.75.75 0 0 1-.461-.461 3.994 3.994 0 0 1 1.332-4.482.75.75 0 0 1 1.052.134Z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M5.752 12A13.07 13.07 0 0 0 8 14.248v4.002c0 .414.336.75.75.75a5 5 0 0 0 4.797-6.414 12.984 12.984 0 0 0 5.45-10.848.75.75 0 0 0-.735-.735 12.984 12.984 0 0 0-10.849 5.45A5 5 0 0 0 1 11.25c.001.414.337.75.751.75h4.002ZM13 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
                             </div>
                         </div>
 

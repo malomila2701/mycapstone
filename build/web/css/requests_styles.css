@@ -156,7 +156,7 @@ select[type='text']{
     white-space: nowrap;
 }
 .header-dot {
-    margin: 10px 5px 0px 5px;
+    margin: 10px 10px 0px 5px;
     color: #9ca3af;
     font-size: 18px;
 }
@@ -167,25 +167,25 @@ select[type='text']{
 }
 .header-select {
     appearance: none;
-    -webkit-appearance: none;
     background: whitesmoke;
+    -webkit-appearance: none;
     border: 1px solid #999;
-    border-radius: 12px;
+    border-radius: 14px;
     font-size: 1rem;
     font-weight: 500;
     color: #34495e;
     cursor: pointer;
-    padding: 8px 12px;
+    padding: 8px 14px;
     outline: none;
 }
 .header-select:hover {
-    background: #ffffff;
+    background: white;
     border: 1px solid #999;
     border-radius: 12px;
     color: #34495e;
 }
 .header-select:focus {
-    background: whitesmoke;
+    background: white;
     border: 1px solid #999;
     border-radius: 12px;
     color: #34495e;
