@@ -539,10 +539,9 @@
                                                             data-start="<%= h.getStartDate()%>"
                                                             data-end="<%= h.getEndDate()%>"
                                                             data-status="<%= h.getStatus()%>"
-
-                                                            style="background:none; border:none; cursor:pointer;">
+                                                            >
                                                         <span class="icon-home"> 
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="20" height="20">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="18" height="18">
                                                             <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
                                                             <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
                                                             </svg> 
@@ -597,45 +596,43 @@
                                             <div style="border-left:1px solid #ccc; padding-left:10px; display:flex; align-items:center; min-width:80px; height:35px; justify-content:center;">
                                                 <span class="status <%= cssClass%>"><%= p.getStatus()%></span>
                                             </div>
-                                            <div style="border-left:1px solid #ccc; padding-left:10px; display:flex; align-items:center; justify-content:center;">
-                                                <div style="display:flex; flex-direction: row;">
-                                                    <div style="position: relative; display:flex; align-items: center; gap: 4px;">
-                                                        <!--BUTTON FOR PENDING TABLE /PERMISSION-->
-                                                        <button class="icon-btn-td"
+                                            <div style="border-left:1px solid #ccc; padding-left:10px; padding-right: 20px; display:flex;">                                                
+                                                <!--MORE DETAILS BTN-->
+                                                <div style="position: relative; display: inline-block;">
+                                                    <button class="icon-btn-td"
 
-                                                                data-userid="<%= p.getUserId()%>" 
-                                                                data-title="Permission"
-                                                                data-holidayid="<%= p.getPermissionId()%>" 
-                                                                data-username="<%= p.getFullName()%>"
-                                                                data-startdate="<%= p.getStartDate()%>"
-                                                                data-enddate="<%= p.getEndDate()%>"
-                                                                data-starttime="<%= p.getStartTime()%>"
-                                                                data-endtime="<%= p.getEndTime()%>"
-                                                                data-motif="<%= p.getMotif()%>"
-                                                                data-status="<%= p.getStatus()%>"
-
-                                                                style="background:none; border:none; cursor:pointer;">
-                                                            <span class="icon-home">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="20" height="20">
-                                                                <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                                                <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                                                                </svg>
-                                                            </span>
-                                                        </button>
-                                                        <!--DROPDOWN-->   
-                                                        <div class="dd">
-                                                            <div class="dd-body">
-                                                                <div class="title">Permission</div>
-                                                                <div class="label"><%= p.getMotif()%></div>
-                                                            </div>
-                                                            <div class="dd-footer">
-                                                                <a href="#" class="view-all-link">View all</a>
-                                                            </div>
+                                                            data-userid="<%= p.getUserId()%>" 
+                                                            data-title="Permission"
+                                                            data-holidayid="<%= p.getPermissionId()%>" 
+                                                            data-username="<%= p.getFullName()%>"
+                                                            data-startdate="<%= p.getStartDate()%>"
+                                                            data-enddate="<%= p.getEndDate()%>"
+                                                            data-starttime="<%= p.getStartTime()%>"
+                                                            data-endtime="<%= p.getEndTime()%>"
+                                                            data-motif="<%= p.getMotif()%>"
+                                                            data-status="<%= p.getStatus()%>"
+                                                            >
+                                                        <span class="icon-home"> 
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="18" height="18">
+                                                            <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                                                            <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
+                                                            </svg> 
+                                                        </span>
+                                                    </button>
+                                                    <!--DROPDOWN-->   
+                                                    <div class="dd">
+                                                        <div class="dd-body">
+                                                            <div class="title">Permission</div>
+                                                            <div class="label"><%= p.getMotif()%></div>
+                                                        </div>
+                                                        <div class="dd-footer">
+                                                            <a href="#" class="view-all-link">View all</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                 </td>
                             </tr>
                             <%

@@ -21,7 +21,8 @@ import org.json.JSONObject;
 public class NotificationServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-     private static final Logger logger = LogManager.getLogger(NotificationServlet.class.getName());
+    private static final Logger logger = LogManager.getLogger(NotificationServlet.class.getName());
+    
 
     // GET : récupérer les notifications non lues
     @Override
@@ -33,6 +34,7 @@ public class NotificationServlet extends HttpServlet {
 
         int unreadCount = 0;
         JSONArray notificationsArray = new JSONArray();
+        
 
         try (java.sql.Connection conn = DBConnection.connect()) {
             String sql = "SELECT id, message, created_at FROM notifications WHERE status = 'unread' ORDER BY created_at DESC";
@@ -48,7 +50,7 @@ public class NotificationServlet extends HttpServlet {
                 unreadCount++;
             }
         } catch (Exception e) {
-            logger.error("Error NotificationServlet" + e.getMessage());
+            logger.error("Error NotificationServlet " + e.getMessage());
         }
 
         JSONObject json = new JSONObject();

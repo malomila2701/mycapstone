@@ -57,6 +57,7 @@
                     selectable: true,
                     showNonCurrentDates: false,
                     firstDay: 1,
+                    weekends: false,
                     events: '<%= request.getContextPath()%>/CalendarLeaveServlet',
 
                     select: function (info) {
@@ -159,8 +160,16 @@
 
         <div class="header" id="top-header">
             <div class="header-left">
-                <div class="search-box">
-                    <input type="text" placeholder="Search">
+                <span class="header-title">Make a request</span>
+                <span class="header-dot">•</span>
+                <div class="header-select-wrapper">
+                    <select class="header-select">
+                        <option>Leave</option>
+                        <option>Permission</option>
+                    </select>
+                    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"/>
+                    </svg>
                 </div>
             </div>
             <div class="header-right">
@@ -214,7 +223,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                                     <path fill-rule="evenodd" d="M1 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V6Zm4 1.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm2 3a4 4 0 0 0-3.665 2.395.75.75 0 0 0 .416 1A8.98 8.98 0 0 0 7 14.5a8.98 8.98 0 0 0 3.249-.604.75.75 0 0 0 .416-1.001A4.001 4.001 0 0 0 7 10.5Zm5-3.75a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm0 6.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm.75-4a.75.75 0 0 0 0 1.5h2.5a.75.75 0 0 0 0-1.5h-2.5Z" clip-rule="evenodd" />
                                     </svg></span> </button>
-                            <span style="font-weight: bold;font-size: 1rem;align-content: center;">
+                            <span style="font-weight: bold;font-size: 1.4rem;align-content: center; color: #444;">
                                 User Details</span>
                         </div>
                         <div class="header-right">
@@ -271,7 +280,8 @@
 
                     <div id="nextStep">
                         <div>
-                            <h3 style=" margin:0; padding: 7px; font-size:1.1rem; color:#333;">Step 2: Leave Details</h3>
+                            <h3 style=" margin:0; padding: 7px; font-size:1.4rem; color:#333;">Step 2: Leave Details</h3>
+                            <div style="border-top: 1px solid #999; width: 90%;"></div>
                             <form id="nextStep_form" action="NewLeaveServlet" method="post">
 
                                 <div class="form-group">
@@ -285,7 +295,7 @@
                                         <input type="text" name="eventStart" id="eventStart" readonly />
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="eventEnd"> End Date:</label> 
                                     <div class="input-wrapper">
@@ -297,7 +307,7 @@
                                         <input type="text" name="eventEnd" id="eventEnd" readonly />
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="eventType"> Leave Type:</label> 
                                     <div class="input-wrapper">
@@ -309,17 +319,20 @@
                                         <input type="text" name="eventType" id="eventType" readonly />
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="eventDescription"> Reason:</label> 
                                     <div class="input-wrapper">
                                         <textarea 
-                                    id="eventDescription" name ="eventDescription" 
-                                    rows="2"></textarea>
+                                            id="eventDescription" name ="eventDescription" 
+                                            rows="3"></textarea>
                                     </div>
                                 </div>
-
+                                
+                                <div class="form-group">
                                 <button type="submit" id="submitBtn" disabled class="btn-disabled">Create Event</button>
+                                <button type="reset" id="clearForm" class="btn-enabled">Clear</button>
+                                </div>
                             </form>
                         </div>
                     </div>

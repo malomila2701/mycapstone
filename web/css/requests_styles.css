@@ -135,37 +135,73 @@ select[type='text']{
     justify-content: space-between;
     align-items: center; /* keeps items vertically centered */
     margin-top: 0;
-    padding-top: 5px;
+    padding-top: 10px;
     margin-bottom:0;
     margin-left: 0;
     width: 100%; /* use full width of parent */
 
-
     height: 5%;
 }
 .header-left {
-    font-family: Segoe, sans-serif;
-    color: #34495e;
+    display: flex;
+    flex-direction: row;
+    padding-left: 2%;
+    font-family: Arial, sans-serif;
+}
+.header-title {
+    padding: 8px 12px;
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #34495e;
     white-space: nowrap;
 }
-.search-box {
-    width: 250px;
-    margin-right: 200px;
+.header-dot {
+    margin: 10px 5px 0px 5px;
+    color: #9ca3af;
+    font-size: 18px;
 }
-.search-box input {
-    width: 100%;
-    color: brown;
-    padding: 6px 9px;
-    border: 2px solid #ccc;
-    border-radius: 16px;
-    font-size: 0.9rem;
+.header-select-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+.header-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: whitesmoke;
+    border: 1px solid #999;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #34495e;
+    cursor: pointer;
+    padding: 8px 12px;
     outline: none;
-    transition: border-color 0.3s;
 }
-.search-box input:focus {
-    border-color: #0078d7; /* highlight color when focused */
+.header-select:hover {
+    background: #ffffff;
+    border: 1px solid #999;
+    border-radius: 12px;
+    color: #34495e;
 }
+.header-select:focus {
+    background: whitesmoke;
+    border: 1px solid #999;
+    border-radius: 12px;
+    color: #34495e;
+}
+.chevron {
+    position: absolute;
+    right: 5px;
+    pointer-events: none;
+    color: #6b7280;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.header-select-wrapper:hover .chevron {
+    opacity: 1;
+}
+
 .header_btn{
     display: flex;
     position: relative;
@@ -248,7 +284,7 @@ select[type='text']{
     background: transparent;
     padding: 15px 0;
     z-index: 999;
-    max-width: 450px;
+    max-width: 410px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -297,7 +333,7 @@ select[type='text']{
 }
 
 .step.active {
-    background: #0078d7;
+    background: #215f91;
 }
 #stepLabel {
     position: fixed;
@@ -352,7 +388,7 @@ Main SECTION
     width:100%;
 }
 #user_banner .header-left {
-     width: 80%;
+    width: 80%;
     padding-left: 2%;
     display:flex;
     align-items: center;
@@ -474,13 +510,33 @@ input[type='text'] {
     height: 410px;
 }
 #calendarContainer {
-    max-width: 830px;
-    margin: 10px 10px 10px 10px;
+    width: auto;
+    position: relative;
 }
-/*compact header*/
-.fc .fc-toolbar {
-    font-size: 14px;
-    padding: 5px;
+.fc-toolbar {
+    padding: 4px;
+}
+.fc-toolbar-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+}
+.fc-button {
+    background-color: white !important;
+    border: 1px solid #ccc !important;
+    color: #333 !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease;
+}
+.fc-button:hover {
+    background-color: #0078d7 !important;
+    color: white !important;
+}
+.fc-col-header {
+    color: #555;                 /* text color */
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
 }
 /* remove outer borders */
 .fc-theme-standard .fc-scrollgrid,
@@ -521,9 +577,6 @@ Next STEP
     margin-top: 15px;
     margin-bottom: 30px;
     padding: 10px;
-    background: #eef;
-    border: 1px solid #ccc;
-    border-radius: 14px;
     display: none; /* hidden until selection */
 }
 #nextStep_form .form-group {
@@ -534,23 +587,25 @@ Next STEP
     font-size: 0.8rem;
     color: #444;
 }
-#nextStep_form input {
+#nextStep_form input[readonly] {
     width: 90%;
-    background: white;
+    background: whitesmoke;
 }
 textarea {
     resize: none;
     overflow: hidden;
-    height: auto;
     width: 90%;
-    padding: 6px;
     border: 1px solid #ccc;
     border-radius: 10px;
     font-family: inherit;
     font-size: inherit;
 }
-#submitBtn {
+#submitBtn, #clearForm {
+    position: relative;
+    left: 35%;
+    transform: translateX(-60%);
     padding: 10px;
+    width: 175px;
     border-radius: 6px;
 }
 .btn-disabled {

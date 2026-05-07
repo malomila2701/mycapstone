@@ -84,8 +84,9 @@
                     </form>
 
                     <div class="modal-actions" id="actionsDiv"></div>
-                    <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdateLeaveStatusServlet">
-                        <input type="hidden" name="holidayid" id="leaveId">
+                    <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdatePermissionStatusServlet">
+                        <input type="hidden" name="permission_id" id="leaveId">
+                        <input type="hidden" name="user_id" id="leaveUserId">
                         <input type="hidden" name="status" id="leaveStatus">
                     </form>
                 </main>
@@ -295,10 +296,10 @@
 
                     // Show modal
                     document.getElementById('leaveModal').style.display = 'block';
-                    
+
                     // Make sure calendar exists
                     if (window.calendar) {
-                         // Remove old sources
+                        // Remove old sources
                         window.calendar.removeAllEventSources();
                         // Add holidays source
                         window.calendar.addEventSource({
@@ -328,10 +329,14 @@
                     alert("No event selected!");
                     return;
                 }
-
+                // ️Passer les IDs dans des champs cachés du formulaire pour le Servlet
                 document.getElementById('leaveId').value = selectedEventId;
                 document.getElementById('leaveStatus').value = newStatus;
+                document.getElementById('leaveUserId').value = currentUserId;
                 document.getElementById('statusForm').submit();
+
+                // après ton UPDATE + INSERT notification
+                request.getHeader("Referer");
             }
 
         </script>

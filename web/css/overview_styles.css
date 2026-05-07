@@ -276,8 +276,13 @@ Main SECTION
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 4px;   /* control spacing */
+    padding: 8px;   /* control spacing */
     margin: 0;
+    
+    background: #ccc;
+    border-radius: 16px;
+    border:none;
+    cursor: pointer;
 }
 .icon-btn-header {
     display: flex;

@@ -29,7 +29,9 @@
 
                                 <main class="main-section">
                                     <img src="${pageContext.request.contextPath}/images/logo_welcome.png" alt="" class="img_small"/>
-                                    <h1><br>STAFF LEAVE<br> MANAGEMENT TOOL </h1>
+                                    <h1>
+                                        <br>STAFF LEAVE<br> MANAGEMENT TOOL 
+                                                </h1>
                                                 </main>
 
                                                 <aside class="side-section">
