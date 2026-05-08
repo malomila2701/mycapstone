@@ -127,10 +127,97 @@
 
         <div class="dashboard">
 
-            <div class="banner" id="welcome">
-                <span style="display:flex; font-size: 1.4rem;"> Welcome back <span style="font-weight: normal;">, ${sessionScope.username} ! </span></span>
-                <span style="margin-top: 3px; font-size:0.7rem; font-weight:lighter;">Entre(e) le: 19/03/2021 </span>
-                <span style="margin-top: 3px; font-size:0.7rem; font-weight:lighter;">Anciennete: 2 an(s)</span>
+            <div class="banner">
+                <!-- Canvas -->
+                <div style="position: relative; width: 100%; height: 300px;">
+                    <canvas id="leavesChart" role="img" aria-label="Area chart showing number of approved leaves per month"></canvas>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <script>
+                                        async function fetchLeavesData() {
+                                            const response = await fetch('/javafiles/ChartUserLeaveServlet');
+                                            const data = await response.json();
+                                            // data = [{ month: 1, count: 2 }, { month: 3, count: 5 }, ...]
+
+                                            const filled = Array(12).fill(0);
+                                            data.forEach(d => {
+                                                filled[d.month - 1] = d.count;
+                                            });
+
+                                            return filled;
+                                        }
+
+                                        async function renderChart() {
+                                            const leavesPerMonth = await fetchLeavesData();
+
+                                            const ctx = document.getElementById('leavesChart').getContext('2d');
+
+                                            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                                            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.3)');
+                                            gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+
+                                            new Chart(ctx, {
+                                                type: 'line',
+                                                data: {
+                                                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                                                    datasets: [{
+                                                            label: 'Leaves taken',
+                                                            data: leavesPerMonth,
+                                                            fill: true,
+                                                            backgroundColor: gradient,
+                                                            borderColor: '#2563eb',
+                                                            borderWidth: 2,
+                                                            tension: 0.45,
+                                                            pointRadius: 4,
+                                                            pointBackgroundColor: '#2563eb',
+                                                            pointHoverRadius: 6,
+                                                            pointHoverBackgroundColor: '#fff',
+                                                            pointHoverBorderColor: '#2563eb',
+                                                            pointHoverBorderWidth: 2,
+                                                        }]
+                                                },
+                                                options: {
+                                                    responsive: true,
+                                                    maintainAspectRatio: false,
+                                                    plugins: {
+                                                        legend: {display: false},
+                                                        tooltip: {
+                                                            backgroundColor: '#fff',
+                                                            titleColor: '#7480a0',
+                                                            bodyColor: '#1e2a4a',
+                                                            borderColor: '#e5e7ef',
+                                                            borderWidth: 1,
+                                                            padding: 10,
+                                                            callbacks: {
+                                                                label: ctx => `${ctx.parsed.y} leave(s)`
+                                                            }
+                                                        }
+                                                    },
+                                                    scales: {
+                                                        x: {
+                                                            grid: {display: false},
+                                                            ticks: {color: '#a0a8c0', font: {size: 11}}
+                                                        },
+                                                        y: {
+                                                            min: 0,
+                                                            max: 9,
+                                                            ticks: {
+                                                                stepSize: 1,
+                                                                color: '#a0a8c0',
+                                                                font: {size: 11}
+                                                            },
+                                                            grid: {color: '#f0f2f8'},
+                                                            border: {display: false}
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        renderChart();
+                </script>
             </div>
 
             <div class="banner" id="latest_banner">
@@ -289,7 +376,7 @@
                                     } // end for UserPermission
                                 }
                             } // end else
-%>
+                        %>
                     </tbody>
                 </table>
             </div>

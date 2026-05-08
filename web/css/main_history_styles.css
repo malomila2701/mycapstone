@@ -174,9 +174,8 @@ body{
 Main SECTION
 */
 .dashboard {
-    display: grid;
-    grid-template-columns: 2.5fr 1.45fr; /* middle wider, right narrower */
-    gap: 25px;
+    display: flex;
+    flex-direction: column;
     align-items: start; /* prevents equal height stretching */
 
     margin-top: 1%;
@@ -184,7 +183,7 @@ Main SECTION
 }
 
 .banner {
-    grid-column: 1 / -1; /* spans all columns */
+    width: 90%;
     border-radius: 14px;
 }
 #welcome {
