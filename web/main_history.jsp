@@ -23,19 +23,18 @@
         <script>
             <%
                 Integer userId = (Integer) session.getAttribute("user_id");
-
-                if (userId != null) {
-            %>
-            User ID: <%= userId%>
-            <%
-                } else {
-                    response.sendRedirect("login.jsp");
+                if (userId == null) {
+                    response.sendRedirect("hello.jsp");
+                    return;
                 }
-                userdataDAO dao = new userdataDAO();
             %>
+            // now safe to use userId in JS if needed
+            const userId = <%= userId%>
         </script>
         <script>
             <%
+                userdataDAO dao = new userdataDAO();
+
                 List<UserLeave> v2 = dao.getUserLeave(userId);
                 List<UserPermission> v3 = dao.getUserPermission(userId);
                 List<UserPending> daoPending = dao.getLeavePending(userId);
@@ -87,7 +86,7 @@
     <body>
 
 
-        <div class="header" id="top-header">
+        <div class="navbar">
             <div class="header-left">
                 <div class="search-box">
                     <input type="text" placeholder="Search">
@@ -126,101 +125,154 @@
         -->
 
         <div class="dashboard">
+            <div class ="charts_section">
+                <main class="cards-section">
+                    <div class="banner" id="charts_banner">
+                        <div class="header">
+                            <div class="header-left"> 
+                                <button class="icon-btn-header"> <span class="icon-home">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                        <path fill-rule="evenodd" d="M4.25 2A2.25 2.25 0 0 0 2 4.25v11.5A2.25 2.25 0 0 0 4.25 18h11.5A2.25 2.25 0 0 0 18 15.75V4.25A2.25 2.25 0 0 0 15.75 2H4.25ZM6 13.25V3.5h8v9.75a.75.75 0 0 1-1.064.681L10 12.576l-2.936 1.355A.75.75 0 0 1 6 13.25Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span> </button>
 
-            <div class="banner">
-                <!-- Canvas -->
-                <div style="position: relative; width: 100%; height: 300px;">
-                    <canvas id="leavesChart" role="img" aria-label="Area chart showing number of approved leaves per month"></canvas>
-                </div>
+                                <span style="
+                                      font-weight: bold;
+                                      font-size: 1rem;">
 
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                                    Requests Collection</span>
+                            </div> 
+                        </div>
+                        <!-- Canvas -->
+                        <div class="chart-wrap">
+                            <div class="chart-loader-wrapper">
+                                <div class="loader"></div>
+                            </div>
+                            <canvas id="leavesChart" role="img" aria-label="Area chart showing number of approved leaves per month"></canvas>
+                        </div>
 
-                <script>
-                                        async function fetchLeavesData() {
-                                            const response = await fetch('/javafiles/ChartUserLeaveServlet');
-                                            const data = await response.json();
-                                            // data = [{ month: 1, count: 2 }, { month: 3, count: 5 }, ...]
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-                                            const filled = Array(12).fill(0);
-                                            data.forEach(d => {
-                                                filled[d.month - 1] = d.count;
-                                            });
+                        <script>
+                        async function fetchLeavesData() {
+                            const response = await fetch("<%= request.getContextPath()%>/ChartUserLeaveServlet");
+                            const data = await response.json();
+                            // data = [{ month: 1, count: 2 }, { month: 3, count: 5 }, ...]
 
-                                            return filled;
+                            const filled = Array(12).fill(0);
+                            data.forEach(d => {
+                                filled[d.month - 1] = d.count;
+                            });
+                            return filled;
+                        }
+
+                        async function renderChart() {
+                            const leavesPerMonth = await fetchLeavesData();
+                            const ctx = document.getElementById('leavesChart').getContext('2d');
+                            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.3)');
+                            gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+                            new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                                    datasets: [{
+                                            label: 'Leaves taken',
+                                            data: leavesPerMonth,
+                                            fill: true,
+                                            backgroundColor: gradient,
+                                            borderColor: '#2563eb',
+                                            borderWidth: 2,
+                                            tension: 0.45,
+                                            pointRadius: 4,
+                                            pointBackgroundColor: '#2563eb',
+                                            pointHoverRadius: 6,
+                                            pointHoverBackgroundColor: '#fff',
+                                            pointHoverBorderColor: '#2563eb',
+                                            pointHoverBorderWidth: 2
+                                        }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {display: false},
+                                        tooltip: {
+                                            backgroundColor: '#fff',
+                                            titleColor: '#7480a0',
+                                            bodyColor: '#1e2a4a',
+                                            borderColor: '#e5e7ef',
+                                            borderWidth: 1,
+                                            padding: 10,
+                                            callbacks: {
+                                                label: ctx => `${ctx.parsed.y} leave(s)`
+                                            }
                                         }
-
-                                        async function renderChart() {
-                                            const leavesPerMonth = await fetchLeavesData();
-
-                                            const ctx = document.getElementById('leavesChart').getContext('2d');
-
-                                            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-                                            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.3)');
-                                            gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
-
-                                            new Chart(ctx, {
-                                                type: 'line',
-                                                data: {
-                                                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                                                    datasets: [{
-                                                            label: 'Leaves taken',
-                                                            data: leavesPerMonth,
-                                                            fill: true,
-                                                            backgroundColor: gradient,
-                                                            borderColor: '#2563eb',
-                                                            borderWidth: 2,
-                                                            tension: 0.45,
-                                                            pointRadius: 4,
-                                                            pointBackgroundColor: '#2563eb',
-                                                            pointHoverRadius: 6,
-                                                            pointHoverBackgroundColor: '#fff',
-                                                            pointHoverBorderColor: '#2563eb',
-                                                            pointHoverBorderWidth: 2,
-                                                        }]
-                                                },
-                                                options: {
-                                                    responsive: true,
-                                                    maintainAspectRatio: false,
-                                                    plugins: {
-                                                        legend: {display: false},
-                                                        tooltip: {
-                                                            backgroundColor: '#fff',
-                                                            titleColor: '#7480a0',
-                                                            bodyColor: '#1e2a4a',
-                                                            borderColor: '#e5e7ef',
-                                                            borderWidth: 1,
-                                                            padding: 10,
-                                                            callbacks: {
-                                                                label: ctx => `${ctx.parsed.y} leave(s)`
-                                                            }
-                                                        }
-                                                    },
-                                                    scales: {
-                                                        x: {
-                                                            grid: {display: false},
-                                                            ticks: {color: '#a0a8c0', font: {size: 11}}
-                                                        },
-                                                        y: {
-                                                            min: 0,
-                                                            max: 9,
-                                                            ticks: {
-                                                                stepSize: 1,
-                                                                color: '#a0a8c0',
-                                                                font: {size: 11}
-                                                            },
-                                                            grid: {color: '#f0f2f8'},
-                                                            border: {display: false}
-                                                        }
-                                                    }
-                                                }
-                                            });
+                                    },
+                                    scales: {
+                                        x: {
+                                            grid: {display: false},
+                                            ticks: {color: '#a0a8c0', font: {size: 11}}
+                                        },
+                                        y: {
+                                            min: 0,
+                                            max: 5,
+                                            ticks: {
+                                                stepSize: 1,
+                                                color: '#a0a8c0',
+                                                font: {size: 11}
+                                            },
+                                            grid: {color: '#f0f2f8'},
+                                            border: {display: false}
                                         }
+                                    }
+                                }
+                            });
+                            document.querySelector('.chart-loader-wrapper').style.display = 'none';
+                            document.getElementById('leavesChart').style.display = 'block';
+                        }
+                        renderChart();
+                        </script>  
+                    </div>
+                </main>
 
-                                        renderChart();
-                </script>
+                <aside class="side-section">
+                    <div class="card">
+                        <span class="card_stats icon-home">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 256 256"><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0v94.37L90.73,98a8,8,0,0,1,10.07-.38l58.81,44.11L218.73,90a8,8,0,1,1,10.54,12l-64,56a8,8,0,0,1-10.07.38L96.39,114.29,40,163.63V200H224A8,8,0,0,1,232,208Z"></path></svg>
+
+                        </span>
+                        <span class="card_change down icon-home">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#fdecea" class="size-5">
+                            <path fill-rule="evenodd" d="M13.5 4.938a7 7 0 1 1-9.006 1.737c.202-.257.59-.218.793.039.278.352.594.672.943.954.332.269.786-.049.773-.476a5.977 5.977 0 0 1 .572-2.759 6.026 6.026 0 0 1 2.486-2.665c.247-.14.55-.016.677.238A6.967 6.967 0 0 0 13.5 4.938ZM14 12a4 4 0 0 1-4 4c-1.913 0-3.52-1.398-3.91-3.182-.093-.429.44-.643.814-.413a4.043 4.043 0 0 0 1.601.564c.303.038.531-.24.51-.544a5.975 5.975 0 0 1 1.315-4.192.447.447 0 0 1 .431-.16A4.001 4.001 0 0 1 14 12Z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                        <h2>April</h2>
+                        <p>Hotest Month</p>
+                    </div>
+
+                    <div class="card">
+                        <span class="card_change up">+12%</span>
+                        <h2>24</h2>
+                        <p>Leave Balance</p>
+                    </div>
+
+                    <div class="card">
+                        <span class="card_change up">+12%</span>
+                        <h2>2</h2>
+                        <p>Requests this month</p>
+                    </div>
+
+                    <div class="card">
+                        <span class="card_change up">+12%</span>
+                        <h2>4</h2>
+                        <p>Requests this year</p>
+                    </div>
+
+                </aside> 
             </div>
 
-            <div class="banner" id="latest_banner">
+            <div id="latest_banner">
                 <div class="header">
                     <div class="header-left"> 
                         <button class="icon-btn-header"> <span class="icon-home">
@@ -235,8 +287,18 @@
 
                             Latest Requests</span>
                     </div>
-                    <div class="header-right" style="display: flex; align-items: center;">
-                        <span style="font-size: 0.9rem; white-space: nowrap;">Status & Action</span>
+                    <div class="header-right">
+                        <select id="dateFilter" style="margin-right: 10px;">
+                            <option value="today">Today</option>
+                            <option value="last_week">Last week</option>
+                            <option value="older">More than 2 weeks ago</option>
+                        </select>
+                        <select id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="approved">Approved</option>
+                            <option value="pending">Pending</option>
+                            <option value="older">Rejected</option>
+                        </select>
                     </div>
                 </div>
 
@@ -376,11 +438,10 @@
                                     } // end for UserPermission
                                 }
                             } // end else
-                        %>
+%>
                     </tbody>
                 </table>
             </div>
-
         </div>
 
     </body>

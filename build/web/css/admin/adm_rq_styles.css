@@ -140,6 +140,7 @@ input[type='text'] {
 }
 
 #calendar{
+    overflow:hidden;
     width: 350px;
     min-height: 420px;
 }
@@ -351,7 +352,7 @@ table {
     color: green;
 }
 .status-pending {
-    color: red;
+    color: orange;
 }
 
 i {

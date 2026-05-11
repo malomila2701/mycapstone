@@ -40,7 +40,7 @@ public class CalendarAdminUserLeaveServlet extends HttpServlet {
 
         try (java.sql.Connection conn = DBConnection.connect(); 
                 java.sql.PreparedStatement ps = conn.prepareStatement(
-                "SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.end_date, holidays.type, holidays.status, holidays.motif, users.user_id, users.fullname AS fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? AND status IN ('pending', 'rejected');")) {
+                "SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.end_date, holidays.type, holidays.status, holidays.motif, users.user_id, users.fullname AS fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? AND status IN ('Pending', 'Rejected');")) {
 
             JSONArray events = new JSONArray();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

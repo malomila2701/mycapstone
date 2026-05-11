@@ -4,7 +4,6 @@
  */
 package javafiles;
 
-
 import java.io.IOException;
 import java.sql.*;
 import javax.servlet.ServletException;
@@ -32,6 +31,11 @@ public class ChartUserLeaveServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse resp)
             throws IOException {
         HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user_id") == null) {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
         int userId = (Integer) session.getAttribute("user_id");
 
         resp.setContentType("application/json");
@@ -40,25 +44,35 @@ public class ChartUserLeaveServlet extends HttpServlet {
 
         String sql = """
                          SELECT 
-                           MONTH(start_date) AS month,
-                           COUNT(*) AS count
-                         FROM holidays
-                         WHERE 
-                           status IN ('Approved','Rejected')
-                           AND YEAR(start_date) = YEAR(CURDATE())
-                           AND user_id = ?
+                             MONTH(start_date) AS month,
+                             COUNT(*) AS count
+                         FROM (
+                             SELECT start_date FROM holidays
+                             WHERE user_id = ?
+                             AND YEAR(start_date) = YEAR(CURDATE())
+                             AND STATUS IN ('Approved','Rejected')
+                             
+                             UNION ALL
+                             
+                             SELECT start_date FROM permissions
+                             WHERE user_id = ?
+                             AND YEAR(start_date) = YEAR(CURDATE())
+                             AND STATUS IN ('Approved','Rejected')
+                         ) AS combined
                          GROUP BY MONTH(start_date)
-                         ORDER BY month;""";
-        
-        
+                         ORDER BY month;
+                     """;
+
         org.json.JSONArray result = new JSONArray();
 
-            try (
-                Connection conn = DBConnection.connect();PreparedStatement stmt = conn.prepareStatement(sql); 
-                ResultSet rs = stmt.executeQuery()) {
+        try (
+                Connection conn = DBConnection.connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);         // set first
+            stmt.setInt(2, userId);
+            ResultSet rs = stmt.executeQuery(); // then execute
 
             stmt.setInt(1, userId);
-            
+
             while (rs.next()) {
                 JSONObject obj = new JSONObject();
                 obj.put("month", rs.getInt("month"));
@@ -75,6 +89,7 @@ public class ChartUserLeaveServlet extends HttpServlet {
             resp.getWriter().write(error.toString());
         } catch (Exception ex) {
             System.getLogger(ChartUserLeaveServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            logger.error("ERROR CHART USER LEAVES : " + ex.getMessage());
         }
     }
 }

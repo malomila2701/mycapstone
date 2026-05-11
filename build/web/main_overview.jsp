@@ -21,83 +21,16 @@
               href="css/overview_styles.css">
 
         <!-- FullCalendar script -->
-        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
 
 
-        <script>
-
-            let calendar;
-            let cellDate;
-            let hasBlockEvent;
-            let start;
-            let end;
-            const currentUserId = <%= session.getAttribute("user_id")%>;
-            document.addEventListener('DOMContentLoaded', function () {
-                var calendarEl = document.getElementById('calendar');
-                calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    firstDay: 1,
-                    weekends: false,
-                    showNonCurrentDates: false,
-                    eventSources: [
-
-                        // All holidays 
-                        {
-                            url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
-                            method: 'GET',
-                            className: 'event-block',
-                            display: 'block'},
-                        // User-specific holidays
-                        {
-                            url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
-                            method: 'GET',
-                            className: 'event-list',
-                            display: 'list-item',
-                            extraParams: {
-                                userId: currentUserId
-                            }
-                        }
-                    ],
-                    // Highlight all days of events
-                    eventsSet: function (events) {
-
-                        // reset all cells
-                        document.querySelectorAll('.fc-daygrid-day').forEach(function (cell) {
-                            cell.classList.remove('event-cell');
-                        });
-                        // loop over days
-                        document.querySelectorAll('.fc-daygrid-day').forEach(function (dayCell) {
-
-                            cellDate = dayCell.getAttribute('data-date');
-                            hasBlockEvent = events.some(function (event) {
-
-                                // ONLY highlight for block events
-                                if (!event.classNames.includes('event-block'))
-                                    return false;
-                                start = event.startStr.substring(0, 10);
-                                end = event.endStr ? event.endStr.substring(0, 10) : start;
-                                return cellDate >= start && cellDate < end;
-                            });
-                            if (hasBlockEvent) {
-                                dayCell.classList.add('event-cell');
-                            }
-                        });
-                    },
-                    eventDidMount: function (info) {
-                        info.el.setAttribute('data-event-id', info.holidayId);
-                    }
-                });
-                calendar.render();
-            });
-        </script>
         <script>
             <%
                 Integer userId = (Integer) session.getAttribute("user_id");
 
                 if (userId != null) {
             %>
-            User ID: <%= userId%>
+            const userid = <%= userId%>
             <%
                 } else {
                     response.sendRedirect("login.jsp");
@@ -324,7 +257,7 @@
                                                                 <a href="#" class="view-all-link">View all</a>
                                                             </div>
                                                         </div>
-                                                        <!--BUTTON FOR PENDING TABLE /LEAVE CANCEL-->
+                                                        <!--BUTTON FOR PENDING TABLE / CANCEL -->
                                                         <button class="icon-btn-td"
                                                                 data-userid="<%= h.getUserId()%>" 
                                                                 data-holidayid="<%= h.getHolidayId()%>" 
@@ -651,10 +584,14 @@
             Right section: calendar + agenda 
             -->
             <aside class="side-section">
-                <!--<div class="calendar-card">-->
-                <!-- <div class="fullcalendar">-->
-                <div id="calendar">
+
+                <div style="position: relative; min-height: 150px;">
+                    <div id="calendarLoader" class="chart-loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                    <div id="calendar"></div>
                 </div>
+
                 <div class="agenda-card">
                     <h3>Agenda</h3>
                     <div class="agenda-item" id="agenda-item-holiday">
@@ -689,6 +626,74 @@
                 </div>
             </aside>
         </div>
+
+
+        <script>
+
+            let calendar;
+            let cellDate;
+            let hasBlockEvent;
+            let start;
+            let end;
+            const currentUserId = <%= session.getAttribute("user_id")%>;
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    firstDay: 1,
+                    weekends: false,
+                    showNonCurrentDates: false,
+                    eventSources: [
+
+                        // All holidays 
+                        {
+                            url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
+                            method: 'GET',
+                            className: 'event-block',
+                            display: 'block'},
+                        // User-specific holidays
+                        {
+                            url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
+                            method: 'GET',
+                            className: 'event-list',
+                            display: 'list-item',
+                            extraParams: {
+                                userId: currentUserId
+                            }
+                        }
+                    ],
+                    // Highlight all days of events
+                    eventsSet: function (events) {
+
+                        // reset all cells
+                        document.querySelectorAll('.fc-daygrid-day').forEach(function (cell) {
+                            cell.classList.remove('event-cell');
+                        });
+                        // loop over days
+                        document.querySelectorAll('.fc-daygrid-day').forEach(function (dayCell) {
+
+                            cellDate = dayCell.getAttribute('data-date');
+                            hasBlockEvent = events.some(function (event) {
+
+                                // ONLY highlight for block events
+                                if (!event.classNames.includes('event-block'))
+                                    return false;
+                                start = event.startStr.substring(0, 10);
+                                end = event.endStr ? event.endStr.substring(0, 10) : start;
+                                return cellDate >= start && cellDate < end;
+                            });
+                            if (hasBlockEvent) {
+                                dayCell.classList.add('event-cell');
+                            }
+                        });
+                    },
+                    eventDidMount: function (info) {
+                        info.el.setAttribute('data-event-id', info.holidayId);
+                    }
+                });
+                calendar.render();
+            });
+        </script>
         <script>
             function toggleDropdownNotifs() {
                 const dropdown = document.getElementById("notificationList");

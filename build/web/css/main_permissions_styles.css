@@ -2,8 +2,8 @@ body{
     font-family:Arial, sans-serif;
     margin:0 0 0 17%;
     height: 100vh;
-    background: #EEF;
-    background: linear-gradient(79deg, rgba(238, 238, 255, 1) 0%, rgba(87, 199, 133, 0.87) 72%, rgba(240, 228, 127, 0.93) 100%);
+    background: #cad1e0;
+    background: linear-gradient(93deg, rgba(202, 209, 224, 1) 36%, rgba(191, 217, 197, 1) 100%);
     overflow:hidden;
 }
 
@@ -141,60 +141,110 @@ body{
 
 
 .header {
-    position: sticky;
-    top:0;
     display: flex;
     justify-content: space-between;
     align-items: center; /* keeps items vertically centered */
-    margin-top: 0;
+    margin-top: 10px;
+    padding-top: 10px;
+    margin-bottom:10px;
     margin-left: 0;
     width: 100%; /* use full width of parent */
-    padding: 4px;
+
+    height: 5%;
+}
+#top-header {
+    justify-content: center;
 }
 .header-left {
-    font-family: Segoe, sans-serif;
-    color: #34495e;
-    font-weight: bold;
-    white-space: nowrap;
-
-}
-.header-right{
-    margin-right: 10px;
-}
-.header_btn{
     display: flex;
-    gap: 10px;
+    flex-direction: row;
+    padding-left: 2%;
+    font-family: Arial, sans-serif;
 }
-.header_icon {
+.header-title {
+    padding: 8px 12px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #34495e;
+    white-space: nowrap;
+}
+.header-dot {
+    margin: 10px 10px 0px 5px;
+    color: #9ca3af;
+    font-size: 18px;
+}
+.header-select-wrapper {
+    position: relative;
     display: inline-flex;
-    background-color: white;
-    color: black;
     align-items: center;
-    justify-content: center;
-    padding: 5px;
-    border: none;
-    border-radius: 20px;
+}
+.header-select {
+    appearance: none;
+    background: whitesmoke;
+    -webkit-appearance: none;
+    border: 1px solid #999;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #34495e;
     cursor: pointer;
+    padding: 8px 14px;
+    outline: none;
+}
+.header-select:hover {
+    background: white;
+    border: 1px solid #999;
+    border-radius: 12px;
+    color: #34495e;
+}
+.header-select:focus {
+    background: white;
+    border: 1px solid #999;
+    border-radius: 12px;
+    color: #34495e;
+}
+.chevron {
+    position: absolute;
+    right: 5px;
+    pointer-events: none;
+    color: #6b7280;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.header-select-wrapper:hover .chevron {
+    opacity: 1;
+}
 
-    transition: transform 0.2s ease;
-}
-.header_icon:hover {
-    transform: scale(1.1);
-}
 
 .icon-btn {
     display: flex;
     margin-right: 15px;
-    border: none;
+    border: 1px solid black;
     cursor: pointer;
     border-radius: 16px;
     padding: 8px;
+    
+    background: transparent;
+}
+.icon-btn-form {
+    display: flex;
+    margin-right: 15px;
+    cursor: pointer;
+    border:none;
+    padding: 8px;
+    
+    background: transparent;
+}
+#icon-btn-header{
+    margin-left: 15px;
+    padding: 7px;
 }
 .icon-home {
     background: transparent;
     width: 17px;
     height: 17px;
 }
+
 
 
 #stepProgress {
@@ -246,12 +296,6 @@ body{
     background: #215f91;
     background: linear-gradient(175deg,rgba(33, 95, 145, 1) 0%, rgba(0, 82, 145, 1) 35%, rgba(0, 170, 204, 1) 100%);
 }
-/* Style the 3rd step differently */
-.step:nth-child(3).active {
-    background: #215f91;
-    background: linear-gradient(175deg,rgba(33, 95, 145, 1) 0%, rgba(0, 82, 145, 1) 35%, rgba(0, 170, 204, 1) 100%);
-}
-
 /* Step circles */
 .step {
     width: 25px;
@@ -266,9 +310,11 @@ body{
     position: relative;
     transition: background 0.3s;
 }
-
 .step.active {
     background: #215F91;
+}
+.step.active svg {
+    fill:white;
 }
 #stepLabel {
     position: fixed;
@@ -313,27 +359,26 @@ Main SECTION
     margin-right: 15px;
     border-radius: 14px;
     background: white;
-    height: 270px;
 }
 #user_banner .header {
-    margin-top: 5px;
-    margin-bottom:5px;
+    align-items: center;
+    padding: 20px;
     outline: none;
+    font-size: 1.1rem;
+
+    width:100%;
 }
 #user_banner .header-left {
+    width: 80%;
+    padding-left: 2%;
     display:flex;
-    margin-left: 15px;
-}
-
-.bar {
-    width: 93%;
-    margin: 0 auto;
-    height: 1px;
-    background-color: lightslategray;
+    align-items: center;
+    gap: 8px;
 }
 
 #user_banner .content{
     position: relative;
+    margin-top: 10px;
     margin-left: 25px;
 }
 
@@ -358,7 +403,7 @@ Main SECTION
     width: 50px;
     font-size: 1rem;
     font-weight: 500;
-    color: #666;
+    color: #34495e;
 }
 
 .form-group input {
@@ -371,8 +416,9 @@ Main SECTION
     font-size: 16px;
 }
 input[readonly] {
-    background-color: #eef; /* grey background when locked */
+    background-color: whitesmoke; /* grey background when locked */
     border: 1px solid #ccc;
+    border-radius: 10px;
     color: black;
     cursor: default;
 }
@@ -415,14 +461,14 @@ input[type='text'] {
     background: white;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     position: relative;
     right: 2%;
     border-radius: 14px;
     padding: 10px;
-    outline: 3px solid white;
+    align-self: start;
     width: 90%;
-    height: 410px;
+    height: auto;
+    max-height: calc(100vh - 50px); /* viewport height minus header + progress bar */
     overflow-y: auto; /* allow scrolling inside aside */
 }
 
@@ -435,12 +481,11 @@ input[type='text'] {
 */
 #calendar{
     overflow:hidden;
-    height: 300px;
+    height: 410px;
 }
 #calendarContainer {
-    max-height: 170px;
-    max-width: 830px;
-    margin: 10px 20px 0px 20px;
+    width: auto;
+    position: relative;
 }
 /*compact header*/
 .fc-toolbar {
@@ -494,122 +539,54 @@ input[type='text'] {
 Next STEP
 */
 
-#nextStep {
-    position: static;
-    width: 97%;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    padding: 10px;
-    max-height:0;
-    background: #eef;
-    border: 1px solid #ccc;
-    border-radius: 14px;
-    overflow: hidden;
-
-    opacity: 0;
-    transform: translateY(-10px); /* slight upward start */
-    transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease;
-}
-#nextStep input[readonly] {
-    background-color: white;
-    width:100%;
-}
-#nextStep #continueBtn {
-    width: 105px;
-    background: #0078d7;
-    color: white;
-    transition: transform 0.4s ease;
-}
-#nextStep #continueBtn:hover {
-    transform: scale(1.1);
-    border: 1px solid black;
-}
-#nextStep #cancelLeave {
-    width: 95px;
-    background: #eef;
-    color: #666;
-    transition: background 0.4s ease;
-}
-#nextStep #cancelLeave:hover {
-    background: #eddf;
-}
-#nextStep.show {
-    max-height:500px;
-    opacity: 1;
-    transform: translateY(0);
-}
-.modal-btn:disabled {
-    background: #ccc;
-    color: #555;
-    cursor: not-allowed;
-}
-
-
 #finalStep {
-    width: 97%;
-    margin-top: 15px;
-    margin-bottom: 30px;
-    padding: 10px;
-
-    max-height: 0;
-    overflow: hidden;
-
-    opacity: 0;
-    transform: translateY(-10px);
-
-    transition:
-        max-height 0.4s ease,
-        opacity 0.3s ease,
-        transform 0.3s ease;
-
-
-    background: white;
-    border: 1px solid #0078d7;
-    border-radius: 14px;
+    position: absolute;
+    top:100%;
+    width: 90%;
+    padding-top:  100px;
+    margin-bottom: 10px;
+    padding: 15px;
     display: none; /* hidden until selection */
 }
-#finalStep input[readonly] {
-    border:none;
-    border-bottom: 1px solid #666;
-    background-color: transparent;
-}
-#finalStartTime,
-#eventDay,
-#finalEndTime {
-    font-family: Arial, sans-serif;
-    color: #0078d7;
-    font-size: 1rem;
+#finalStep h3 {
     text-align: center;
+    padding: 10px;
+    font-size:1.4rem;
+    color:#333;
 }
+#eventForm .form-group {
+    justify-content: center;
+    align-content: center;
+    gap: 30px;
+}
+#eventForm label {
+    white-space: nowrap;
+    font-size: 0.8rem;
+    color: #444;
+}
+#eventForm input[readonly] {
+    width: 90%;
+    background: whitesmoke;
+}
+
 #finalStep.show {
-    max-height: 650px; /* adjust depending on content */
+    max-height: 750px; /* adjust depending on content */
     opacity: 1;
     transform: translateY(0);
 }
-
-
-#eventForm {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* spacing between fields */
-    max-width: 300px;
-    &:last-child{
-        margin-bottom: 15px;
-    }
-}
-
 textarea {
     resize: none;
     overflow: hidden;
-    height: auto;
-    padding: 6px;
+    width: 90%;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 10px;
     font-family: inherit;
     font-size: inherit;
 }
-#submitBtn {
+#submitBtn{
+    position: relative;
     padding: 10px;
+    width: 175px;
     border-radius: 6px;
 }
 .btn-disabled {
@@ -623,7 +600,7 @@ textarea {
     background-color: #0078d7;
     color: white;
     cursor: pointer;
-    border: 1px solid #ccc;
+    border: none;
     transition: transform 0.3s ease;
 }
 

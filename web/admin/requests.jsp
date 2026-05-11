@@ -81,14 +81,14 @@
                     </form>
                     <!-- Actions -->
                     <div class="modal-actions" id="actionsDiv"></div>
-                    <form id="statusForm" method="POST">
+                    <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdateLeaveStatusServlet">
                         <input type="hidden" name="holidayid" id="leaveId">
+                        <input type="hidden" name="user_id" id="leaveUserId">
                         <input type="hidden" name="status" id="leaveStatus">
                     </form>
                 </main>
+                        
                 <aside class="side-section">
-                    <!--<div class="calendar-card">-->
-                    <!-- <div class="fullcalendar">-->
                     <div id="calendar">
                     </div>
                 </aside>
@@ -130,93 +130,11 @@
             <div class="bar"></div>
 
 
-            <!-- table for PENDING requests --> 
-            <table class ="reqtable" cellspacing="0" id="pendingtable" style="opacity:1;">
-                <%
-                    if (daoPending == null || daoPending.isEmpty()) {
-                %>
-                <tbody>
-                    <tr>
-                        <td colspan="1" style="text-align: center; color: red;">No pending holidays found.</td>
-                    </tr>
-                    <%
-                    } else {
-                        for (UserPending h : daoPending) {
-                    %>
-
-                    <tr>
-                        <td>
-
-                            <!-- Left: Avatar + Name/Type -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <!-- Avatar -->
-                                <img src="<%= selectedAvatar%>" alt="User Avatar" style="width: 50px; height: 50px; border-radius: 50%;"/>
-
-                                <!-- Name + Holiday Type -->
-                                <div style="display: flex; flex-direction: column;">
-                                    <span style="font-weight: 600;"><%=h.getName()%></span>
-                                    <span style=" font-size: 0.9rem; font-weight: normal;">Holiday from <%= h.getStartDate()%> to <%= h.getEndDate()%></span>
-                                    <span style=" font-size: 0.8rem; color: lightslategray"><%= h.getType()%></span>
-                                </div>
-                            </div>
-
-
-                            <!-- Right: Status + Details Button -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-
-
-                                <% String status = h.getStatus();
-                                    String cssClass = "";
-                                    if ("rejected".equalsIgnoreCase(status)) {
-                                        cssClass = "status-rejected";
-                                    } else if ("approved".equalsIgnoreCase(status)) {
-                                        cssClass = "status-approved";
-                                    } else if ("pending".equalsIgnoreCase(status)) {
-                                        cssClass = "status-pending";
-                                    }%>
-                                <!-- Status with vertical separator -->
-                                <div style="border-left: 1px solid #ccc; padding-left: 10px; display: flex; align-items: center; min-width: 80px; height: 35px; justify-content: center;">
-                                    <span class="status <%= cssClass%>"> 
-                                        <%= h.getStatus()%> </span>
-                                </div>
-
-                                <!-- Details Button with vertical separator -->
-                                <div style="border-left: 1px solid #ccc; padding-left: 10px; display: flex; align-items: center; justify-content: center;">
-                                    <button class="detailsBtn" 
-
-                                            data-userid="<%= h.getUserId()%>" 
-                                            data-holidayid="<%= h.getHolidayId()%>" 
-                                            data-username="<%= h.getName()%>"
-                                            data-startdate="<%= h.getStartDate()%>"
-                                            data-enddate="<%= h.getEndDate()%>"
-                                            data-motif="<%= h.getMotif()%>"
-                                            data-status="<%= h.getStatus()%>">
-
-                                        <span class="icon-home">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="20" height="20">
-                                            <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                            <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                                            </svg>
-                                        </span>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </td>
-                    </tr>
-                    <%
-                            }
-                        }
-                    %>
-                </tbody>
-            </table>
-
-
             <!--
             table
             ALL REQUESTS
             -->  
-            <table class ="reqtable" cellspacing="0" id="alltable">
+            <table class ="reqtable" cellspacing="0" id="alltable" style="opacity:1;">
                 <%
                     if (daoAll == null || daoAll.isEmpty()) {
                 %>
@@ -302,7 +220,6 @@
         <script src="../scripts/utils.js"></script>
         <script>
             const statusfilter = document.getElementById('statusFilter');
-            const tablePending = document.getElementById('pendingtable');
             const tableAll = document.getElementById('alltable');
             let currentTable = null;
             function showTable(newTable) {
@@ -323,67 +240,33 @@
             }
 
             function updateTable() {
-
                 const status = statusfilter.value;
-                let newTable = null;
-                // THIS is where table is chosen
-                if (status === "pending") {
-                    newTable = tablePending;
-                }
-
-                if (status === "all") {
-                    newTable = tableAll;
-                }
+                let newTable = status === 'pending' ? tablePending
+                        : status === 'all' ? tableAll
+                        : null;
                 showTable(newTable);
             }
+
             statusfilter.addEventListener('change', updateTable);
+
             window.addEventListener('DOMContentLoaded', () => {
-                statusfilter.value = "all";
+                statusfilter.value = 'all';
                 updateTable();
             });
-            /**function updateTable() {
-             const status = statusfilter.value;
-             let newTable = null;
-             if (status === 'pending') {
-             newTable = tablePending;
-             } else if (status === 'all') {
-             newTable = tableAll;
-             }
-             showTable(newTable);
-             }
-             // Event listeners
-             statusfilter.addEventListener('change', updateTable);
-             // Default table on load
-             window.addEventListener('DOMContentLoaded', () => {
-             statusfilter.value = 'all';
-             updateTable();
-             });*/
         </script>
         <script>
 
-            let calendar;
             const calendarEl = document.getElementById('calendar');
+            let calendar;
             let selectedEventId = null;
             let currentUserId = null;
             const detailsAction = document.querySelector('.detailsAction');
-            const form = document.getElementById("statusForm");
+
             window.calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 firstDay: 1,
                 showNonCurrentDates: false,
-                hiddenDays: [0],
-
-                eventSources: [
-                    {
-                        url: '<%= request.getContextPath()%>/CalendarHolidaysServlet'
-                    },
-                    {
-                        url: '<%= request.getContextPath()%>/CalendarAdminUserLeaveServlet',
-                        extraParams: () => ({
-                                userId: currentUserId
-                            })
-                    }
-                ]
+                hiddenDays: [0]
             });
             window.calendar.render();
 
@@ -403,9 +286,9 @@
                     // buttons
                     if (status === "Pending") {
                         actionsDiv.innerHTML = `
-                <button class="modal-btn" onclick="submitStatus('Approved')">Approve</button>
-                <button class="modal-btn" onclick="submitStatus('Rejected')">Reject</button>
-                <button class="modal-btn" onclick="leaveModal.style.display='none'">Cancel</button>
+                <button class="modal-btn" id="approveLeaveBtn" onclick="submitStatus('Approved')">Approve</button>
+                <button class="modal-btn" id="rejectLeaveBtn" onclick="submitStatus('Rejected')">Reject</button>
+                <button class="modal-btn" onclick="document.getElementById('leaveModal').style.display='none'">Cancel</button>
             `;
                     } else {
                         actionsDiv.innerHTML = `
@@ -426,24 +309,49 @@
                             btn.dataset.enddate || "";
                     // show modal
                     document.getElementById('leaveModal').style.display = 'block';
+
                     // reload calendar safely
-                    /**if (window.calendar) {
-                     
-                     window.calendar.removeAllEventSources();
-                     window.calendar.addEventSource({
-                     url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
-                     method: 'GET'
-                     });
-                     window.calendar.addEventSource({
-                     url: '<%= request.getContextPath()%>/CalendarAdminUserLeaveServlet',
-                     method: 'GET',
-                     extraParams: () => ({
-                     userId: currentUserId   // ALWAYS fresh
-                     })
-                     });*/
-                    window.calendar.refetchEvents();
+                    // Make sure calendar exists
+                    if (window.calendar) {
+                        // Remove old sources
+                        window.calendar.removeAllEventSources();
+                        // Add holidays source
+                        window.calendar.addEventSource({
+                            url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
+                            method: 'GET'
+                        });
+                        //PermissionCalendar
+                        window.calendar.addEventSource({
+                            url: '<%= request.getContextPath()%>/CalendarAdminUserLeaveServlet',
+                            method: 'GET',
+                            display: 'list-item',
+                            extraParams: {
+                                userId: currentUserId
+                            }
+                        });
+                        // Refresh events
+                        window.calendar.refetchEvents();
+                    }
                 });
             });
+
+            function submitStatus(newStatus) {
+
+                console.log("Submitting ID:", selectedEventId);
+                // SAFETY CHECK
+                if (!selectedEventId) {
+                    alert("No event selected!");
+                    return;
+                }
+                // ️Passer les IDs dans des champs cachés du formulaire pour le Servlet
+                document.getElementById('leaveId').value = selectedEventId;
+                document.getElementById('leaveStatus').value = newStatus;
+                document.getElementById('leaveUserId').value = currentUserId;
+                document.getElementById('statusForm').submit();
+
+                // après ton UPDATE + INSERT notification
+                request.getHeader("Referer");
+            }
 
         </script>
     </body>

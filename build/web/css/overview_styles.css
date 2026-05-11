@@ -422,9 +422,11 @@ Side SECTION
 /**
 *CALENDAR
 */
+
 #calendar{
     overflow:hidden;
     height: 420px;
+    min-height: 400px;
 }
 .fc-toolbar {
     padding: 5px;
