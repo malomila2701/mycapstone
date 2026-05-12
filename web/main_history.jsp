@@ -41,43 +41,6 @@
                 List<UserPermission> daoPermissionPending = dao.getPermissionPending(userId);
             %>
         </script>
-        <script>
-            function loadNotifications() {
-                fetch("<%= request.getContextPath()%>/NotificationServlet")
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error("Erreur serveur: " + response.status);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            const dot = document.querySelector('.notification-dot');
-                            const list = document.getElementById('notificationList');
-                            list.innerHTML = "";
-                            if (data.unreadCount > 0) {
-                                dot.style.display = 'block';
-                                if (Array.isArray(data.notifications)) {
-                                    data.notifications.forEach(n => {
-                                        const li = document.createElement("li");
-                                        li.textContent = n.message + " - " + n.created_at;
-                                        list.appendChild(li);
-                                    });
-                                }
-                            } else {
-                                dot.style.display = 'none';
-                            }
-                        })
-                        .catch(err => {
-                            console.error("Probleme lors du chargement des notifications:", err);
-                        });
-            }
-
-            // Charger au demarrage et rafraichir toutes les 30s
-            document.addEventListener("DOMContentLoaded", () => {
-                loadNotifications();
-                setInterval(loadNotifications, 30000);
-            });
-        </script>
         <%
             String selectedAvatar = "images/avatar1.jpg";
         %> 
@@ -138,7 +101,7 @@
 
                                 <span style="
                                       font-weight: bold;
-                                      font-size: 1rem;">
+                                      font-size: 1.1rem;">
 
                                     Requests Collection</span>
                             </div> 
@@ -154,6 +117,7 @@
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
                         <script>
+                        console.time('fetch');
                         async function fetchLeavesData() {
                             const response = await fetch("<%= request.getContextPath()%>/ChartUserLeaveServlet");
                             const data = await response.json();
@@ -165,7 +129,9 @@
                             });
                             return filled;
                         }
+                        console.timeEnd('fetch');
 
+                        console.time('renderChart');
                         async function renderChart() {
                             const leavesPerMonth = await fetchLeavesData();
                             const ctx = document.getElementById('leavesChart').getContext('2d');
@@ -232,18 +198,19 @@
                             document.getElementById('leavesChart').style.display = 'block';
                         }
                         renderChart();
+                        console.timeEnd('renderChart');
                         </script>  
                     </div>
                 </main>
 
                 <aside class="side-section">
                     <div class="card">
-                        <span class="card_stats icon-home">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 256 256"><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0v94.37L90.73,98a8,8,0,0,1,10.07-.38l58.81,44.11L218.73,90a8,8,0,1,1,10.54,12l-64,56a8,8,0,0,1-10.07.38L96.39,114.29,40,163.63V200H224A8,8,0,0,1,232,208Z"></path></svg>
-
-                        </span>
+                        <!-- <span class="card_stats icon-home">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 256 256"><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0v94.37L90.73,98a8,8,0,0,1,10.07-.38l58.81,44.11L218.73,90a8,8,0,1,1,10.54,12l-64,56a8,8,0,0,1-10.07.38L96.39,114.29,40,163.63V200H224A8,8,0,0,1,232,208Z"></path></svg>
+ 
+                         </span> -->
                         <span class="card_change down icon-home">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#fdecea" class="size-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#d93025" class="size-5">
                             <path fill-rule="evenodd" d="M13.5 4.938a7 7 0 1 1-9.006 1.737c.202-.257.59-.218.793.039.278.352.594.672.943.954.332.269.786-.049.773-.476a5.977 5.977 0 0 1 .572-2.759 6.026 6.026 0 0 1 2.486-2.665c.247-.14.55-.016.677.238A6.967 6.967 0 0 0 13.5 4.938ZM14 12a4 4 0 0 1-4 4c-1.913 0-3.52-1.398-3.91-3.182-.093-.429.44-.643.814-.413a4.043 4.043 0 0 0 1.601.564c.303.038.531-.24.51-.544a5.975 5.975 0 0 1 1.315-4.192.447.447 0 0 1 .431-.16A4.001 4.001 0 0 1 14 12Z" clip-rule="evenodd" />
                             </svg>
                         </span>
@@ -275,19 +242,25 @@
             <div id="latest_banner">
                 <div class="header">
                     <div class="header-left"> 
-                        <button class="icon-btn-header"> <span class="icon-home">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                <path d="M5.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H6a.75.75 0 0 1-.75-.75V12ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM7.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H8a.75.75 0 0 1-.75-.75V12ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V10ZM10 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H10ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H12ZM11.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H12a.75.75 0 0 1-.75-.75V12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V10ZM14 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H14Z" />
-                                <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                                </svg></span> </button>
+                        <button class="icon-btn-header">
+                            <span class="icon-home">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                            <path d="M5.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H6a.75.75 0 0 1-.75-.75V12ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM7.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H8a.75.75 0 0 1-.75-.75V12ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V10ZM10 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H10ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H12ZM11.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H12a.75.75 0 0 1-.75-.75V12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V10ZM14 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H14Z" />
+                            <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
+                            </svg>
+                            </span>
+                    </button>
 
                         <span style="
                               font-weight: bold;
-                              font-size: 1rem;">
+                              font-size: 1.1rem;">
 
                             Latest Requests</span>
                     </div>
                     <div class="header-right">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search by Name or ID">
+                        </div>
                         <select id="dateFilter" style="margin-right: 10px;">
                             <option value="today">Today</option>
                             <option value="last_week">Last week</option>
@@ -302,16 +275,22 @@
                     </div>
                 </div>
 
-                <div class="bar"></div>
-
                 <table class="reqtable" cellspacing="0" id="latest_b">
+                    <thead>
+                        <tr>
+                            <th style="padding:12px; text-align:left;">Description</th>
+                            <th style="padding:12px; text-align:center;">Reason</th>
+                            <th style="padding:12px; text-align:center;">Status</th>
+                            <th style="padding:12px; text-align:center;">Action</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         <%
                             boolean isEmpty = (v2 == null || v2.isEmpty()) && (v3 == null || v3.isEmpty());
                             if (isEmpty) {
                         %>
                         <tr>
-                            <td colspan="1" style="padding:30px; background:white; text-align:center;
+                            <td colspan="4" style="padding:30px; background:white; text-align:center;
                                 border-bottom-left-radius:16px; border-bottom-right-radius:16px; color:red;">
                                 No latest holidays found.
                             </td>
@@ -331,47 +310,79 @@
                                         cssClass = "status-pending";
                         %>
                         <tr>
+
+                            <!-- DESCRIPTION -->
                             <td style="padding:10px;">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <!-- Left: Avatar + Name/Type -->
-                                    <div style="display:flex; align-items:center; gap:10px;">
-                                        <!-- Avatar -->
-                                        <img src="<%= selectedAvatar%>" alt="User Avatar" style="padding-left:5%; width:50px; height:50px; border-radius:50%;"/>
-                                        <div style="display:flex; flex-direction:column;">
-                                            <span style="font-weight:normal; white-space:nowrap;">Holiday on <%= h.getStartDate()%> - <%= h.getEndDate()%></span>
-                                            <span style="font-size:0.8rem; color:lightslategray;"><%= h.getType()%></span>
-                                        </div>
+                                <div style="display:flex; align-items:center; gap:10px;">
+
+                                    <!-- Avatar -->
+                                    <img src="<%= selectedAvatar%>"
+                                         alt="User Avatar"
+                                         style="width:50px; height:50px; border-radius:50%;" />
+
+                                    <!-- Text -->
+                                    <div style="display:flex; flex-direction:column;">
+                                        <span style="font-weight:normal;">
+                                            Holiday on <%= h.getStartDate()%> - <%= h.getEndDate()%>
+                                        </span>
+
+                                        <span style="font-size:0.8rem; color:lightslategray;">
+                                            <%= h.getType()%>
+                                        </span>
                                     </div>
-                                    <div style="display:flex; align-items:center; gap:10px;">
-                                        <div style="border-left:1px solid #ccc; padding-left:10px; display:flex; align-items:center; min-width:80px; height:35px; justify-content:center;">
-                                            <span class="status <%= cssClass%>"><%= h.getStatus()%></span>
-                                        </div>
-                                        <div style="border-left:1px solid #ccc; padding-left:10px; padding-right: 20px; display:flex;">
-                                            <!--MORE DETAILS BTN-->
-                                            <div style="position: relative; display: inline-block;">
 
-                                                <button class="icon-btn-td" onclick="toggleDropdownDetails(this)" 
-
-                                                        data-holiday-id="<%= h.getHolidayId()%>"
-                                                        data-title="<%= h.getType()%>"
-                                                        data-motif="<%=h.getMotif()%>"
-                                                        data-start="<%= h.getStartDate()%>"
-                                                        data-end="<%= h.getEndDate()%>"
-                                                        data-status="<%= h.getStatus()%>"
-                                                        >
-                                                    <span class="icon-home"> 
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="18" height="18">
-                                                        <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                                        <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                                                        </svg> 
-                                                    </span>
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </div>
                                 </div>
                             </td>
+
+                            <!-- REASON -->
+                            <td style="padding:10px; text-align:center; width:250px;">
+                                <span style="
+                                      font-size:0.9rem;
+                                      white-space:nowrap;
+                                      overflow:hidden;
+                                      text-overflow:ellipsis;
+                                      display:block;
+                                      ">
+                                    <%= h.getMotif()%>
+                                </span>
+                            </td>
+
+                            <!-- STATUS -->
+                            <td style="padding:10px; text-align:center; width:120px;">
+                                <span class="status <%= cssClass%>">
+                                    <%= h.getStatus()%>
+                                </span>
+                            </td>
+
+                            <!-- ACTION -->
+                            <td style="padding:10px; text-align:center; width:100px;">
+
+                                <button class="icon-btn-td"
+                                        onclick="toggleDropdownDetails(this)"
+                                        data-holiday-id="<%= h.getHolidayId()%>"
+                                        data-title="<%= h.getType()%>"
+                                        data-motif="<%=h.getMotif()%>"
+                                        data-start="<%= h.getStartDate()%>"
+                                        data-end="<%= h.getEndDate()%>"
+                                        data-status="<%= h.getStatus()%>">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         viewBox="0 0 20 20"
+                                         fill="#666"
+                                         width="18"
+                                         height="18">
+
+                                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+
+                                    <path fill-rule="evenodd"
+                                          d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                                          clip-rule="evenodd" />
+                                    </svg>
+
+                                </button>
+
+                            </td>
+
                         </tr>
                         <%
                                 } // end for UserLeave
@@ -390,49 +401,91 @@
                                         cssClass = "status-pending";
                         %>
                         <tr>
-                            <td style="padding:10px;">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <!-- Left: Avatar + Name/Type -->
-                                    <div style="display:flex; align-items:center; gap:10px;">
-                                        <!-- Avatar -->
-                                        <img src="<%= selectedAvatar%>" alt="User Avatar" style="padding-left:5%; width:50px; height:50px; border-radius:50%;"/>
-                                        <div style="display:flex; flex-direction:column;">
-                                            <span style="font-weight:normal; white-space:nowrap;">Permission on <%= p.getStartDate()%> from <%= p.getStartTime()%> to <%= p.getEndTime()%></span>
-                                            <span style="font-size:0.8rem; color:lightslategray;">Permission</span>
-                                        </div>
-                                    </div>
-                                    <div style="display:flex; align-items:center; gap:10px;">
-                                        <div style="border-left:1px solid #ccc; padding-left:10px; display:flex; align-items:center; min-width:80px; height:35px; justify-content:center;">
-                                            <span class="status <%= cssClass%>"><%= p.getStatus()%></span>
-                                        </div>
-                                        <div style="border-left:1px solid #ccc; padding-left:10px; padding-right: 20px; display:flex;">                                                
-                                            <!--MORE DETAILS BTN-->
-                                            <div style="position: relative; display: inline-block;">
-                                                <button class="icon-btn-td"
 
-                                                        data-userid="<%= p.getUserId()%>" 
-                                                        data-title="Permission"
-                                                        data-holidayid="<%= p.getPermissionId()%>" 
-                                                        data-username="<%= p.getFullName()%>"
-                                                        data-startdate="<%= p.getStartDate()%>"
-                                                        data-enddate="<%= p.getEndDate()%>"
-                                                        data-starttime="<%= p.getStartTime()%>"
-                                                        data-endtime="<%= p.getEndTime()%>"
-                                                        data-motif="<%= p.getMotif()%>"
-                                                        data-status="<%= p.getStatus()%>"
-                                                        >
-                                                    <span class="icon-home"> 
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="18" height="18">
-                                                        <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                                        <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                                                        </svg> 
-                                                    </span>
-                                                </button>
-                                            </div>
-                                        </div>
+                            <!-- DESCRIPTION -->
+                            <td style="padding:10px;">
+                                <div style="display:flex; align-items:center; gap:10px;">
+
+                                    <!-- Avatar -->
+                                    <img src="<%= selectedAvatar%>"
+                                         alt="User Avatar"
+                                         style="width:50px; height:50px; border-radius:50%;" />
+
+                                    <!-- Info -->
+                                    <div style="display:flex; flex-direction:column;">
+
+                                        <span style="font-weight:normal; white-space:nowrap;">
+                                            Permission on <%= p.getStartDate()%>
+                                            from <%= p.getStartTime()%>
+                                            to <%= p.getEndTime()%>
+                                        </span>
+
+                                        <span style="font-size:0.8rem; color:lightslategray;">
+                                            Permission
+                                        </span>
+
                                     </div>
+
                                 </div>
                             </td>
+
+                            <!-- REASON -->
+                            <td style="padding:10px; text-align:center; width:250px;">
+
+                                <span style="
+                                      font-size:0.9rem;
+                                      display:block;
+                                      white-space:nowrap;
+                                      overflow:hidden;
+                                      text-overflow:ellipsis;
+                                      ">
+                                    <%= p.getMotif()%>
+                                </span>
+
+                            </td>
+
+                            <!-- STATUS -->
+                            <td style="padding:10px; text-align:center; width:120px;">
+
+                                <span class="status <%= cssClass%>">
+                                    <%= p.getStatus()%>
+                                </span>
+
+                            </td>
+
+                            <!-- ACTION -->
+                            <td style="padding:10px; text-align:center; width:100px;">
+
+                                <button class="icon-btn-td"
+
+                                        data-userid="<%= p.getUserId()%>" 
+                                        data-title="Permission"
+                                        data-holidayid="<%= p.getPermissionId()%>" 
+                                        data-username="<%= p.getFullName()%>"
+                                        data-startdate="<%= p.getStartDate()%>"
+                                        data-enddate="<%= p.getEndDate()%>"
+                                        data-starttime="<%= p.getStartTime()%>"
+                                        data-endtime="<%= p.getEndTime()%>"
+                                        data-motif="<%= p.getMotif()%>"
+                                        data-status="<%= p.getStatus()%>">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         viewBox="0 0 20 20"
+                                         fill="#666"
+                                         width="18"
+                                         height="18">
+
+                                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+
+                                    <path fill-rule="evenodd"
+                                          d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                                          clip-rule="evenodd" />
+                                    </svg>
+
+                                </button>
+
+                            </td>
+
                         </tr>
                         <%
                                     } // end for UserPermission

@@ -24,7 +24,7 @@ function loadPage(page, element) {
             container.classList.remove("fade-out");
         };
 
-    }, 300); // match CSS transition duration
+    }, 100); // match CSS transition duration
 
     // keep your tab logic
     setActiveTab(element);

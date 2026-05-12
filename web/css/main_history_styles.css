@@ -41,15 +41,15 @@ ICONES
 }
 .icon-btn-header {
     display: flex;
-    margin-right: 15px;
+    margin-right: 5px;
     border: none;
     cursor: pointer;
     border-radius: 16px;
     padding: 8px;
-    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+    background-image: whitesmoke;
 }
 .icon-home {
-    background: transparent;
+    
     width: 17px;
     height: 17px;
 }
@@ -80,7 +80,7 @@ body{
     height: 5%;
 }
 .navbar header-left {
-   
+
     font-family: Segoe, sans-serif;
     color: #34495e;
     font-weight: bold;
@@ -175,7 +175,7 @@ Main SECTION
     display: flex;
     flex-direction: column;
     align-items: start; /* prevents equal height stretching */
-    
+
     height: 100%;
 }
 
@@ -249,26 +249,27 @@ Main SECTION
     position: relative;
 
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-
-    align-self: start; /* keeps it aligned at the top only */
-    width:50%;
-    height: 100%;
+    grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+    grid-auto-rows: 1fr;                   /* all rows same height, auto-generated */
+    align-self: start;
+    width:45%;
 
     gap: 20px;
 }
 .card {
     display: grid;
     position: relative;
-    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    background: #215f91;
+    background: linear-gradient(175deg,rgba(33, 95, 145, 1) 0%, rgba(0, 82, 145, 1) 35%, rgba(0, 170, 204, 1) 100%);
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    
     width: 95%;
-    height:100%;
+    min-height: 115px;
+
     text-align: center;
     align-items: center;
-    color: #333;
+    color: white;
 }
 .card_stats {
     position: absolute;
@@ -278,7 +279,7 @@ Main SECTION
     padding: 4px 8px;
     border-radius: 8px;
     font-weight: 600;
-    
+
     fill: white;
 }
 .card_change {
@@ -294,18 +295,18 @@ Main SECTION
 /* positive change */
 .card_change.up {
     background: white;
-    color: #e6f7ee;
+    color: #0078d7;
 }
 /* negative change */
 .card_change.down {
     background: white;
-    color: #fdecea;
+    color: #d93025;
 }
 .card h2 {
     margin:0;
     position: relative;
-    top: 20%;
-    font-size: 1.2rem;
+    top: 30%;
+    font-size: 1.3rem;
 }
 .card p {
     margin: 0;
@@ -315,9 +316,22 @@ Main SECTION
 
 .reqtable {
     width: 100%;
-    margin: 0;
     background: #ffffff;
-    border-collapse: collapse;
+    
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+.reqtable thead {
+    border: 1px solid transparent;
+    background: #eef;
+    overflow:hidden;
+}
+.reqtable thead th:first-child {
+    border-top-left-radius: 8px;
+}
+.reqtable thead th:last-child {
+    border-top-right-radius: 8px;
 }
 .reqtable td:hover {
     background: whitesmoke;
@@ -326,8 +340,9 @@ Main SECTION
     position: relative;
     width: 100%;
     margin-top: 17px;
+    padding: 10px;
     box-sizing: border-box;
-     
+
     border-radius: 14px;
     color: #666;
     background-color: white;
@@ -337,8 +352,8 @@ Main SECTION
     display: flex;
     justify-content: space-between;
     padding: 15px 20px;
+
     
-    align-items:center;
     outline: none;
     font-size: 1.1rem;
 }
@@ -351,13 +366,31 @@ Main SECTION
 #latest_banner .header-right{
     display: flex;
     flex-direction: row;
+    margin: 0px;
+}
+#latest_banner .search-box {
+    position: relative;
+    margin-right: 5px;
+}
+#latest_banner .search-box input {
+    width: 80%;
+    color: black;
+    padding: 6px 9px;
+    border: 1px solid #ccc;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+#latest_banner .search-box input:focus {
+    border-color: #0078d7; /* highlight color when focused */
 }
 #dateFilter, #statusFilter {
     position :relative;
-    padding: 3px;
-    background: #eef;
+    padding: 5px;
+    background: whitesmoke;
     color: #333;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid #ccc;
     cursor:pointer;
 

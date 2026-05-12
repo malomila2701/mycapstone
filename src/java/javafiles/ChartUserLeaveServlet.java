@@ -30,11 +30,16 @@ public class ChartUserLeaveServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse resp)
             throws IOException {
+
+        long t0 = System.currentTimeMillis();
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user_id") == null) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+
+        long t1 = System.currentTimeMillis();
 
         int userId = (Integer) session.getAttribute("user_id");
 
@@ -69,9 +74,12 @@ public class ChartUserLeaveServlet extends HttpServlet {
                 Connection conn = DBConnection.connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);         // set first
             stmt.setInt(2, userId);
+
+            long t2 = System.currentTimeMillis();
+
             ResultSet rs = stmt.executeQuery(); // then execute
 
-            stmt.setInt(1, userId);
+            long t3 = System.currentTimeMillis();
 
             while (rs.next()) {
                 JSONObject obj = new JSONObject();
@@ -79,6 +87,13 @@ public class ChartUserLeaveServlet extends HttpServlet {
                 obj.put("count", rs.getInt("count"));
                 result.put(obj);
             }
+
+            long t4 = System.currentTimeMillis();
+            resp.setHeader("Server-Timing",
+                    "pool;" + "dur=" + (t2 - t1) + ";desc=\"DB connect\","
+                    + "sql;" + "dur=" + (t3 - t2) + ";desc=\"SQL exec\","
+                    + "json;" + "dur=" + (t4 - t3) + ";desc=\"JSON build\""
+            );
 
             resp.getWriter().write(result.toString());
 
