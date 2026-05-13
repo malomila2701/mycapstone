@@ -232,7 +232,7 @@ input[type='text'] {
 .search-box input:focus {
     border-color: #0078d7; /* highlight color when focused */
 }
-#dateFilter, #dateStatus {
+#dateFilter, #statusFilter {
     align-items: center;
     padding: 3px;
     background: #eef;
@@ -241,7 +241,7 @@ input[type='text'] {
     border: 1px solid #ccc;
     cursor:pointer;
 }
-#dateFilter:hover, #dateStatus:hover {
+#dateFilter:hover, #statusFilter:hover {
     background: white
 }
 

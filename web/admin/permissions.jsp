@@ -121,11 +121,11 @@
                         <option value="last_week">Last week</option>
                         <option value="older">More than 2 weeks ago</option>
                     </select>
-                    <select id="dateStatus">
+                    <select id="statusFilter">
                         <option value="all">All Status</option>
                         <option value="approved">Approved</option>
                         <option value="pending">Pending</option>
-                        <option value="older">Rejected</option>
+                        <option value="rejected">Rejected</option>
                     </select>
                 </div>
 
@@ -221,22 +221,64 @@
         </div>
 
         <script src="../scripts/utils.js"></script>
-        <!--<script>
-            const filter = document.getElementById('dateStatus');
-            const tablePending = document.getElementById('pendingtable');
-            const tableAll = document.getElementById('alltable');
+        <script>
+            function applyFilters() {
+                const selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
+                const selectedDate = document.getElementById('dateFilter').value.toLowerCase();
+                const rows = document.querySelectorAll('#permissiontable tbody tr');
 
-            filter.addEventListener('change', function () {
-                if (this.value === 'pending') {
-                    tablePending.style.display = 'table';
-                    tableAll.style.display = 'none';
-                } else if (this.value === 'all') {
-                    tablePending.style.display = 'none';
-                    tableAll.style.display = 'table';
-                }
-            });
+                // --- Date range boundaries ---
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const yesterday = new Date(today);
+                yesterday.setDate(today.getDate() - 1);
 
-        </script>-->
+                const lastWeekStart = new Date(today);
+                lastWeekStart.setDate(today.getDate() - 7);
+                const lastMonthStart = new Date(today);
+                lastMonthStart.setMonth(today.getMonth() - 1);
+
+                rows.forEach(row => {
+                    if (row.querySelector('td[colspan]'))
+                        return;
+
+                    const statusSpan = row.querySelector('.status');
+                    if (!statusSpan)
+                        return;
+
+                    // --- Status ---
+                    const rowStatus = statusSpan.textContent.trim().toLowerCase();
+                    const statusMatch = selectedStatus === 'all' || rowStatus === selectedStatus;
+
+                    // --- Date ---
+                    // The start date is in the second <span> of the first <td>
+                    const spans = row.querySelectorAll('td:first-child div span');
+                    const rawDate = spans[1] ? spans[1].textContent.trim() : '';
+                    const rowDate = new Date(rawDate);
+                    rowDate.setHours(0, 0, 0, 0);
+
+                    let dateMatch = true;
+                    if (selectedDate !== 'all' && !isNaN(rowDate)) {
+                        if (selectedDate === 'today') {
+                            dateMatch = rowDate.getTime() === today.getTime();
+                        } else if (selectedDate === 'yesterday') {
+                            dateMatch = rowDate.getTime() === yesterday.getTime();
+                        } else if (selectedDate === 'last_week') {
+                            dateMatch = rowDate >= lastWeekStart && rowDate <= today;
+                        } else if (selectedDate === 'last_month') {
+                            dateMatch = rowDate >= lastMonthStart && rowDate <= today;
+                        }
+                    }
+
+                    row.style.display = (statusMatch && dateMatch) ? '' : 'none';
+                });
+
+                showEmptyMessageIfNeeded();
+            }
+
+            document.getElementById('statusFilter').addEventListener('change', applyFilters);
+            document.getElementById('dateFilter').addEventListener('change', applyFilters);
+        </script>
         <script>
 
             const calendarEl = document.getElementById('calendar');

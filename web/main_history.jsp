@@ -4,6 +4,7 @@
     Author     : JeanSamuel
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="javafiles.userdataDAO"%>
 <%@page import="javafiles.UserPending"%>
 <%@page import="javafiles.UserPermission"%>
@@ -244,12 +245,12 @@
                     <div class="header-left"> 
                         <button class="icon-btn-header">
                             <span class="icon-home">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                            <path d="M5.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H6a.75.75 0 0 1-.75-.75V12ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM7.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H8a.75.75 0 0 1-.75-.75V12ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V10ZM10 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H10ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H12ZM11.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H12a.75.75 0 0 1-.75-.75V12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V10ZM14 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H14Z" />
-                            <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                            </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path d="M5.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H6a.75.75 0 0 1-.75-.75V12ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM7.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H8a.75.75 0 0 1-.75-.75V12ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V10ZM10 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H10ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H12ZM11.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H12a.75.75 0 0 1-.75-.75V12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V10ZM14 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H14Z" />
+                                <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
+                                </svg>
                             </span>
-                    </button>
+                        </button>
 
                         <span style="
                               font-weight: bold;
@@ -262,15 +263,22 @@
                             <input type="text" placeholder="Search by Name or ID">
                         </div>
                         <select id="dateFilter" style="margin-right: 10px;">
+                            <option value="all">All Dates</option>
                             <option value="today">Today</option>
-                            <option value="last_week">Last week</option>
-                            <option value="older">More than 2 weeks ago</option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="last_week">Last Week</option>
+                            <option value="last_month">Last Month</option>
+                        </select>
+                        <select id="typeFilter" style="margin-right: 10px;">
+                            <option value="all">All Types</option>
+                            <option value="leave">Leave</option>
+                            <option value="permission">Permission</option>
                         </select>
                         <select id="statusFilter">
                             <option value="all">All Status</option>
                             <option value="approved">Approved</option>
                             <option value="pending">Pending</option>
-                            <option value="older">Rejected</option>
+                            <option value="rejected">Rejected</option>
                         </select>
                     </div>
                 </div>
@@ -300,6 +308,19 @@
                             //  Loop 1: UserLeave (holidays) 
                             if (v2 != null) {
                                 for (UserLeave h : v2) {
+
+                                    /**
+                                     * Compute number of days.START*
+                                     */
+                                    Date start = h.getStartDate();
+                                    Date end = h.getEndDate();
+
+                                    long diffMillis = end.getTime() - start.getTime();
+                                    long days = diffMillis / (1000 * 60 * 60 * 24);
+                                    /**
+                                     * .END
+                                     */
+
                                     String status = h.getStatus();
                                     String cssClass = "";
                                     if ("rejected".equalsIgnoreCase(status))
@@ -309,7 +330,7 @@
                                     else if ("pending".equalsIgnoreCase(status))
                                         cssClass = "status-pending";
                         %>
-                        <tr>
+                        <tr data-id="<%=h.getHolidayId()%>" data-type="leave">
 
                             <!-- DESCRIPTION -->
                             <td style="padding:10px;">
@@ -318,16 +339,16 @@
                                     <!-- Avatar -->
                                     <img src="<%= selectedAvatar%>"
                                          alt="User Avatar"
-                                         style="width:50px; height:50px; border-radius:50%;" />
+                                         style="width:50px; height:50px; border-radius:50%; padding-left: 15px;" />
 
                                     <!-- Text -->
                                     <div style="display:flex; flex-direction:column;">
-                                        <span style="font-weight:normal;">
-                                            Holiday on <%= h.getStartDate()%> - <%= h.getEndDate()%>
+                                        <span style="font-weight:normal; letter-spacing: 0.3px;">
+                                            Holidays (<%= days%> days)
                                         </span>
 
-                                        <span style="font-size:0.8rem; color:lightslategray;">
-                                            <%= h.getType()%>
+                                        <span style="font-size:0.8rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color:lightslategray; margin-top: 3px;">
+                                            <%= h.getStartDate()%>
                                         </span>
                                     </div>
 
@@ -343,7 +364,7 @@
                                       text-overflow:ellipsis;
                                       display:block;
                                       ">
-                                    <%= h.getMotif()%>
+                                    <%= h.getType()%>
                                 </span>
                             </td>
 
@@ -400,7 +421,7 @@
                                     else if ("pending".equalsIgnoreCase(status))
                                         cssClass = "status-pending";
                         %>
-                        <tr>
+                        <tr data-id="<%=p.getPermissionId()%>" data-type="permission">
 
                             <!-- DESCRIPTION -->
                             <td style="padding:10px;">
@@ -409,19 +430,17 @@
                                     <!-- Avatar -->
                                     <img src="<%= selectedAvatar%>"
                                          alt="User Avatar"
-                                         style="width:50px; height:50px; border-radius:50%;" />
+                                         style="width:50px; height:50px; border-radius:50%; padding-left: 15px;" />
 
                                     <!-- Info -->
                                     <div style="display:flex; flex-direction:column;">
 
-                                        <span style="font-weight:normal; white-space:nowrap;">
-                                            Permission on <%= p.getStartDate()%>
-                                            from <%= p.getStartTime()%>
-                                            to <%= p.getEndTime()%>
+                                        <span style="font-weight:normal; letter-spacing:0.3px ; white-space:nowrap;">
+                                            Permission
                                         </span>
 
-                                        <span style="font-size:0.8rem; color:lightslategray;">
-                                            Permission
+                                        <span style="font-size:0.8rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color:lightslategray; ">
+                                            <%= p.getStartDate()%>
                                         </span>
 
                                     </div>
@@ -496,6 +515,119 @@
                 </table>
             </div>
         </div>
+        <script>
+            (function () {
+                const params = new URLSearchParams(window.location.search);
+                const targetId = params.get('id');
+                const targetType = params.get('type');
+                if (!targetId)
+                    return;
 
+                // Find the row — your rows need a data-id and data-type attribute (see Step 3)
+                const row = document.querySelector(
+                        '[data-id="' + targetId + '"][data-type="' + targetType + '"]'
+                        );
+                if (!row)
+                    return;
+
+                // Scroll to it
+                row.scrollIntoView({behavior: 'smooth', block: 'center'});
+
+                // Pop highlight effect
+                row.classList.add('row-highlight');
+                setTimeout(function () {
+                    row.classList.remove('row-highlight');
+                }, 2500);
+            })();
+        </script>
+        <script>
+            function applyFilters() {
+                const selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
+                const selectedType = document.getElementById('typeFilter').value.toLowerCase();
+                const selectedDate = document.getElementById('dateFilter').value.toLowerCase();
+                const rows = document.querySelectorAll('#latest_b tbody tr');
+
+                // --- Date range boundaries ---
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const yesterday = new Date(today);
+                yesterday.setDate(today.getDate() - 1);
+
+                const lastWeekStart = new Date(today);
+                lastWeekStart.setDate(today.getDate() - 7);
+                const lastMonthStart = new Date(today);
+                lastMonthStart.setMonth(today.getMonth() - 1);
+
+                rows.forEach(row => {
+                    if (row.querySelector('td[colspan]'))
+                        return;
+
+                    const statusSpan = row.querySelector('.status');
+                    if (!statusSpan)
+                        return;
+
+                    // --- Status ---
+                    const rowStatus = statusSpan.textContent.trim().toLowerCase();
+                    const statusMatch = selectedStatus === 'all' || rowStatus === selectedStatus;
+
+                    // --- Type ---
+                    const descSpan = row.querySelector('td:first-child span');
+                    const descText = descSpan ? descSpan.textContent.trim().toLowerCase() : '';
+                    const rowType = descText.startsWith('holiday') ? 'leave' : 'permission';
+                    const typeMatch = selectedType === 'all' || rowType === selectedType;
+
+                    // --- Date ---
+                    // The start date is in the second <span> of the first <td>
+                    const spans = row.querySelectorAll('td:first-child div span');
+                    const rawDate = spans[1] ? spans[1].textContent.trim() : '';
+                    const rowDate = new Date(rawDate);
+                    rowDate.setHours(0, 0, 0, 0);
+
+                    let dateMatch = true;
+                    if (selectedDate !== 'all' && !isNaN(rowDate)) {
+                        if (selectedDate === 'today') {
+                            dateMatch = rowDate.getTime() === today.getTime();
+                        } else if (selectedDate === 'yesterday') {
+                            dateMatch = rowDate.getTime() === yesterday.getTime();
+                        } else if (selectedDate === 'last_week') {
+                            dateMatch = rowDate >= lastWeekStart && rowDate <= today;
+                        } else if (selectedDate === 'last_month') {
+                            dateMatch = rowDate >= lastMonthStart && rowDate <= today;
+                        }
+                    }
+
+                    row.style.display = (statusMatch && typeMatch && dateMatch) ? '' : 'none';
+                });
+
+                showEmptyMessageIfNeeded();
+            }
+
+            function showEmptyMessageIfNeeded() {
+                const tbody = document.querySelector('#latest_b tbody');
+                const visibleRows = Array.from(tbody.querySelectorAll('tr')).filter(row => {
+                    return !row.querySelector('td[colspan]') && row.style.display !== 'none';
+                });
+
+                // Supprimer ancien message de filtre vide
+                const existing = document.getElementById('filter-empty-msg');
+                if (existing)
+                    existing.remove();
+
+                if (visibleRows.length === 0) {
+                    const emptyRow = document.createElement('tr');
+                    emptyRow.id = 'filter-empty-msg';
+                    emptyRow.innerHTML = `
+            <td colspan="4" style="padding:30px; background:white; text-align:center;
+                border-bottom-left-radius:16px; border-bottom-right-radius:16px; color:red;">
+                No results for this filter.
+            </td>`;
+                    tbody.appendChild(emptyRow);
+                }
+            }
+
+            document.getElementById('statusFilter').addEventListener('change', applyFilters);
+            document.getElementById('typeFilter').addEventListener('change', applyFilters);
+            document.getElementById('dateFilter').addEventListener('change', applyFilters);
+        </script>
     </body>
 </html>

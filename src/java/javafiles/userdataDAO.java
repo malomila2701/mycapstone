@@ -146,6 +146,7 @@ public class userdataDAO {
      *
      * @param userId
      * @return
+     * @throws java.lang.Exception
      */
     public List<UserLeave> getUserLeave(int userId) throws Exception {
         List<UserLeave> leaveList = new ArrayList<>();
@@ -352,6 +353,72 @@ public class userdataDAO {
             logger.error("ERROR ADMIN EMPLOYEE INFO: " + e.getMessage());
         }
         return employeesList;
+    }
+
+    public List<UserAllEvent> getUserEventAll(int userId) throws Exception {
+        List<UserAllEvent> eventList = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DBConnection.connect();
+            PreparedStatement ps = con.prepareStatement("SELECT *\n"
+                    + "FROM (\n"
+                    + "    SELECT \n"
+                    + "        'HOLIDAY' AS type,\n"
+                    + "        h.holidays_id AS event_id,\n"
+                    + "        h.user_id,\n"
+                    + "        u.fullname,\n"
+                    + "        h.start_date AS start_time,\n"
+                    + "        h.end_date AS end_time,\n"
+                    + "        h.created_at\n"
+                    + "    FROM holidays h\n"
+                    + "    INNER JOIN users u ON u.user_id = h.user_id\n"
+                    + "    WHERE h.user_id = ?\n"
+                    + "\n"
+                    + "    UNION ALL\n"
+                    + "\n"
+                    + "    SELECT \n"
+                    + "        'PERMISSION' AS type,\n"
+                    + "        p.permission_id AS event_id,\n"
+                    + "        p.user_id,\n"
+                    + "        u.fullname,\n"
+                    + "        p.start_time,\n"
+                    + "        p.end_time,\n"
+                    + "        p.start_date,\n"
+                    + "        p.end_date,\n"
+                    + "        p.created_at\n"
+                    + "    FROM permissions p\n"
+                    + "    INNER JOIN users u ON u.user_id = p.user_id\n"
+                    + "    WHERE p.user_id = ?\n"
+                    + ") r\n"
+                    + "ORDER BY created_at DESC\n"
+                    + "LIMIT 5;");
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                UserAllEvent e = new UserAllEvent(
+                        rs.getInt("user_id"),
+                        rs.getInt("holidays_id"),
+                        rs.getInt("permission_id"),
+                        rs.getString("fullname"),
+                        rs.getDate("start_date"),
+                        rs.getDate("end_date"),
+                        rs.getString("type"),
+                        rs.getString("status"),
+                        rs.getString("motif")
+                );
+                eventList.add(e);
+            }
+
+            rs.close();
+            ps.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error("ERROR RETRIEVING INDIVIDUAL USER LEAVES: " + e.getMessage());
+        }
+        return eventList;
     }
 
 }

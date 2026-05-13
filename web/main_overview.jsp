@@ -4,11 +4,15 @@
     Author     : HP
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="javafiles.UserPermission"%>
 <%@page import="javafiles.UserLeave"%>
 <%@page import="javafiles.UserPending"%>
 <%@page import="java.util.List"%>
 <%@page import="javafiles.userdataDAO"%>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.util.List, java.util.ArrayList, java.util.Date" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,12 +21,11 @@
 
         <title>Home Page</title>
 
-        <link rel="stylesheet" 
-              href="css/overview_styles.css">
-
         <!-- FullCalendar script -->
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
 
+        <link rel="stylesheet" 
+              href="css/overview_styles.css">
 
         <script>
             <%
@@ -84,19 +87,24 @@
                 setInterval(loadNotifications, 30000);
             });
         </script>
+        <!-- Resources utilisées dans le code -->
         <%
             String selectedAvatar = "images/avatar1.jpg";
+
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH);
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         %> 
+
     </head>
     <body>
 
-        <div class="header" id="top-header">
-            <div class="header-left">
+        <div class="navbar" id="top-header">
+            <div class="navbar-left">
                 <div class="search-box">
                     <input type="text" placeholder="Search">
                 </div>
             </div>
-            <div class="header-right">
+            <div class="navbar-right">
                 <div class="header_btn">
                     <button class="header_icon" id="notificationBtn" onclick="toggleDropdownNotifs()">
                         <span class="icon-home" style="width: 20px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
@@ -134,8 +142,8 @@
 
                 <div class="banner" id="welcome">
                     <span style="display:flex; font-size: 1.4rem;"> Welcome back <span style="font-weight: normal;">, ${sessionScope.username} ! </span></span>
-                    <span style="margin-top: 3px; font-size:0.7rem; font-weight:lighter;">Entre(e) le: 19/03/2021 </span>
-                    <span style="margin-top: 3px; font-size:0.7rem; font-weight:lighter;">Anciennete: 2 an(s)</span>
+                    <span style="margin-top: 3px; font-size:0.7rem; font-weight:lighter;">Entered on: 2023/03/11 </span>
+                    <span style="margin-top: 3px; font-size:0.7rem; font-weight:lighter;">Length of Service: 2 year(s)</span>
                 </div>
 
                 <div class="card">
@@ -254,7 +262,9 @@
                                                                 <div class="label"></div>
                                                             </div>
                                                             <div class="dd-footer">
-                                                                <a href="#" class="view-all-link">View all</a>
+                                                                <button type="button" class="view-all-link" onclick="window.location.href = 'main_history.jsp?id=<%=h.getHolidayId()%>&type=leave'">
+                                                                    View all
+                                                                </button>
                                                             </div>
                                                         </div>
                                                         <!--BUTTON FOR PENDING TABLE / CANCEL -->
@@ -306,8 +316,8 @@
                                             <!-- Avatar -->
                                             <img src="<%= selectedAvatar%>" alt="User Avatar" style="padding-left:5%; width:50px; height:50px; border-radius:50%;"/>
                                             <div style="display:flex; flex-direction:column;">
-                                                <span style="font-weight:normal; white-space:nowrap;">Permission on <%= p.getStartDate()%> from <%= p.getStartTime()%> to <%= p.getEndTime()%> </span>
-                                                <span style="font-size:0.8rem; color:lightslategray;">Permission</span>
+                                                <span style="font-weight:normal; white-space:nowrap;">Permission from <%= timeFormat.format(p.getStartTime())%> to <%=  timeFormat.format(p.getEndTime())%> </span>
+                                                <span style="font-size:0.8rem; color:lightslategray;"><%= sdf.format(p.getStartDate())%></span>
                                             </div>
                                         </div>
                                         <div style="display:flex; align-items:center; gap:10px;">
@@ -349,7 +359,9 @@
                                                                 <div class="label"><%= p.getMotif()%></div>
                                                             </div>
                                                             <div class="dd-footer">
-                                                                <a href="#" class="view-all-link">View all</a>
+                                                                <button type="button" class="view-all-link" onclick="window.location.href = 'main_history.jsp?id=<%=p.getPermissionId()%>&type=permission'">
+                                                                    View all
+                                                                </button>
                                                             </div>
                                                         </div>
                                                         <!--BUTTON FOR PENDING TABLE /PERMISSION CANCEL-->
@@ -407,12 +419,22 @@
 
                             <span style="
                                   font-weight: bold;
-                                  font-size: 1rem;">
+                                  font-size: 1.1rem;">
 
                                 Latest Requests</span>
                         </div>
-                        <div class="header-right" style="display: flex; align-items: center;">
-                            <span style="font-size: 0.9rem; white-space: nowrap;">Status & Action</span>
+                        <div class="header-right">
+                            <select id="typeFilter" style="margin-right: 10px;">
+                                <option value="all">All Types</option>
+                                <option value="holidays">Leave</option>
+                                <option value="permission">Permission</option>
+                            </select>
+                            <select id="statusFilter">
+                                <option value="all">All Status</option>
+                                <option value="approved">Approved</option>
+                                <option value="pending">Pending</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
                         </div>
                     </div>
 
@@ -421,8 +443,28 @@
                     <table class="reqtable" cellspacing="0" id="latest_b">
                         <tbody>
                             <%
-                                boolean isEmpty = (v2 == null || v2.isEmpty()) && (v3 == null || v3.isEmpty());
-                                if (isEmpty) {
+                                // --- Merge both lists into one ---
+                                List<Object> combined = new ArrayList<>();
+                                if (v2 != null) {
+                                    combined.addAll(v2);
+                                }
+                                if (v3 != null) {
+                                    combined.addAll(v3);
+                                }
+
+                                // --- Sort by startDate descending (newest first) ---
+                                combined.sort((a,
+                                        b) -> {
+                                    Date dateA = (a instanceof UserLeave)
+                                            ? ((UserLeave) a).getStartDate()
+                                            : ((UserPermission) a).getStartDate();
+                                    Date dateB = (b instanceof UserLeave)
+                                            ? ((UserLeave) b).getStartDate()
+                                            : ((UserPermission) b).getStartDate();
+                                    return dateB.compareTo(dateA);
+                                });
+
+                                if (combined.isEmpty()) {
                             %>
                             <tr>
                                 <td colspan="1" style="padding:30px; background:white; text-align:center;
@@ -432,134 +474,137 @@
                             </tr>
                             <%
                             } else {
-                                //  Loop 1: UserLeave (holidays) 
-                                if (v2 != null) {
-                                    for (UserLeave h : v2) {
-                                        String status = h.getStatus();
-                                        String cssClass = "";
-                                        if ("rejected".equalsIgnoreCase(status))
-                                            cssClass = "status-rejected";
-                                        else if ("approved".equalsIgnoreCase(status))
-                                            cssClass = "status-approved";
-                                        else if ("pending".equalsIgnoreCase(status))
-                                            cssClass = "status-pending";
+                                for (Object item : combined) {
+                                    boolean isLeave = item instanceof UserLeave;
+                                    String status = isLeave ? ((UserLeave) item).getStatus() : ((UserPermission) item).getStatus();
+                                    String cssClass = "";
+                                    if ("rejected".equalsIgnoreCase(status)) {
+                                        cssClass = "status-rejected";
+                                    } else if ("approved".equalsIgnoreCase(status)) {
+                                        cssClass = "status-approved";
+                                    } else if ("pending".equalsIgnoreCase(status)) {
+                                        cssClass = "status-pending";
+                                    }
+
+                                    if (isLeave) {
+                                        UserLeave h = (UserLeave) item;
+                                        long diffMillis = h.getEndDate().getTime() - h.getStartDate().getTime();
+                                        long days = diffMillis / (1000 * 60 * 60 * 24);
                             %>
                             <tr>
                                 <td style="padding:10px;">
                                     <div style="display:flex; justify-content:space-between; align-items:center;">
                                         <!-- Left: Avatar + Name/Type -->
                                         <div style="display:flex; align-items:center; gap:10px;">
-                                            <!-- Avatar -->
-                                            <img src="<%= selectedAvatar%>" alt="User Avatar" style="padding-left:5%; width:50px; height:50px; border-radius:50%;"/>
+                                            <button class="icon-btn-avatar">
+                                                <span class="icon-home">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                                    <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+                                                    <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+                                                    </svg>
+                                                </span>
+                                            </button>
                                             <div style="display:flex; flex-direction:column;">
-                                                <span style="font-weight:normal; white-space:nowrap;">Holiday on <%= h.getStartDate()%> - <%= h.getEndDate()%></span>
-                                                <span style="font-size:0.8rem; color:lightslategray;"><%= h.getType()%></span>
+                                                <span style="font-weight:normal; white-space:nowrap;">Holidays (<%=days%> day(s))</span>
+                                                <span style="font-size:0.8rem; color:lightslategray;"><%=sdf.format(h.getStartDate())%></span>
                                             </div>
                                         </div>
+                                        <!-- Right: status + details -->
                                         <div style="display:flex; align-items:center; gap:10px;">
                                             <div style="border-left:1px solid #ccc; padding-left:10px; display:flex; align-items:center; min-width:80px; height:35px; justify-content:center;">
-                                                <span class="status <%= cssClass%>"><%= h.getStatus()%></span>
+                                                <span class="status <%=cssClass%>"><%=h.getStatus()%></span>
                                             </div>
-                                            <div style="border-left:1px solid #ccc; padding-left:10px; padding-right: 20px; display:flex;">
-                                                <!--MORE DETAILS BTN-->
-                                                <div style="position: relative; display: inline-block;">
-
-                                                    <button class="icon-btn-td" onclick="toggleDropdownDetails(this)" 
-
-                                                            data-holiday-id="<%= h.getHolidayId()%>"
-                                                            data-title="<%= h.getType()%>"
+                                            <div style="border-left:1px solid #ccc; padding-left:10px; padding-right:20px; display:flex;">
+                                                <div style="position:relative; display:inline-block;">
+                                                    <button class="icon-btn-td"
+                                                            data-holiday-id="<%=h.getHolidayId()%>"
+                                                            data-type="holidays"
+                                                            data-title="<%=h.getType()%>"
                                                             data-motif="<%=h.getMotif()%>"
-                                                            data-start="<%= h.getStartDate()%>"
-                                                            data-end="<%= h.getEndDate()%>"
-                                                            data-status="<%= h.getStatus()%>"
-                                                            >
-                                                        <span class="icon-home"> 
+                                                            data-start="<%=h.getStartDate()%>"
+                                                            data-end="<%=h.getEndDate()%>"
+                                                            data-status="<%=h.getStatus()%>">
+                                                        <span class="icon-home">
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="18" height="18">
                                                             <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
                                                             <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                                                            </svg> 
+                                                            </svg>
                                                         </span>
                                                     </button>
-                                                    <!--DROPDOWN-->   
                                                     <div class="dd">
                                                         <div class="dd-body">
                                                             <div class="title"></div>
                                                             <div class="label"></div>
                                                         </div>
                                                         <div class="dd-footer">
-                                                            <a href="#" class="view-all-link">View all</a>
+                                                            <button type="button" class="view-all-link" onclick="window.location.href = 'main_history.jsp?id=<%=h.getHolidayId()%>&type=leave'">
+                                                                View all
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <%
-                                    } // end for UserLeave
-                                }
-
-                                // Loop 2: UserPermission 
-                                if (v3 != null) {
-                                    for (UserPermission p : v3) {
-                                        String status = p.getStatus();
-                                        String cssClass = "";
-                                        if ("rejected".equalsIgnoreCase(status))
-                                            cssClass = "status-rejected";
-                                        else if ("approved".equalsIgnoreCase(status))
-                                            cssClass = "status-approved";
-                                        else if ("pending".equalsIgnoreCase(status))
-                                            cssClass = "status-pending";
+                            } else {
+                                UserPermission p = (UserPermission) item;
                             %>
                             <tr>
                                 <td style="padding:10px;">
                                     <div style="display:flex; justify-content:space-between; align-items:center;">
                                         <!-- Left: Avatar + Name/Type -->
                                         <div style="display:flex; align-items:center; gap:10px;">
-                                            <!-- Avatar -->
-                                            <img src="<%= selectedAvatar%>" alt="User Avatar" style="padding-left:5%; width:50px; height:50px; border-radius:50%;"/>
+                                            <button class="icon-btn-avatar">
+                                                <span class="icon-home">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                                    <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0 1 12 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 0 1 7.5 5.455V5.25Zm7.5 0v.09a49.488 49.488 0 0 0-6 0v-.09a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5Zm-3 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+                                                    <path d="M3 18.4v-2.796a4.3 4.3 0 0 0 .713.31A26.226 26.226 0 0 0 12 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 0 1-6.477-.427C4.047 21.128 3 19.852 3 18.4Z" />
+                                                    </svg>
+                                                </span>
+                                            </button>
                                             <div style="display:flex; flex-direction:column;">
-                                                <span style="font-weight:normal; white-space:nowrap;">Permission on <%= p.getStartDate()%> from <%= p.getStartTime()%> to <%= p.getEndTime()%></span>
-                                                <span style="font-size:0.8rem; color:lightslategray;">Permission</span>
+                                                <span style="font-weight:normal; white-space:nowrap;">Permission from <%=timeFormat.format(p.getStartTime())%> to <%=timeFormat.format(p.getEndTime())%></span>
+                                                <span style="font-size:0.8rem; color:lightslategray;"><%=sdf.format(p.getStartDate())%></span>
                                             </div>
                                         </div>
+                                        <!-- Right: status + details -->
                                         <div style="display:flex; align-items:center; gap:10px;">
                                             <div style="border-left:1px solid #ccc; padding-left:10px; display:flex; align-items:center; min-width:80px; height:35px; justify-content:center;">
-                                                <span class="status <%= cssClass%>"><%= p.getStatus()%></span>
+                                                <span class="status <%=cssClass%>"><%=p.getStatus()%></span>
                                             </div>
-                                            <div style="border-left:1px solid #ccc; padding-left:10px; padding-right: 20px; display:flex;">                                                
-                                                <!--MORE DETAILS BTN-->
-                                                <div style="position: relative; display: inline-block;">
+                                            <div style="border-left:1px solid #ccc; padding-left:10px; padding-right:20px; display:flex;">
+                                                <div style="position:relative; display:inline-block;">
                                                     <button class="icon-btn-td"
-
-                                                            data-userid="<%= p.getUserId()%>" 
+                                                            data-userid="<%=p.getUserId()%>"
+                                                            data-type="permission"
                                                             data-title="Permission"
-                                                            data-holidayid="<%= p.getPermissionId()%>" 
-                                                            data-username="<%= p.getFullName()%>"
-                                                            data-startdate="<%= p.getStartDate()%>"
-                                                            data-enddate="<%= p.getEndDate()%>"
-                                                            data-starttime="<%= p.getStartTime()%>"
-                                                            data-endtime="<%= p.getEndTime()%>"
-                                                            data-motif="<%= p.getMotif()%>"
-                                                            data-status="<%= p.getStatus()%>"
-                                                            >
-                                                        <span class="icon-home"> 
+                                                            data-holidayid="<%=p.getPermissionId()%>"
+                                                            data-username="<%=p.getFullName()%>"
+                                                            data-startdate="<%=p.getStartDate()%>"
+                                                            data-enddate="<%=p.getEndDate()%>"
+                                                            data-starttime="<%=p.getStartTime()%>"
+                                                            data-endtime="<%=p.getEndTime()%>"
+                                                            data-motif="<%=p.getMotif()%>"
+                                                            data-status="<%=p.getStatus()%>">
+                                                        <span class="icon-home">
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="18" height="18">
                                                             <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
                                                             <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                                                            </svg> 
+                                                            </svg>
                                                         </span>
                                                     </button>
-                                                    <!--DROPDOWN-->   
                                                     <div class="dd">
                                                         <div class="dd-body">
                                                             <div class="title">Permission</div>
-                                                            <div class="label"><%= p.getMotif()%></div>
+                                                            <div class="label"><%=p.getMotif()%></div>
                                                         </div>
                                                         <div class="dd-footer">
-                                                            <a href="#" class="view-all-link">View all</a>
+                                                            <button type="button" class="view-all-link" onclick="window.location.href = 'main_history.jsp?id=<%=p.getPermissionId()%>&type=permission'">
+                                                                View all
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -569,10 +614,10 @@
                                 </td>
                             </tr>
                             <%
-                                        } // end for UserPermission
-                                    }
+                                        } // end if/else isLeave
+                                    } // end for combined
                                 } // end else
-                            %>
+%>
                         </tbody>
                     </table>
                 </div>
@@ -693,6 +738,61 @@
                 });
                 calendar.render();
             });
+        </script>
+        <script>
+            function applyFilters() {
+                const selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
+                const selectedType = document.getElementById('typeFilter').value.toLowerCase();
+                const rows = document.querySelectorAll('#latest_b tbody tr');
+
+                rows.forEach(row => {
+                    if (row.querySelector('td[colspan]'))
+                        return;
+
+                    const statusSpan = row.querySelector('.status');
+                    if (!statusSpan)
+                        return;
+
+                    // --- Status ---
+                    const rowStatus = statusSpan.textContent.trim().toLowerCase();
+                    const statusMatch = selectedStatus === 'all' || rowStatus === selectedStatus;
+
+                    // --- Type ---
+                    const btn = row.querySelector('.icon-btn-td');
+                    const rowType = btn ? btn.dataset.type : '';
+                    const typeMatch = selectedType === 'all' || rowType === selectedType;
+
+                    row.style.display = (statusMatch && typeMatch) ? '' : 'none';
+                });
+
+                showEmptyMessageIfNeeded();
+            }
+
+            function showEmptyMessageIfNeeded() {
+                const tbody = document.querySelector('#latest_b tbody');
+                const visibleRows = Array.from(tbody.querySelectorAll('tr')).filter(row => {
+                    return !row.querySelector('td[colspan]') && row.style.display !== 'none';
+                });
+
+                // Supprimer ancien message de filtre vide
+                const existing = document.getElementById('filter-empty-msg');
+                if (existing)
+                    existing.remove();
+
+                if (visibleRows.length === 0) {
+                    const emptyRow = document.createElement('tr');
+                    emptyRow.id = 'filter-empty-msg';
+                    emptyRow.innerHTML = `
+            <td colspan="4" style="padding:30px; background:white; text-align:center;
+                border-bottom-left-radius:16px; border-bottom-right-radius:16px; color:red;">
+                No results for this filter.
+            </td>`;
+                    tbody.appendChild(emptyRow);
+                }
+            }
+
+            document.getElementById('statusFilter').addEventListener('change', applyFilters);
+            document.getElementById('typeFilter').addEventListener('change', applyFilters);
         </script>
         <script>
             function toggleDropdownNotifs() {

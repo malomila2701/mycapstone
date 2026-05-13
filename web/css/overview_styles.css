@@ -5,8 +5,9 @@
 }
 
 body{
-    font-family:Arial, sans-serif;
-    font-size: 0.9rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+             "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1rem;
     background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
     color: #666;
     height: 100%;
@@ -14,8 +15,9 @@ body{
     overflow-x: hidden;
 }
 
-.header {
+.navbar {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center; /* keeps items vertically centered */
     margin-top: 0;
@@ -27,8 +29,8 @@ body{
 
     height: 5%;
 }
-.header-left {
-    font-family: Segoe, sans-serif;
+.navbar-left {
+    /**font-family: Segoe, sans-serif;*/
     color: #34495e;
     font-weight: bold;
     white-space: nowrap;
@@ -210,8 +212,16 @@ Main SECTION
     margin: 0;
     background: #ffffff;
     border-collapse: collapse;
+    
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
 }
 .reqtable td:hover {
+    background: whitesmoke;
+}
+.reqtable tr:last-child td:hover {
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
     background: whitesmoke;
 }
 #pending_banner, #latest_banner {
@@ -220,26 +230,27 @@ Main SECTION
     background-color: white;
 }
 #pending_banner .header, #latest_banner .header{
+    display:flex;
+    flex-direction: row;
     align-items: center;
-    padding: 20px;
+    padding: 15px;
     outline: none;
     font-size: 1.1rem;
 
-    width:100%;
 }
 
 /* Tableau des congés en attente */
 #pending_banner .header-left{
-    width: 80%;
     padding-left: 2%;
     display:flex;
+    flex:1;
     align-items: center;
     gap: 8px;
 }
 #pending_banner .header-right{
-    width: 20%;
-    align-content: center;
-    margin-right: 3%;
+    display:flex;
+    flex-shrink:0;
+    align-items: center;
 }
 #pending_t td {
     display:flex;
@@ -248,16 +259,28 @@ Main SECTION
 
 /* Tableau des derniers congés */
 #latest_banner .header-left{
-    width: 80%;
-    padding-left: 2%;
     display:flex;
+    flex:1;
+    padding-left: 2%;
     align-items: center;
     gap: 8px;
 }
 #latest_banner .header-right{
-    width: 20%;
-    margin-right:0;
-    align-content: center;
+    display:flex;
+    flex-shrink: 0;
+    gap:10px;
+}
+#typeFilter, #statusFilter {
+    position :relative;
+    padding: 5px;
+    background: whitesmoke;
+    color: #333;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    cursor:pointer;
+}
+#statusFilter:hover, #typeFilter:hover {
+    background: white;
 }
 
 /**
@@ -273,6 +296,22 @@ Main SECTION
     border-radius: 16px;
     padding: 8px;
 }
+.icon-btn-avatar {
+    position:relative;
+    margin-left: 15px;
+    
+    width: 50px;
+    height:50px;
+    padding: 8px;
+    
+    background: #ccc;
+    border: 1px transparent;
+    border-radius: 50%;
+}
+.icon-btn-avatar svg {
+    width: 70%;
+    height: 70%;
+}
 .icon-btn-td {
     display: inline-flex;
     align-items: center;
@@ -287,7 +326,7 @@ Main SECTION
 }
 .icon-btn-header {
     display: flex;
-    margin-right: 15px;
+    margin-right: 5px;
     border: none;
     cursor: pointer;
     border-radius: 16px;
