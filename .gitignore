@@ -1,0 +1,78 @@
+# ========================
+# NETBEANS
+# ========================
+nbproject/private/
+nbproject/build-impl.xml~
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# ========================
+# BUILD / COMPILATION
+# ========================
+build/
+target/
+
+web/META-INF/context.xml
+build/web/META-INF/context.xml
+
+# ========================
+# JAVA
+# ========================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+hs_err_pid*
+
+# ========================
+# MAVEN
+# ========================
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+
+# ========================
+# LOGS
+# ========================
+*.log
+logs/
+
+# ========================
+# OS
+# ========================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ========================
+# IDE DIVERS
+# ========================
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# ========================
+# CONFIG SENSIBLE
+# ========================
+*.env
+.env
+config.properties
+db.properties
+secret.properties.DS_Store
