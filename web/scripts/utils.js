@@ -30,6 +30,10 @@ function loadPage(page, element) {
 
 // create it if it doesn't exist
 function goToHistory(id, type) {
+    
+    //Highlight sidebar tab
+    sessionStorage.setItem('activeTab', 'historyTab');
+
     var overlay = document.getElementById('page-transition');
     if (!overlay) {
         overlay = document.createElement('div');
@@ -93,8 +97,6 @@ dropdownBtn.addEventListener("click", function () {
 // Remove highlight from element when clicking ANY other tab
 tabs.forEach(tab => {
     tab.addEventListener("click", function () {
-
-
         // reset dropdown completely
         dropdownContent.classList.remove("show");
         dropdownContent.style.display = "none";

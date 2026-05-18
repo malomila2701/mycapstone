@@ -39,7 +39,7 @@ body{
 
 .dashboard {
     display: grid;
-    grid-template-columns: 2.5fr 1.2fr; /* middle wider, right narrower */
+    grid-template-columns: 2.5fr 1.25fr; /* middle wider, right narrower */
     gap: 25px;
     align-items: start; /* prevents equal height stretching */
 
@@ -51,7 +51,7 @@ body{
     margin-left: 0px;
     grid-column: 1 / -1; /* spans all columns */
     border-radius: 14px;
-    background: whitesmoke;
+    background:white;
 }
 
 .cards-section {
@@ -85,34 +85,48 @@ body{
 }
 #calendar{
     visibility: hidden;
+    background:white;
     overflow:hidden;
-    height: auto;
+    padding: 15px;
+    height: 500px;
     min-height: 420px;
 }
-.fc-toolbar {
-    padding: 5px;
+.fc-header-toolbar {
+    margin-bottom: 0.5em !important; /* default is 1.5em */
+    padding: 4px 0 !important;
 }
-.fc-toolbar-title {
+.fc .fc-toolbar-title {
     font-size: 1.1rem;
     font-weight: bold;
     color: #555;
 }
-.fc-button {
+.fc .fc-button {
     background-color: white !important;
     border: 1px solid #ccc !important;
-    color: #333 !important;
     border-radius: 8px !important;
+    
+    padding: 4px 8px !important;
+    font-size: 0.8em !important;
+    color: #333 !important;
     transition: all 0.2s ease;
 }
 .fc-button:hover {
     background-color: #0078d7 !important;
     color: white !important;
 }
-.fc-col-header {
+.fc .fc-col-header-cell {
+    padding: 8px 0 !important;
+    background: #eef;
     color: #555;                 /* text color */
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.85rem;
+}
+.fc .fc-col-header-cell:first-child {
+    border-top-left-radius: 12px;
+}
+.fc .fc-col-header-cell:last-child {
+    border-top-right-radius: 12px;
 }
 /* remove outer borders */
 .fc-theme-standard .fc-scrollgrid,
@@ -123,11 +137,8 @@ body{
 .fc-theme-standard .fc-scrollgrid {
     border: none;
 }
-.fc-daygrid-day.fc-other-month {
-    display: none;
-}
 .fc-daygrid-day{
-    padding: 1px 5px;
+    padding: 1px 3px;
 }
 .fc-daygrid-day-number {
     font-size: 0.8rem;

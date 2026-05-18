@@ -12,7 +12,6 @@
         <!-- Responsiveness -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/main_user_styles.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.1.0/css/all.min.css">
 
         <title>Main Page</title>
     </head>
@@ -98,27 +97,37 @@
 
         <script src="scripts/utils.js"></script>
         <script>
-                    const content = document.querySelector(".content");
-                    document.querySelectorAll(".topnav a").forEach(link => {
-                        link.addEventListener("click", function (e) {
-                            e.preventDefault();
+                    var activeTab = sessionStorage.getItem('activeTab');
+                    if (activeTab) {
+                        tabs.forEach(t => t.classList.remove("active"));
+                        var tab = document.getElementById(activeTab);
+                        if (tab)
+                            tab.classList.add("active");
+                        sessionStorage.removeItem('activeTab');
+                    }
+        </script>
+        <script>
+            const content = document.querySelector(".content");
+            document.querySelectorAll(".topnav a").forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
 
-                            const url = this.getAttribute("href");
-                            if (!url || url === "#")
-                                return;
+                    const url = this.getAttribute("href");
+                    if (!url || url === "#")
+                        return;
 
-                            loader.style.display = "block";
-                            iframe.classList.remove("loaded");
-                            iframe.style.opacity = 0;
+                    loader.style.display = "block";
+                    iframe.classList.remove("loaded");
+                    iframe.style.opacity = 0;
 
-                            iframe.src = url;
-                        });
-                    });
+                    iframe.src = url;
+                });
+            });
 
-                    iframe.onload = function () {
-                        loader.style.display = "none";
-                        iframe.classList.add("visible");
-                    };
+            iframe.onload = function () {
+                loader.style.display = "none";
+                iframe.classList.add("visible");
+            };
         </script>
     </body>
 </html>

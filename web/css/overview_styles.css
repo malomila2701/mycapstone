@@ -49,105 +49,230 @@ body{
 
 .navbar {
     display: flex;
-    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
-    align-items: center; /* keeps items vertically centered */
-    margin-top: 0;
-    padding-top: 5px;
-    margin-bottom:0;
-    margin-left: 0;
-    width: 100%; /* use full width of parent */
 
+    width: 100%;
+    min-height: 72px;
 
     height: 5%;
+    box-sizing: border-box;
+
+    gap: 20px;
 }
+
 .navbar-left {
-    /**font-family: Segoe, sans-serif;*/
-    color: #34495e;
-    font-weight: bold;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    flex: 1;
+    min-width: 0;
 }
+
 .search-box {
-    width: 250px;
-    margin-right: 200px;
+    position: relative;
+
+    width: 100%;
+    max-width: 420px;
+    min-width: 180px;
 }
 .search-box input {
     width: 100%;
-    color: brown;
-    padding: 6px 9px;
-    border: 2px solid #ccc;
-    border-radius: 16px;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.3s;
+
+    padding: 12px 16px;
+
+    border: 1px solid #d8e1ec;
+    border-radius: 14px;
+
+    background: white;
+
+    font-size: 14px;
+    color: #1e293b;
+
+    transition: all .2s ease;
+    box-sizing: border-box;
+}
+.search-box input::placeholder {
+    color: #94a3b8;
 }
 .search-box input:focus {
-    border-color: #0078d7; /* highlight color when focused */
+    outline: none;
+
+    border-color: #0078d7;
+
+    box-shadow: 0 0 0 4px rgba(0,120,215,.1);
 }
-.header_btn_section{
+
+.navbar-right {
     display: flex;
-    position: relative;
+    align-items: center;
+
+    flex-shrink: 0;
+    margin-right: 1%;
+}
+
+.header_btn_section {
+    display: flex;
     align-items: center;
     gap: 10px;
+
+    position: relative;
 }
+
 .header_icon {
     position: relative;
+
     display: inline-flex;
-    background-color: white;
-    color: black;
     align-items: center;
-    padding: 8px;
-    border: 1px solid transparent;
-    border-radius: 16px;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+
+    background: white;
+    color: #475569;
+
     cursor: pointer;
 
-    transition: transform 0.2s ease;
+    transition: all .2s ease;
 }
+
+.header_icon svg {
+    width: 18px;
+    height: 18px;
+}
+
 .header_icon:hover {
-    transform: scale(1.1);
+    background: #f8fbff;
+    border-color: #0078d7;
+    color: #0078d7;
+
+    transform: translateY(-1px);
 }
+
 #header_icon_logout {
-    border: 1px solid #ccc
+    width: auto;
+
+    padding: 0 16px;
+
+    gap: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #334155;
 }
 #header_icon_logout:hover {
-    transform:none;
-    border:1px solid #0078d7;
+    background: #fff5f5;
+    border-color: #ffb4b4;
+    color: #dc2626;
+
+    transform: none;
 }
+
+.label {
+    white-space: nowrap;
+}
+
 .header_icon .notification-dot {
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 10px;
-    height: 10px;
-    background-color: red;
+
+    top: 9px;
+    right: 9px;
+
+    width: 8px;
+    height: 8px;
+
+    background: #ff4d4f;
+
     border-radius: 50%;
-    display: none; /* caché par défaut */
+    border: 2px solid white;
+
+    display: block;
 }
+
 .dropdown {
-    display: none; /* caché par défaut */
+    display: none;
+
     position: absolute;
+
+    top: calc(100% + 12px);
     right: 0;
-    top: 100%; /* juste sous le bouton */
-    margin-top: 5px;
-    background: #fff;
-    border: 1px solid #ccc;
-    width: 250px;
-    max-height: 200px;
+
+    width: 280px;
+    max-height: 260px;
+
     overflow-y: auto;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    z-index: 100;
+
+    margin: 0;
     padding: 0;
+
+    list-style: none;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    box-shadow: 0 12px 32px rgba(15,23,42,.12);
+
+    z-index: 999;
 }
 
 .dropdown li {
-    list-style: none;
-    padding: 8px 12px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-}
+    padding: 14px 16px;
 
+    border-bottom: 1px solid #f1f5f9;
+
+    font-size: 14px;
+    color: #334155;
+
+    transition: background .15s ease;
+}
+.dropdown li:hover {
+    background: #f8fafc;
+}
 .dropdown li:last-child {
     border-bottom: none;
+}
+
+.profile_avatar {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: linear-gradient(135deg, #0078d7, #00a6ff);
+
+    border: 3px solid rgba(0,120,215,.15);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 0 4px rgba(0,120,215,.08),
+        0 6px 18px rgba(0,120,215,.25);
+
+    transition: all .2s ease;
+}
+
+.profile_avatar:hover {
+    transform: translateY(-1px) scale(1.04);
+
+    box-shadow:
+        0 0 0 5px rgba(0,120,215,.12),
+        0 10px 24px rgba(0,120,215,.35);
 }
 
 
@@ -163,7 +288,6 @@ Main SECTION
     gap: 25px;
     align-items: start; /* prevents equal height stretching */
 
-    margin-top: 1%;
     height:100%;
 }
 
@@ -503,35 +627,39 @@ Side SECTION
 *CALENDAR
 */
 .loader {
-  width: 35px;
-  height: 10px;
-  color: #766DF4;
-  background:
-    radial-gradient(farthest-side,currentColor 90%,#0000) left  /10px 10px,
-    radial-gradient(farthest-side,currentColor 90%,#0000) center/10px 10px,
-    radial-gradient(farthest-side,currentColor 90%,#0000) right /10px 10px,
-    linear-gradient(currentColor 0 0) center/100% 4px; 
-  background-repeat: no-repeat;
-  position: relative;
-  animation: s6 2s infinite linear;
+    width: 35px;
+    height: 10px;
+    color: #766DF4;
+    background:
+        radial-gradient(farthest-side,currentColor 90%,#0000) left  /10px 10px,
+        radial-gradient(farthest-side,currentColor 90%,#0000) center/10px 10px,
+        radial-gradient(farthest-side,currentColor 90%,#0000) right /10px 10px,
+        linear-gradient(currentColor 0 0) center/100% 4px;
+    background-repeat: no-repeat;
+    position: relative;
+    animation: s6 2s infinite linear;
 }
 .loader:before,
 .loader:after {
-  content: "";
-  position: absolute;
-  inset:0;
-  background:inherit;
-  animation:inherit;
-  --s:calc(50% - 5px);
-  animation-direction: reverse;
+    content: "";
+    position: absolute;
+    inset:0;
+    background:inherit;
+    animation:inherit;
+    --s:calc(50% - 5px);
+    animation-direction: reverse;
 }
 .loader:after {
-  --s:calc(5px - 50%);
+    --s:calc(5px - 50%);
 }
 
 @keyframes s6 {
-  0%   {transform: translate(var(--s,0)) rotate(0)}
-  100% {transform: translate(var(--s,0)) rotate(1turn)}
+    0%   {
+        transform: translate(var(--s,0)) rotate(0)
+    }
+    100% {
+        transform: translate(var(--s,0)) rotate(1turn)
+    }
 }
 .chart-loader-wrapper {
     position: absolute;

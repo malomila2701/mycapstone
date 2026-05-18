@@ -1,5 +1,13 @@
 * {
     font-family: Arial, sans-serif !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+*:focus {
+    border:none;
+    outline: none;
+    box-shadow: none;
 }
 
 .modal {

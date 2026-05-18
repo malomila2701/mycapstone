@@ -50,7 +50,6 @@
 
         <div class="dashboard">
             <main class="cards-section">
-
                 <div class="banner">
                     <div style="position: relative; min-height: 150px;">
                         <div id="calendarLoader" class="chart-loader-wrapper">
@@ -113,7 +112,11 @@
                     initialView: 'dayGridMonth',
                     firstDay: 1,
                     weekends: false,
-                    showNonCurrentDates: false,
+                    headerToolbar: {
+                        start: 'prev',
+                        center: 'title',
+                        end: 'next'
+                    },
                     eventSources: [
 
                         // All holidays 
