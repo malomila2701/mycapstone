@@ -21,7 +21,6 @@ build/web/META-INF/context.xml
 # ========================
 *.class
 *.jar
-*.war
 *.ear
 *.nar
 *.zip
