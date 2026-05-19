@@ -95,17 +95,28 @@
             </main>
         </div>
 
-        <script src="scripts/utils.js"></script>
         <script>
-                    var activeTab = sessionStorage.getItem('activeTab');
-                    if (activeTab) {
-                        tabs.forEach(t => t.classList.remove("active"));
-                        var tab = document.getElementById(activeTab);
-                        if (tab)
-                            tab.classList.add("active");
-                        sessionStorage.removeItem('activeTab');
-                    }
+            function setActiveTab(tabName) {
+                // Remove active from all tabs
+                document.querySelectorAll('.tab').forEach(li => {
+                    li.classList.remove('active');
+                });
+
+                // Add active to the matching one
+                const target = document.querySelector(`.sidebar li[data-tab="${tabName}"]`);
+                if (target)
+                    target.classList.add('active');
+            }
         </script>
+        <script>
+            function setActiveTab(tabId) {
+                tabs.forEach(t => t.classList.remove("active"));
+                var tab = document.getElementById(tabId);
+                if (tab)
+                    tab.classList.add("active");
+            }
+        </script>
+        <script src="scripts/utils.js"></script>
         <script>
             const content = document.querySelector(".content");
             document.querySelectorAll(".topnav a").forEach(link => {

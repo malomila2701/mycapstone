@@ -247,7 +247,7 @@
                 if (!container) {
                     container = document.createElement('div');
                     container.id = 'pagination-container';
-                    document.getElementById('permissiontable').insertAdjacentElement('afterend', container);
+                    document.getElementById('alltable').insertAdjacentElement('afterend', container);
                 }
 
                 container.innerHTML = '';
@@ -298,7 +298,7 @@
                 currentPage = 1;
                 const selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
                 const selectedDate = document.getElementById('dateFilter').value.toLowerCase();
-                const rows = document.querySelectorAll('#permissiontable tbody tr');
+                const rows = document.querySelectorAll('#alltable tbody tr');
 
                 // --- Date range boundaries ---
                 const now = new Date();

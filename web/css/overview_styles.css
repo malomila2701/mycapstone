@@ -396,7 +396,7 @@ Main SECTION
     display:flex;
     flex-direction: row;
     align-items: center;
-    padding: 15px;
+    padding: 12px;
     outline: none;
     font-size: 1.1rem;
 
@@ -435,10 +435,10 @@ Main SECTION
 }
 #typeFilter, #statusFilter {
     position :relative;
-    padding: 5px;
+    padding: 8px;
     background: whitesmoke;
     color: #333;
-    border-radius: 8px;
+    border-radius: 7px;
     border: 1px solid #ccc;
     cursor:pointer;
 }
@@ -470,6 +470,14 @@ Main SECTION
     background: whitesmoke;
     border: 1px solid #ccc;
     border-radius: 50%;
+}
+.icon-btn-avatar.holiday {
+    background:#f8fbff; 
+    border: 1px solid #dbeafe;
+}
+.icon-btn-avatar.permission {
+    background:#faeeda;
+    border: 1px solid #e6d7c3;
 }
 .icon-btn-avatar svg {
     width: 70%;
@@ -504,17 +512,30 @@ Main SECTION
 
 /**Add Request Button*/
 #new-leave-btn {
-    width: 120px;
-    border-radius: 10px;
-    border: 1px solid #444;
-    background: #34495e;
-    transition: background 0.2s ease;
     display: flex;
+    width: 120px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0078d7, #00a6ff);
+    border: 3px solid rgba(0,120,215,.15);
+    box-shadow:
+        0 0 0 4px rgba(0,120,215,.08),
+        0 6px 18px rgba(0,120,215,.25);
+
+    transition: all .2s ease;
+    
     gap: 8px;
     padding: 8px 6px;
+}
+#new-leave-btn:hover {
+    transform: translateY(-1px) scale(1.04);
+
+    box-shadow:
+        0 0 0 5px rgba(0,120,215,.12),
+        0 10px 24px rgba(0,120,215,.35);
 }
 #new-leave-btn svg {
     flex-shrink: 0;
@@ -540,19 +561,26 @@ Main SECTION
 }
 
 .status {
-    font-weight: 400;
     display: inline-flex;
+    padding: 3px 10px; 
+    border-radius: 99px;
     align-items: center;
     gap: 5px;
+    
+    font-weight: 400;
+    font-size: 0.9rem;
 }
 .status-rejected {
-    color: red;
+    background: #f8d7da;
+    color: #721c24;
 }
 .status-approved {
-    color: green;
+    background: #d4edda;
+    color: #155724;
 }
 .status-pending {
-    color: orange;
+    background: #fef3cd; 
+    color: #7d5a00;
 }
 
 .bar {

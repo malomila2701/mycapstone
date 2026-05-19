@@ -7,6 +7,13 @@ const ovrview_Btn1 = document.getElementById("askLeave_btn");
 const ovrview_Btn2 = document.getElementById("askPermission_btn");
 
 
+function setActiveTab(tabId) {
+    tabs.forEach(t => t.classList.remove("active"));
+    var tab = document.getElementById(tabId);
+    if (tab)
+        tab.classList.add("active");
+}
+
 //Load page in iFrame
 function loadPage(page, element) {
     const iframe = document.getElementById("contentFrame");
@@ -30,9 +37,13 @@ function loadPage(page, element) {
 
 // create it if it doesn't exist
 function goToHistory(id, type) {
-    
-    //Highlight sidebar tab
-    sessionStorage.setItem('activeTab', 'historyTab');
+
+    // Navigate iframe
+    parent.document.getElementById('contentFrame').src =
+            'main_history.jsp?id=' + id + '&type=' + type;
+
+    // Highlight tab
+    parent.setActiveTab('historyTab');
 
     var overlay = document.getElementById('page-transition');
     if (!overlay) {
