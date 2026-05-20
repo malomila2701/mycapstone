@@ -4,57 +4,33 @@
  */
 package javafiles;
 
-/**
- *
- * @author HP
- */
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.nio.file.*;
+import java.sql.*;
 
 public class InsertAvatar {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        // Change these for each user
+        int userId = 101;
+        String imagePath = "C:\\Users\\HP\\Documents\\personal\\it_admin_avatar.png";
+        String mimeType = "image/png";
 
-        try {
+        byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
 
-            Connection con = DBConnection.connect();
-
-            // USER 1
-            byte[] img1 = Files.readAllBytes(
-                    Paths.get("C:/images/user1.png")
-            );
-
-            PreparedStatement pst1 = con.prepareStatement(
+        try (java.sql.Connection con = DriverManager.getConnection(
+                "jdbc:mysql://capstone-prototype.i.aivencloud.com:13324/defaultdb?ssl-mode=REQUIRED",
+                "avnadmin",
+                ""
+        )) {
+            PreparedStatement ps = con.prepareStatement(
                     "UPDATE users SET avatar = ?, avatar_type = ? WHERE user_id = ?"
             );
+            ps.setBytes(1, imageBytes);
+            ps.setString(2, mimeType);
+            ps.setInt(3, userId);
+            ps.executeUpdate();
 
-            pst1.setBytes(1, img1);
-            pst1.setString(2, "image/png");
-            pst1.setInt(3, 1);
-
-            pst1.executeUpdate();
-
-            // USER 2
-            byte[] img2 = Files.readAllBytes(
-                    Paths.get("C:/images/user2.jpg")
-            );
-
-            PreparedStatement pst2 = con.prepareStatement(
-                    "UPDATE users SET avatar = ?, avatar_type = ? WHERE user_id = ?"
-            );
-
-            pst2.setBytes(1, img2);
-            pst2.setString(2, "image/jpeg");
-            pst2.setInt(3, 2);
-
-            pst2.executeUpdate();
-
-            System.out.println("Images insérées.");
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Avatar inserted for user " + userId);
         }
     }
 }

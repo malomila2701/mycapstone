@@ -21,7 +21,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>User History Page</title>
 
-        <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
 
         <link rel="stylesheet" 
@@ -74,7 +73,8 @@
         <%
             String selectedAvatar = "images/avatar1.jpg";
 
-            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH);
+            SimpleDateFormat outFmt = new SimpleDateFormat("MMM d", Locale.ENGLISH);
+            SimpleDateFormat yearFmt = new SimpleDateFormat("yyyy");
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         %> 
     </head>
@@ -84,12 +84,12 @@
         <!-- Leave type modal -->
         <div id="leaveModal" class="modal">
             <div class="modal-content">
-                    <button class="modal-close-btn" onclick="document.getElementById('leaveModal').style.display = 'none'">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                        </svg>
-                    </button>
-                <main class="details-section">
+                <button class="modal-close-btn" onclick="document.getElementById('leaveModal').style.display = 'none'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                    </svg>
+                </button>
+                <div class="details-section">
                     <span style="display:flex; flex-direction:row;">
                         <img src="<%= selectedAvatar%>" alt="User Avatar" class="avatar" style="margin-left: 15px;"/>
                         <span style="display: flex; flex-direction: column;">
@@ -159,7 +159,7 @@
                     </form>
 
                     <div class="modal-actions" id="actionsDiv"></div>
-                </main>
+                </div>
 
                 <aside class="modal-side-section">
                     <div id="calendar">
@@ -171,35 +171,52 @@
 
 
         <div class="navbar">
-            <div class="header-left">
+            <div class="navbar-left">
                 <div class="search-box">
-                    <input type="text" placeholder="Search">
+                    <input type="text" placeholder="Search users, reports, settings...">
                 </div>
             </div>
-            <div class="header-right">
-                <div class="header_btn">
-                    <button class="header_icon" id="notificationBtn" onclick="toggleDropdownNotifs()">
-                        <span class="icon-home" style="width: 20px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                            <path d="M4.214 3.227a.75.75 0 0 0-1.156-.955 8.97 8.97 0 0 0-1.856 3.825.75.75 0 0 0 1.466.316 7.47 7.47 0 0 1 1.546-3.186ZM16.942 2.272a.75.75 0 0 0-1.157.955 7.47 7.47 0 0 1 1.547 3.186.75.75 0 0 0 1.466-.316 8.971 8.971 0 0 0-1.856-3.825Z" />
-                            <path fill-rule="evenodd" d="M10 2a6 6 0 0 0-6 6c0 1.887-.454 3.665-1.257 5.234a.75.75 0 0 0 .515 1.076 32.91 32.91 0 0 0 3.256.508 3.5 3.5 0 0 0 6.972 0 32.903 32.903 0 0 0 3.256-.508.75.75 0 0 0 .515-1.076A11.448 11.448 0 0 1 16 8a6 6 0 0 0-6-6Zm0 14.5a2 2 0 0 1-1.95-1.557 33.54 33.54 0 0 0 3.9 0A2 2 0 0 1 10 16.5Z" clip-rule="evenodd" />
-                            </svg>
-                            <span class="notification-dot"></span>
-                        </span>
-                    </button>
-                    <ul id="notificationList" class="dropdown"></ul>
 
-                    <button class="header_icon">
-                        <span class="icon-home" style="width: 20px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 0 1 8.82 1h2.36a1 1 0 0 1 .98.804l.331 1.652a6.993 6.993 0 0 1 1.929 1.115l1.598-.54a1 1 0 0 1 1.186.447l1.18 2.044a1 1 0 0 1-.205 1.251l-1.267 1.113a7.047 7.047 0 0 1 0 2.228l1.267 1.113a1 1 0 0 1 .206 1.25l-1.18 2.045a1 1 0 0 1-1.187.447l-1.598-.54a6.993 6.993 0 0 1-1.929 1.115l-.33 1.652a1 1 0 0 1-.98.804H8.82a1 1 0 0 1-.98-.804l-.331-1.652a6.993 6.993 0 0 1-1.929-1.115l-1.598.54a1 1 0 0 1-1.186-.447l-1.18-2.044a1 1 0 0 1 .205-1.251l1.267-1.114a7.05 7.05 0 0 1 0-2.227L1.821 7.773a1 1 0 0 1-.206-1.25l1.18-2.045a1 1 0 0 1 1.187-.447l1.598.54A6.992 6.992 0 0 1 7.51 3.456l.33-1.652ZM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />
-                            </svg></span>
-                    </button>
-                    <button class="header_icon" style="margin-right: 5px; border: 2px solid #ccc">
-                        <span class="label" style="margin-left: 7px; margin-right: 5px;">Deconnexion</span>
+            <div class="navbar-right">
+                <div class="header_btn_section">
+                    <button class="header_icon" id="notificationBtn" onclick="toggleDropdownNotifs()">
                         <span class="icon-home">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 2a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5A.75.75 0 0 1 10 2ZM5.404 4.343a.75.75 0 0 1 0 1.06 6.5 6.5 0 1 0 9.192 0 .75.75 0 1 1 1.06-1.06 8 8 0 1 1-11.313 0 .75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
-                            </svg></span>
+                            <path d="M4.214 3.227a.75.75 0 0 0-1.156-.955 8.97 8.97 0 0 0-1.856 3.825.75.75 0 0 0 1.466.316 7.47 7.47 0 0 1 1.546-3.186ZM16.942 2.272a.75.75 0 0 0-1.157.955 7.47 7.47 0 0 1 1.547 3.186.75.75 0 0 0 1.466-.316 8.971 8.971 0 0 0-1.856-3.825Z"/>
+                            <path fill-rule="evenodd" d="M10 2a6 6 0 0 0-6 6c0 1.887-.454 3.665-1.257 5.234a.75.75 0 0 0 .515 1.076 32.91 32.91 0 0 0 3.256.508 3.5 3.5 0 0 0 6.972 0 32.903 32.903 0 0 0 3.256-.508.75.75 0 0 0 .515-1.076A11.448 11.448 0 0 1 16 8a6 6 0 0 0-6-6Zm0 14.5a2 2 0 0 1-1.95-1.557 33.54 33.54 0 0 0 3.9 0A2 2 0 0 1 10 16.5Z" clip-rule="evenodd"/>
+                            </svg>
+
+                            <span class="notification-dot"></span>
+                        </span>
+
                     </button>
+
+                    <ul id="notificationList" class="dropdown">
+                        <li>No new notifications</li>
+                    </ul>
+
+                    <button class="header_icon">
+                        <span class="icon-home">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 0 1 8.82 1h2.36a1 1 0 0 1 .98.804l.331 1.652a6.993 6.993 0 0 1 1.929 1.115l1.598-.54a1 1 0 0 1 1.186.447l1.18 2.044a1 1 0 0 1-.205 1.251l-1.267 1.113a7.047 7.047 0 0 1 0 2.228l1.267 1.113a1 1 0 0 1 .206 1.25l-1.18 2.045a1 1 0 0 1-1.187.447l-1.598-.54a6.993 6.993 0 0 1-1.929 1.115l-.33 1.652a1 1 0 0 1-.98.804H8.82a1 1 0 0 1-.98-.804l-.331-1.652a6.993 6.993 0 0 1-1.929-1.115l-1.598.54a1 1 0 0 1-1.186-.447l-1.18-2.044a1 1 0 0 1 .205-1.251l1.267-1.114a7.05 7.05 0 0 1 0-2.227L1.821 7.773a1 1 0 0 1-.206-1.25l1.18-2.045a1 1 0 0 1 1.187-.447l1.598.54A6.992 6.992 0 0 1 7.51 3.456l.33-1.652ZM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd"/>
+                            </svg>
+                        </span>
+                    </button>
+                    <button class="header_icon" id="header_icon_logout">
+                        <span class="label">
+                            Log out
+                        </span>
+                        <span class="icon-home">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 2a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5A.75.75 0 0 1 10 2ZM5.404 4.343a.75.75 0 0 1 0 1.06 6.5 6.5 0 1 0 9.192 0 .75.75 0 1 1 1.06-1.06 8 8 0 1 1-11.313 0 .75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+                            </svg>
+                        </span>
+                    </button>
+
+                    <div class="profile_avatar">
+                        <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%=userId%>"
+                             style="width:40px; height:40px; border-radius:50%; background: #eef;" title="" alt="" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -209,22 +226,12 @@
         -->
 
         <div class="dashboard">
-            <div class ="charts_section">
+            <div class="charts_section">
                 <main class="cards-section">
                     <div class="banner" id="charts_banner">
                         <div class="header">
                             <div class="header-left"> 
-                                <button class="icon-btn-header"> <span class="icon-home">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                        <path fill-rule="evenodd" d="M4.25 2A2.25 2.25 0 0 0 2 4.25v11.5A2.25 2.25 0 0 0 4.25 18h11.5A2.25 2.25 0 0 0 18 15.75V4.25A2.25 2.25 0 0 0 15.75 2H4.25ZM6 13.25V3.5h8v9.75a.75.75 0 0 1-1.064.681L10 12.576l-2.936 1.355A.75.75 0 0 1 6 13.25Z" clip-rule="evenodd" />
-                                        </svg>
-                                    </span> </button>
-
-                                <span style="
-                                      font-weight: bold;
-                                      font-size: 1.1rem;">
-
-                                    Requests Collection</span>
+                                Requests Collection
                             </div> 
                         </div>
                         <!-- Canvas -->
@@ -236,7 +243,6 @@
                         </div>
 
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
                         <script>
                         console.time('fetch');
                         async function fetchLeavesData() {
@@ -335,11 +341,11 @@
                             </svg>
                         </span>
                         <h2>April</h2>
-                        <p>Hotest Month</p>
+                        <p>Hottest Month</p>
                     </div>
 
                     <div class="card">
-                        <span class="card_change up">+12%</span>
+                        <span class="card_change up">↑ 12%</span>
                         <h2>24</h2>
                         <p>Leave Balance</p>
                     </div>
@@ -351,7 +357,7 @@
                     </div>
 
                     <div class="card">
-                        <span class="card_change up">+12%</span>
+                        <span class="card_change down">↓ 4%</span>
                         <h2>4</h2>
                         <p>Requests this year</p>
                     </div>
@@ -362,26 +368,13 @@
             <div id="latest_banner">
                 <div class="header">
                     <div class="header-left"> 
-                        <button class="icon-btn-header">
-                            <span class="icon-home">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                <path d="M5.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H6a.75.75 0 0 1-.75-.75V12ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM7.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H8a.75.75 0 0 1-.75-.75V12ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V10ZM10 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H10ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H12ZM11.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H12a.75.75 0 0 1-.75-.75V12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 10a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V10ZM14 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H14Z" />
-                                <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                                </svg>
-                            </span>
-                        </button>
-
-                        <span style="
-                              font-weight: bold;
-                              font-size: 1.1rem;">
-
-                            Latest Requests</span>
+                        Latest Requests
                     </div>
                     <div class="header-right">
                         <div class="search-box">
                             <input type="text" placeholder="Search by Name or ID">
                         </div>
-                        <span style="position:relative; padding: 8px; font-size: 0.8rem; margin-right: 10px;">Filter by: </span>
+                        <span style="position:relative; padding: 8px; font-size: 0.8rem; margin-right: 10px; white-space: nowrap;">Filter by: </span>
                         <select id="dateFilter" style="margin-right: 10px;">
                             <option value="all">All Dates</option>
                             <option value="today">Today</option>
@@ -406,7 +399,7 @@
                 <table class="reqtable" cellspacing="0" id="latest_b">
                     <thead>
                         <tr>
-                            <th style="padding:12px; text-align:left;">Description</th>
+                            <th style="padding:12px; text-align:left; padding-left: 30px;">Description</th>
                             <th style="padding:12px; text-align:center;">Reason</th>
                             <th style="padding:12px; text-align:center;">Status</th>
                             <th style="padding:12px; text-align:center;">Action</th>
@@ -425,14 +418,12 @@
 
                             // --- Sort by startDate descending (newest first) ---
                             combined.sort(( a,
-                                  
-                                  
-                                  
+                                      
                                   
                                   
                                   
                                 b) -> {
-                                   Date dateA = (a instanceof UserLeave)
+                                Date dateA = (a instanceof UserLeave)
                                         ? ((UserLeave) a).getStartDate()
                                         : ((UserPermission) a).getStartDate();
                                 Date dateB = (b instanceof UserLeave)
@@ -483,24 +474,23 @@
                                 <div style="display:flex; align-items:center; gap:10px;">
 
                                     <!-- Avatar -->
-                                    <button class="icon-btn-avatar">
-                                        <span class="icon-home">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                                            <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
-                                            <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
-                                            </svg>
-                                        </span>
-                                    </button>
-
-                                    <!-- Text -->
-                                    <div style="display:flex; flex-direction:column;">
-                                        <span style="font-weight:normal; letter-spacing: 0.3px;">
-                                            Holidays (<%= days%> days)
-                                        </span>
-
-                                        <span style="font-size:0.8rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color:lightslategray; margin-top: 3px;">
-                                            <%= h.getStartDate()%>
-                                        </span>
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <button class="icon-btn-avatar holiday">
+                                            <span class="icon-home">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#215f91" class="size-6">
+                                                <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+                                                <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+                                                </svg>
+                                            </span>
+                                        </button>
+                                        <div style="display:flex; flex-direction:column;">
+                                            <span style="font-size: 0.9rem; font-weight:600; white-space:nowrap;">
+                                                <%= outFmt.format(h.getStartDate())%> &rarr;
+                                                <%= outFmt.format(h.getEndDate())%>,
+                                                <%= yearFmt.format(h.getEndDate())%>                                                
+                                            </span>
+                                            <span style="font-size:0.8rem; color:lightslategray;"><%=h.getType()%>  &bull; <%=days%> days </span>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -515,7 +505,7 @@
                                       text-overflow:ellipsis;
                                       display:block;
                                       ">
-                                    <%= h.getType()%>
+                                    <%= h.getMotif()%>
                                 </span>
                             </td>
 
@@ -559,6 +549,10 @@
                         } // end for UserLeave
                         else if (item instanceof UserPermission) {
                             UserPermission p = (UserPermission) item;
+
+                            long diffMillis = p.getEndTime().getTime() - p.getStartTime().getTime();
+                            long hours = diffMillis / (1000 * 60 * 60);
+
                             String status = p.getStatus();
                             String cssClass = "";
                             if ("rejected".equalsIgnoreCase(status))
@@ -575,26 +569,23 @@
                                 <div style="display:flex; align-items:center; gap:10px;">
 
                                     <!-- Avatar -->
-                                    <button class="icon-btn-avatar">
-                                        <span class="icon-home">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                                            <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0 1 12 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 0 1 7.5 5.455V5.25Zm7.5 0v.09a49.488 49.488 0 0 0-6 0v-.09a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5Zm-3 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
-                                            <path d="M3 18.4v-2.796a4.3 4.3 0 0 0 .713.31A26.226 26.226 0 0 0 12 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 0 1-6.477-.427C4.047 21.128 3 19.852 3 18.4Z" />
-                                            </svg>
-                                        </span>
-                                    </button>
-
-                                    <!-- Info -->
-                                    <div style="display:flex; flex-direction:column;">
-
-                                        <span style="font-weight:normal; letter-spacing:0.3px ; white-space:nowrap;">
-                                            Permission
-                                        </span>
-
-                                        <span style="font-size:0.8rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color:lightslategray; ">
-                                            <%= p.getStartDate()%>
-                                        </span>
-
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <button class="icon-btn-avatar permission">
+                                            <span class="icon-home">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#854f0b" class="size-6">
+                                                <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0 1 12 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 0 1 7.5 5.455V5.25Zm7.5 0v.09a49.488 49.488 0 0 0-6 0v-.09a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5Zm-3 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+                                                <path d="M3 18.4v-2.796a4.3 4.3 0 0 0 .713.31A26.226 26.226 0 0 0 12 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 0 1-6.477-.427C4.047 21.128 3 19.852 3 18.4Z" />
+                                                </svg>
+                                            </span>
+                                        </button>
+                                        <div style="display:flex; flex-direction:column;">
+                                            <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap;">
+                                                <%= outFmt.format(p.getStartDate())%>
+                                            </span>
+                                            <span style="font-size:0.8rem; color:lightslategray;">
+                                                Permission &bull; <%= hours%> hrs
+                                            </span>
+                                        </div>
                                     </div>
 
                                 </div>

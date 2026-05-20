@@ -4,6 +4,9 @@
     Author     : HP
 --%>
 
+<%@page import="javafiles.EmployeeInfo"%>
+<%@page import="java.util.List"%>
+<%@page import="javafiles.userdataDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +16,24 @@
         <link rel="stylesheet" 
               href="/css/admin/admin_styles.css">
         <title>Admin Dashboard</title>
+
+
+
+        <script>
+            <%
+                Integer userId = (Integer) session.getAttribute("user_id");
+
+                if (userId != null) {
+            %>
+             const userid = <%= userId%>
+            <%
+                } else {
+                    response.sendRedirect("hello.jsp");
+                }
+                userdataDAO dao = new userdataDAO();
+                List<EmployeeInfo> e = dao.getEmployeeInfo();
+            %>
+        </script>
     </head>
 
     <body>
@@ -40,7 +61,10 @@
                     </svg>
                     Déconnexion
                 </button>
-                <div class="header-avatar">AD</div>
+                <div class="header-avatar">
+                    <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%=userId%>"
+                         style="width:40px; height:40px; border-radius:50%; background: #eef;" title="" alt="" />
+                </div>
             </div>
         </div>
 

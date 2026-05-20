@@ -11,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/AvatarServlet")
 public class AvatarServlet extends HttpServlet {
+    
+    private static final Logger logger = LogManager.getLogger(AvatarServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -66,7 +70,7 @@ public class AvatarServlet extends HttpServlet {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR_AVATAR_SERVLET: " + e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

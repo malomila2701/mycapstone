@@ -157,7 +157,7 @@ body{
 #header_icon_logout {
     width: auto;
 
-    padding: 0 16px;
+    padding: 0px 16px 0px 0px;
 
     gap: 8px;
 
@@ -172,10 +172,6 @@ body{
     color: #dc2626;
 
     transform: none;
-}
-
-.label {
-    white-space: nowrap;
 }
 
 .header_icon .notification-dot {
@@ -248,7 +244,7 @@ body{
 
     background: linear-gradient(135deg, #0078d7, #00a6ff);
 
-    border: 3px solid rgba(0,120,215,.15);
+    border: 1px solid rgba(0,120,215,.15);
 
     display: flex;
     align-items: center;
@@ -329,16 +325,36 @@ Main SECTION
     align-items: center;
     color: #333;
 }
-#newLeave_card {
-    background:lightgray;
-    color:white;
+#permission_card {
+    display: flex;          /* override grid */
+    flex-direction: column;
+    gap: 10px;
+
+    background: #f3f4f6;
+    border: 1px solid #ececec;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+
+    color: #333;
     cursor: pointer;
-    transition: background 0.3s;
 }
-#newLeave_card:hover {
-    background: #34495e;
-    color: #0099ff;
+#permission_card .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
+#permission_card .h2 {
+    font-size: 0.85rem;
+    color: #6b7788;
+    font-weight: 500;
+}
+
+#permission_card .p {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2f2f2f;
+}
+
 .card_change {
     position: absolute;
     background: #44acff;
@@ -431,19 +447,34 @@ Main SECTION
 #latest_banner .header-right{
     display:flex;
     flex-shrink: 0;
-    gap:10px;
+    gap:7px;
 }
-#typeFilter, #statusFilter {
-    position :relative;
-    padding: 8px;
-    background: whitesmoke;
-    color: #333;
-    border-radius: 7px;
-    border: 1px solid #ccc;
-    cursor:pointer;
+
+#typeFilter,
+#statusFilter {
+    padding: 8px 8px;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 10px;
+
+    background: #fafafa;
+    color: #444;
+
+    font-size: 0.88rem;
+    cursor: pointer;
+    outline: none;
+
+    transition: all 0.2s ease;
 }
-#statusFilter:hover, #typeFilter:hover {
-    background: white;
+#typeFilter:hover,
+#statusFilter:hover {
+    background: #fff;
+    border-color: #d4d4d4;
+}
+#typeFilter:focus,
+#statusFilter:focus {
+    border-color: #4f7fa8;
+    box-shadow: 0 0 0 3px rgba(79, 127, 168, 0.12);
 }
 
 /**
@@ -472,11 +503,11 @@ Main SECTION
     border-radius: 50%;
 }
 .icon-btn-avatar.holiday {
-    background:#f8fbff; 
+    background:#f8fbff;
     border: 1px solid #dbeafe;
 }
 .icon-btn-avatar.permission {
-    background:#faeeda;
+    background:#fdf6ec;
     border: 1px solid #e6d7c3;
 }
 .icon-btn-avatar svg {
@@ -513,45 +544,61 @@ Main SECTION
 /**Add Request Button*/
 #new-leave-btn {
     display: flex;
-    width: 120px;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
-    
-    border-radius: 10px;
-    background: linear-gradient(135deg, #0078d7, #00a6ff);
-    border: 3px solid rgba(0,120,215,.15);
-    box-shadow:
-        0 0 0 4px rgba(0,120,215,.08),
-        0 6px 18px rgba(0,120,215,.25);
-
-    transition: all .2s ease;
-    
     gap: 8px;
-    padding: 8px 6px;
+
+    width: 120px;
+    padding: 10px 14px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: linear-gradient(135deg, #0078d7 0%, #00a6ff 100%);
+
+    box-shadow:
+        0 4px 14px rgba(0,120,215,.22),
+        0 1px 2px rgba(0,0,0,.06);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+
+    cursor: pointer;
 }
 #new-leave-btn:hover {
-    transform: translateY(-1px) scale(1.04);
+    transform: translateY(-2px);
 
     box-shadow:
-        0 0 0 5px rgba(0,120,215,.12),
-        0 10px 24px rgba(0,120,215,.35);
+        0 10px 24px rgba(0,120,215,.28),
+        0 2px 6px rgba(0,0,0,.08);
+
+    filter: brightness(1.03);
 }
 #new-leave-btn svg {
-    flex-shrink: 0;
     width: 16px;
     height: 16px;
+    flex-shrink: 0;
 }
 #new-leave-label {
     color: white;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 600;
     white-space: nowrap;
 }
-
-#details-btn{
-    position: relative;
-    right: 10px;
+.see-more-btn {
+    background: none;
+    border: none;
+    color: #0078d7;
+    font-size: 13px;
+    cursor: pointer;
 }
+.see-more-btn:hover {
+    text-decoration: underline;
+}
+
+
 
 #latest_banner svg, #pending_banner svg {
     transition: transform 0.2s ease;
@@ -562,11 +609,11 @@ Main SECTION
 
 .status {
     display: inline-flex;
-    padding: 3px 10px; 
+    padding: 3px 10px;
     border-radius: 99px;
     align-items: center;
     gap: 5px;
-    
+
     font-weight: 400;
     font-size: 0.9rem;
 }
@@ -579,7 +626,7 @@ Main SECTION
     color: #155724;
 }
 .status-pending {
-    background: #fef3cd; 
+    background: #fef3cd;
     color: #7d5a00;
 }
 
@@ -596,8 +643,7 @@ Main SECTION
     height: 30px;
     border-radius: 50%;
 }
-.
-{
+.label{
     margin-left: 40px;
     font-size: 0.9rem;
     color: #666;
@@ -761,6 +807,7 @@ Side SECTION
 }
 
 .agenda-card h3 {
+    color: #444;
     margin-bottom: 15px;
 }
 

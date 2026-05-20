@@ -4,6 +4,8 @@
     Author     : HP
 --%>
 
+<%@page import="java.util.Locale"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="javafiles.UserPermission"%>
 <%@page import="javafiles.UserLeave"%>
 <%@page import="javafiles.UserPending"%>
@@ -33,7 +35,12 @@
             List<UserPermission> daoPermission = dao.getAdminPermissionAll();
         %>
 
-        <%                String selectedAvatar = "../images/avatar1.jpg";
+        <%
+            SimpleDateFormat outFmt = new SimpleDateFormat("MMM d", Locale.ENGLISH);
+            SimpleDateFormat yearFmt = new SimpleDateFormat("yyyy");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+            String selectedAvatar = "../images/avatar1.jpg";
         %> 
 
         <!-- Leave type modal -->
@@ -103,23 +110,21 @@
 
 
 
-        <div style="overflow-y: visible;">
-            <div class="banner">
-
-                <div class="banner-left">
+        <div id="latest_banner">
+            <div class="header">
+                <div class="header-left"> 
+                </div>
+                <div class="header-right">
                     <div class="search-box">
-                        <span class="icon-searchbox"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
-                            </svg>
-                        </span>
                         <input type="text" placeholder="Search by Name or ID">
                     </div>
+                    <span style="position:relative; padding: 8px; font-size: 0.8rem; margin-right: 10px;">Filter by: </span>
                     <select id="dateFilter" style="margin-right: 10px;">
-                         <option value="all">All Dates</option>
-                            <option value="today">Today</option>
-                            <option value="yesterday">Yesterday</option>
-                            <option value="last_week">Last Week</option>
-                            <option value="last_month">Last Month</option>
+                        <option value="all">All Dates</option>
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="last_week">Last Week</option>
+                        <option value="last_month">Last Month</option>
                     </select>
                     <select id="statusFilter">
                         <option value="all">All Status</option>
@@ -128,88 +133,123 @@
                         <option value="rejected">Rejected</option>
                     </select>
                 </div>
-
-                <div class="banner-right">
-                </div>
-
             </div>
 
 
-            <div class="bar"></div>
             <!-- table for PERMISSIONS requests -->
             <table class ="reqtable" cellspacing="0" id="permissiontable">
+                <thead>
+                    <tr>
+                        <th style="padding:12px; text-align:left; padding-left: 30px;">Description</th>
+                        <th style="padding:12px; text-align:center;">Reason</th>
+                        <th style="padding:12px; text-align:center;">Status</th>
+                        <th style="padding:12px; text-align:center;">Action</th>
+                    </tr>
+                </thead>
                 <%
                     if (daoPermission == null || daoPermission.isEmpty()) {
                 %>
                 <tbody>
                     <tr>
-                        <td colspan="1" style="text-align: center; color: red;">No pending holidays found.</td>
+                        <td colspan="4" style="padding:30px; background:white; text-align:center;
+                            border-bottom-left-radius:16px; border-bottom-right-radius:16px; color:red;">
+                            No permission records found.
+                        </td>
                     </tr>
                     <%
                     } else {
                         for (UserPermission p : daoPermission) {
+
+                            long diffMillis = p.getEndTime().getTime() - p.getStartTime().getTime();
+                            long hours = diffMillis / (1000 * 60 * 60);
+
+                            String status = p.getStatus();
+                            String cssClass = "";
+                            if ("rejected".equalsIgnoreCase(status))
+                                cssClass = "status-rejected";
+                            else if ("approved".equalsIgnoreCase(status))
+                                cssClass = "status-approved";
+                            else if ("pending".equalsIgnoreCase(status))
+                                cssClass = "status-pending";
                     %>
 
                     <tr>
-                        <td>
+                        <td style="padding:10px;">
+                            <div style="display:flex; align-items:center; gap:10px;">
 
-                            <!-- Left: Avatar + Name/Type -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
                                 <!-- Avatar -->
-                                <img src="<%= selectedAvatar%>" alt="User Avatar" style="width: 50px; height: 50px; border-radius: 50%;"/>
-
-                                <!-- Name + Holiday Type -->
-                                <div style="display: flex; flex-direction: column;">
-                                    <span style="font-weight: 600;"><%=p.getFullName()%></span>
-                                    <span style=" font-size: 0.9rem; font-weight: normal;">Permission on <%=p.getEndDate()%> from <%=p.getStartTime()%> to <%=p.getEndTime()%></span>
-                                    <span style=" font-size: 0.8rem; color: lightslategray">Permission</span>
-                                </div>
-                            </div>
-
-
-                            <!-- Right: Status + Details Button -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-
-
-                                <% String status = p.getStatus();
-                                    String cssClass = "";
-                                    if ("rejected".equalsIgnoreCase(status)) {
-                                        cssClass = "status-rejected";
-                                    } else if ("approved".equalsIgnoreCase(status)) {
-                                        cssClass = "status-approved";
-                                    } else if ("pending".equalsIgnoreCase(status)) {
-                                        cssClass = "status-pending";
-                                    }%>
-                                <!-- Status with vertical separator -->
-                                <div style="border-left: 1px solid #ccc; padding-left: 10px; display: flex; align-items: center; min-width: 80px; height: 35px; justify-content: center;">
-                                    <span class="status <%= cssClass%>"> 
-                                        <%= p.getStatus()%> </span>
-                                </div>
-
-                                <!-- Details Button with vertical separator -->
-                                <div style="border-left: 1px solid #ccc; padding-left: 10px; display: flex; align-items: center; justify-content: center;">
-                                    <button class="detailsBtn" 
-
-                                            data-userid="<%= p.getUserId()%>" 
-                                            data-holidayid="<%= p.getPermissionId()%>" 
-                                            data-username="<%= p.getFullName()%>"
-                                            data-startdate="<%= p.getStartDate()%>"
-                                            data-enddate="<%= p.getEndDate()%>"
-                                            data-starttime="<%= p.getStartTime()%>"
-                                            data-endtime="<%= p.getEndTime()%>"
-                                            data-motif="<%= p.getMotif()%>"
-                                            data-status="<%= p.getStatus()%>">
-
-                                        <span class="icon-home">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="20" height="20">
-                                            <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                            <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                                            </svg>
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%= p.getUserId()%>"
+                                         style="width:60px; height:60px; border-radius:50%; background: whitesmoke;" alt="<%= p.getFullName()%>" />
+                                    <div style="display:flex; flex-direction:column;">
+                                        <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap;">
+                                            <%= outFmt.format(p.getStartDate())%>
                                         </span>
-                                    </button>
+                                        <span style="font-size:0.8rem; color:lightslategray;">
+                                            Permission &bull; <%= hours%> hrs
+                                        </span>
+                                    </div>
                                 </div>
 
                             </div>
+                        </td>
+
+                        <!-- REASON -->
+                        <td style="padding:10px; text-align:center; width:250px;">
+
+                            <span style="
+                                  font-size:0.9rem;
+                                  display:block;
+                                  white-space:nowrap;
+                                  overflow:hidden;
+                                  text-overflow:ellipsis;
+                                  ">
+                                <%= p.getMotif()%>
+                            </span>
+
+                        </td>
+
+                        <!-- STATUS -->
+                        <td style="padding:10px; text-align:center; width:120px;">
+
+                            <span class="status <%= cssClass%>">
+                                <%= p.getStatus()%>
+                            </span>
+
+                        </td>
+
+                        <!-- ACTION -->
+                        <td style="padding:10px; text-align:center; width:100px;">
+
+                            <button class="icon-btn-td"
+
+                                    data-userid="<%= p.getUserId()%>" 
+                                    data-type="permission"
+                                    data-title="Permission"
+                                    data-holidayid="<%= p.getPermissionId()%>" 
+                                    data-username="<%= p.getFullName()%>"
+                                    data-startdate="<%= p.getStartDate()%>"
+                                    data-enddate="<%= p.getEndDate()%>"
+                                    data-starttime="<%= p.getStartTime()%>"
+                                    data-endtime="<%= p.getEndTime()%>"
+                                    data-motif="<%= p.getMotif()%>"
+                                    data-status="<%= p.getStatus()%>">
+
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     viewBox="0 0 20 20"
+                                     fill="#666"
+                                     width="18"
+                                     height="18">
+
+                                <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+
+                                <path fill-rule="evenodd"
+                                      d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                                      clip-rule="evenodd" />
+                                </svg>
+
+                            </button>
+
                         </td>
                     </tr>
                     <%
@@ -223,7 +263,7 @@
         <script src="../scripts/utils.js"></script>
 
         <script>
-            const ROWS_PER_PAGE = 4; // change this to whatever limit you want
+            const ROWS_PER_PAGE = 5; // change this to whatever limit you want
             let currentPage = 1;
 
             function paginateTable() {
@@ -296,7 +336,7 @@
         </script>
         <script>
             function applyFilters() {
-                
+
                 currentPage = 1;
                 const selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
                 const selectedDate = document.getElementById('dateFilter').value.toLowerCase();
@@ -327,9 +367,10 @@
 
                     // --- Date ---
                     // The start date is in the second <span> of the first <td>
-                    const spans = row.querySelectorAll('td:first-child div span');
-                    const rawDate = spans[1] ? spans[1].textContent.trim() : '';
-                    const rowDate = new Date(rawDate);
+                    const rawDate =
+                            row.querySelector('td:first-child div div span:first-of-type')
+                            ?.textContent.trim() || '';
+                    const rowDate = new Date(rawDate + ', ' + new Date().getFullYear());
                     rowDate.setHours(0, 0, 0, 0);
 
                     let dateMatch = true;
@@ -355,6 +396,27 @@
                 showEmptyMessageIfNeeded();
             }
 
+            function showEmptyMessageIfNeeded() {
+                const tbody = document.querySelector('#permissiontable tbody');
+                const visibleRows = Array.from(tbody.querySelectorAll('tr')).filter(row => {
+                    return !row.querySelector('td[colspan]') && row.style.display !== 'none';
+                });
+                // Supprimer ancien message de filtre vide
+                const existing = document.getElementById('filter-empty-msg');
+                if (existing)
+                    existing.remove();
+                if (visibleRows.length === 0) {
+                    const emptyRow = document.createElement('tr');
+                    emptyRow.id = 'filter-empty-msg';
+                    emptyRow.innerHTML = `
+            <td colspan="4" style="padding:30px; background:white; text-align:center;
+                border-bottom-left-radius:16px; border-bottom-right-radius:16px; color:red;">
+                No results for this filter.
+            </td>`;
+                    tbody.appendChild(emptyRow);
+                }
+            }
+
             document.getElementById('statusFilter').addEventListener('change', applyFilters);
             document.getElementById('dateFilter').addEventListener('change', applyFilters);
         </script>
@@ -377,7 +439,7 @@
             window.calendar.render();
 
             // Open modal for each user button
-            document.querySelectorAll('.detailsBtn').forEach(btn => {
+            document.querySelectorAll('.icon-btn-td').forEach(btn => {
                 btn.addEventListener('click', () => {
 
                     // UserId
