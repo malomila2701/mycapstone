@@ -325,30 +325,27 @@ Main SECTION
     align-items: center;
     color: #333;
 }
+
 #permission_card {
-    display: flex;          /* override grid */
-    flex-direction: column;
-    gap: 10px;
-
-    background: #f3f4f6;
-    border: 1px solid #ececec;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-
-    color: #333;
-    cursor: pointer;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    height: 80px;
+    background: white;
 }
+
 #permission_card .row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 15px;
 }
-
+#permission_card .row:first-child {
+    border-bottom: 1px solid #ccc;
+}
 #permission_card .h2 {
     font-size: 0.85rem;
-    color: #6b7788;
-    font-weight: 500;
+    color: #333;
 }
-
 #permission_card .p {
     font-size: 0.95rem;
     font-weight: 700;
@@ -609,25 +606,42 @@ Main SECTION
 
 .status {
     display: inline-flex;
-    padding: 3px 10px;
-    border-radius: 99px;
     align-items: center;
     gap: 5px;
 
+    min-width: 60px;
+    padding: 3px 10px;
+    border-radius: 99px;
+
     font-weight: 400;
     font-size: 0.9rem;
+}
+.status::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
 }
 .status-rejected {
     background: #f8d7da;
     color: #721c24;
 }
+.status-rejected::before {
+    background: rgba(114, 28, 36, 0.6);
+}
 .status-approved {
     background: #d4edda;
     color: #155724;
 }
+.status-approved::before {
+    background: rgba(21, 87, 36, 0.6);
+}
 .status-pending {
     background: #fef3cd;
     color: #7d5a00;
+}
+.status-pending::before {
+    background: rgba(125, 90, 0, 0.6);
 }
 
 .bar {
@@ -635,6 +649,11 @@ Main SECTION
     margin: 0 auto;
     height: 1px;
     background-color: #c7c9cc;
+}
+#bar2 {
+    width: 20%;
+    text-align:right;
+    margin-right: 5%;
 }
 
 .avatar {

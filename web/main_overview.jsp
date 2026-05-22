@@ -125,7 +125,6 @@
                     </ul>
 
                     <button class="header_icon">
-
                         <span class="icon-home">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 0 1 8.82 1h2.36a1 1 0 0 1 .98.804l.331 1.652a6.993 6.993 0 0 1 1.929 1.115l1.598-.54a1 1 0 0 1 1.186.447l1.18 2.044a1 1 0 0 1-.205 1.251l-1.267 1.113a7.047 7.047 0 0 1 0 2.228l1.267 1.113a1 1 0 0 1 .206 1.25l-1.18 2.045a1 1 0 0 1-1.187.447l-1.598-.54a6.993 6.993 0 0 1-1.929 1.115l-.33 1.652a1 1 0 0 1-.98.804H8.82a1 1 0 0 1-.98-.804l-.331-1.652a6.993 6.993 0 0 1-1.929-1.115l-1.598.54a1 1 0 0 1-1.186-.447l-1.18-2.044a1 1 0 0 1 .205-1.251l1.267-1.114a7.05 7.05 0 0 1 0-2.227L1.821 7.773a1 1 0 0 1-.206-1.25l1.18-2.045a1 1 0 0 1 1.187-.447l1.598.54A6.992 6.992 0 0 1 7.51 3.456l.33-1.652ZM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd"/>
@@ -137,7 +136,6 @@
                         <span style="margin-left: 10px; font-size: 0.9rem; color: #666;">
                             Log out
                         </span>
-
                         <span class="icon-home">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 2a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5A.75.75 0 0 1 10 2ZM5.404 4.343a.75.75 0 0 1 0 1.06 6.5 6.5 0 1 0 9.192 0 .75.75 0 1 1 1.06-1.06 8 8 0 1 1-11.313 0 .75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
@@ -182,7 +180,6 @@
                         <span class="h2">Permission</span>
                         <span class="p">4</span>
                     </div>
-
                     <div class="row">
                         <span class="h2">Absenteeism</span>
                         <span class="p">1</span>
@@ -498,12 +495,8 @@
                                 }
 
                                 // --- Sort by startDate descending (newest first) ---
-                                combined.sort(( a,
-                                          
-                                      
-                                      
-                                      
-                                    b) -> {
+                                combined.sort((a,
+                                        b) -> {
                                     Date dateA = (a instanceof UserLeave)
                                             ? ((UserLeave) a).getStartDate()
                                             : ((UserPermission) a).getStartDate();
@@ -672,9 +665,10 @@
                                         } // end if/else isLeave
                                     } // end for combined
                                 } // end else
-%>
+                            %>
                         </tbody>
                     </table>
+                    <div class="bar" id="bar2"></div>
                     <div style="text-align:right; padding: 5px 0; margin-right: 6%; margin-bottom: 5px;">
                         <button onclick="goToHistory(null, 'all')" class="see-more-btn">
                             View full history &rarr;

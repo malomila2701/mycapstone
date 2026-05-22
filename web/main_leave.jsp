@@ -166,6 +166,14 @@
                     <option>Leave</option>
                     <option>Permission</option>
                 </select>
+                <script>
+                    const typeSelect = document.querySelector('.header-select');
+                    typeSelect.value = 'Leave';
+
+                    typeSelect.addEventListener('change', function () {
+                        goToRequest(this.value.toLowerCase());
+                    });
+                </script>
                 <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"/>
                 </svg>
@@ -174,7 +182,14 @@
 
         <div id="stepProgress">
             <div class="step active"></div>
-            <div class="step"></div>
+            <div class="step">
+                <span class="icon-home">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#215f91" class="size-5">
+                    <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 0 1-.134 1.051 2.494 2.494 0 0 0-.93 2.437 2.494 2.494 0 0 0 2.437-.93.75.75 0 1 1 1.186.918 3.995 3.995 0 0 1-4.482 1.332.75.75 0 0 1-.461-.461 3.994 3.994 0 0 1 1.332-4.482.75.75 0 0 1 1.052.134Z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M5.752 12A13.07 13.07 0 0 0 8 14.248v4.002c0 .414.336.75.75.75a5 5 0 0 0 4.797-6.414 12.984 12.984 0 0 0 5.45-10.848.75.75 0 0 0-.735-.735 12.984 12.984 0 0 0-10.849 5.45A5 5 0 0 0 1 11.25c.001.414.337.75.751.75h4.002ZM13 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+            </div>
         </div>
         <div id="stepLabel">Step 1: Click & Drag the leave period</div>
 
@@ -196,8 +211,6 @@
                                     </svg></span> </button>
                             <span style="font-weight: bold;font-size: 1.5rem; color: #34495e;">
                                 User Details</span>
-                        </div>
-                        <div class="header-right">
                         </div>
                     </div>
 
@@ -321,22 +334,21 @@
         </div>
 
         <script src="scripts/utils.js"></script>
-
         <script>
-            const textarea = document.getElementById("eventDescription");
-            const submitBtn = document.getElementById("submitBtn");
+                    const textarea = document.getElementById("eventDescription");
+                    const submitBtn = document.getElementById("submitBtn");
 
-            textarea.addEventListener("input", () => {
-                if (textarea.value.trim().length > 0) {
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove("btn-disabled");
-                    submitBtn.classList.add("btn-enabled");
-                } else {
-                    submitBtn.disabled = true;
-                    submitBtn.classList.remove("btn-enabled");
-                    submitBtn.classList.add("btn-disabled");
-                }
-            });
+                    textarea.addEventListener("input", () => {
+                        if (textarea.value.trim().length > 0) {
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove("btn-disabled");
+                            submitBtn.classList.add("btn-enabled");
+                        } else {
+                            submitBtn.disabled = true;
+                            submitBtn.classList.remove("btn-enabled");
+                            submitBtn.classList.add("btn-disabled");
+                        }
+                    });
         </script>
     </body>
 </html>

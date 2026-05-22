@@ -4344,5 +4344,22 @@ var Swiper = (function () {
   Swiper.use([Resize, Observer]);
 
   return Swiper;
-
+  
+  
+  
+  
+  function loadPage(page, element) {
+    const iframe = document.getElementById("contentFrame");
+    const container = iframe.parentElement; // wrapper div
+    // start fade OUT
+    container.classList.add("fade-out");
+    setTimeout(() => {
+        // change iframe source after fade out
+        iframe.src = page;
+        // when new page is loaded → fade back IN
+        iframe.onload = function () {
+            container.classList.remove("fade-out");
+        };
+    }, 100); // match CSS transition duration
+}
 })();

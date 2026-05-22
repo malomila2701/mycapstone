@@ -30,32 +30,23 @@
         %>
         <script>
             const userId = <%= userId%>;
+
             const formatTime = (date) =>
                 date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false});
             document.addEventListener('DOMContentLoaded', function () {
 
                 let currentEvent = null;
+                let selectedInfo = null; // store calendar selection
 
                 const calendarEl = document.getElementById('calendar');
-
-                const nextStep = document.getElementById('nextStep');
                 const finalStep = document.getElementById('finalStep');
-
                 const steps = document.querySelectorAll('.step');
                 const stepProgress = document.getElementById('stepProgress');
                 const label = document.getElementById('stepLabel');
-
                 const eventDayInput = document.getElementById('eventDay');
                 const eventTypeInput = document.getElementById('eventType');
-
                 const finalstartTimeInput = document.getElementById("finalStartTime");
                 const finalendTimeInput = document.getElementById("finalEndTime");
-
-                const continueBtn = document.getElementById('continueBtn');
-                const confirmLeaveBtn = document.getElementById('confirmLeave');
-                const cancelLeaveBtn = document.getElementById('cancelLeave');
-
-                let selectedInfo = null; // store calendar selection
 
                 function updateProgress(stepIndex) {
                     const totalSteps = steps.length;
@@ -86,47 +77,70 @@
                             }
                         }
                     ],
-
                     select: function (info) {
                         selectedInfo = info; // save selection
 
                         const start = info.start;
                         const end = info.end;
                         const day = start.toISOString().split('T')[0];
-
                         // Extract time (HH:mm)
                         const startTime = start.toTimeString().slice(0, 5);
                         const endTime = end.toTimeString().slice(0, 5);
-
                         //Fill inputs
                         eventDayInput.value = day;
                         finalstartTimeInput.value = formatTime(info.start);
                         finalendTimeInput.value = formatTime(info.end);
-
                         currentEvent = calendar.addEvent({
                             title: 'Permission',
                             start: info.start,
                             end: info.end,
                             display: "list-item"
                         });
-
                         // Update progress bar
                         steps[1].classList.add('active');
                         updateProgress(1);
                         // update label
                         label.textContent = `Step 2: Select the permission time`;
-
                         // Show next step section
                         showFinalStep();
-
-                        continueBtn.disabled = true;
-                        cancelLeaveBtn.disabled = true;
-
                     }
                 });
                 calendar.render();
-            });
 
+                /**
+                 *  Trash button in finalStep
+                 *  
+                 */
+                const clearFormBtn = document.getElementById("clearForm");
+                clearFormBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    if (currentEvent) {
+                        currentEvent.remove();
+                        currentEvent = null;
+                    }
+
+                    calendar.unselect();
+                    selectedInfo = null;
+
+                    eventDayInput.value = '';
+                    finalstartTimeInput.value = '';
+                    finalendTimeInput.value = '';
+
+                    steps[1].classList.remove('active');
+                    updateProgress(0);
+                    label.textContent = 'Step 1: Select a time slot';
+
+                    hideFinalStep();
+
+                    // Fix frozen calendar — disable then re-enable selectable after hide transition
+                    calendar.setOption('selectable', false);
+                    setTimeout(() => {
+                        calendar.setOption('selectable', true);
+                        calendar.render();  // force re-render to restore clean state
+                    }, 350); // slightly after hideFinalStep's 300ms
+                });
+            });
         </script>
     </head>
     <body>
@@ -150,6 +164,14 @@
                     <option>Leave</option>
                     <option>Permission</option>
                 </select>
+                <script>
+                    const typeSelect = document.querySelector('.header-select');
+                    typeSelect.value = 'Permission';
+
+                    typeSelect.addEventListener('change', function () {
+                        goToRequest(this.value.toLowerCase());
+                    });
+                </script>
                 <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 12 15 18 9"/>
                 </svg>
@@ -181,7 +203,8 @@
 
                     <div class="header">
                         <div class="header-left"> 
-                            <button class="icon-btn" id="icon-btn-header"> <span class="icon-home">
+                            <button class="icon-btn" id="icon-btn-header"> 
+                                <span class="icon-home">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                                     <path fill-rule="evenodd" d="M1 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V6Zm4 1.5a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm2 3a4 4 0 0 0-3.665 2.395.75.75 0 0 0 .416 1A8.98 8.98 0 0 0 7 14.5a8.98 8.98 0 0 0 3.249-.604.75.75 0 0 0 .416-1.001A4.001 4.001 0 0 0 7 10.5Zm5-3.75a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm0 6.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm.75-4a.75.75 0 0 0 0 1.5h2.5a.75.75 0 0 0 0-1.5h-2.5Z" clip-rule="evenodd" />
                                     </svg></span> </button>
@@ -260,9 +283,9 @@
                                 <label for="finalStartTime"> From </label>
                                 <div class="input-wrapper">
                                     <span class="icon-form">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
+                                        </svg>
                                     </span>
                                     <input type="text" id="finalStartTime" name ="eventStartTime" readonly>
                                 </div>
@@ -272,9 +295,9 @@
                                 <label for="finalEndTime"> to </label>
                                 <div class="input-wrapper">
                                     <span class="icon-form">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
-                                    </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
+                                        </svg>
                                     </span>
                                     <input type="text" id="finalEndTime" name ="eventEndTime" readonly>
                                 </div>
@@ -313,11 +336,9 @@
         <script>
                     const responseMessage = "<%= request.getAttribute("responseMessage")%>";
                     const responseStatus = "<%= request.getAttribute("responseStatus")%>";
-
                     if (responseMessage && responseMessage !== "null") {
                         const modal = document.getElementById("responseModal");
                         const messageEl = document.getElementById("modalMessage");
-
                         messageEl.innerText = responseMessage;
                         modal.style.display = "block";
                     }
@@ -328,7 +349,7 @@
         </script>
         <script>
             const finalStep = document.getElementById("finalStep");
-
+            const calendarEl = document.getElementById('calendar');
             function showFinalStep() {
                 finalStep.style.display = "block";
                 finalStep.classList.add("show");
@@ -340,11 +361,18 @@
                     });
                 }, 200);
             }
+
+            function hideFinalStep() {
+                finalStep.classList.remove("show");
+                setTimeout(() => {
+                    finalStep.style.display = "none";
+                    calendarEl.scrollIntoView({behavior: "smooth", block: "nearest"});
+                }, 300); // matches transition duration
+            }
         </script>
         <script>
             const textarea = document.getElementById("eventDescription");
             const submitBtn = document.getElementById("submitBtn");
-
             textarea.addEventListener("input", () => {
                 if (textarea.value.trim().length > 0) {
                     submitBtn.disabled = false;

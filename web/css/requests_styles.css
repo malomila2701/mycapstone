@@ -1,9 +1,23 @@
 body{
-    font-family:Arial, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin:0 0 0 17%;
     height: 100vh;
     background-image: linear-gradient(45deg, #93a5cf 0%, #e4efe9 100%);
     overflow:hidden;
+}
+#page-transition {
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 9999;
+}
+#page-transition.active {
+    opacity: 1;
+    pointer-events: all;
 }
 
 .modal {
@@ -322,9 +336,11 @@ select[type='text']{
     position: relative;
     transition: background 0.3s;
 }
-
 .step.active {
     background: #215f91;
+}
+.step.active svg {
+    fill:white;
 }
 #stepLabel {
     position: fixed;

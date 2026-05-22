@@ -1,10 +1,25 @@
 body{
-    font-family:Arial, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin:0 0 0 17%;
     height: 100vh;
     background: #cad1e0;
     background: linear-gradient(93deg, rgba(202, 209, 224, 1) 36%, rgba(191, 217, 197, 1) 100%);
     overflow:hidden;
+}
+
+#page-transition {
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 9999;
+}
+#page-transition.active {
+    opacity: 1;
+    pointer-events: all;
 }
 
 .modal {
@@ -169,7 +184,7 @@ body{
     white-space: nowrap;
 }
 .header-dot {
-    margin: 10px 10px 0px 5px;
+    margin: 5px 10px 0px 5px;
     color: #9ca3af;
     font-size: 18px;
 }
@@ -188,7 +203,7 @@ body{
     font-weight: 500;
     color: #34495e;
     cursor: pointer;
-    padding: 8px 14px;
+    padding: 8px 20px 8px 4px;
     outline: none;
 }
 .header-select:hover {
@@ -205,7 +220,7 @@ body{
 }
 .chevron {
     position: absolute;
-    right: 5px;
+    right: 2px;
     pointer-events: none;
     color: #6b7280;
     opacity: 0;
@@ -219,11 +234,11 @@ body{
 .icon-btn {
     display: flex;
     margin-right: 15px;
-    border: 1px solid black;
+    border: 1px solid #ccc;
     cursor: pointer;
     border-radius: 16px;
     padding: 8px;
-    
+
     background: transparent;
 }
 .icon-btn-form {
@@ -232,7 +247,7 @@ body{
     cursor: pointer;
     border:none;
     padding: 8px;
-    
+
     background: transparent;
 }
 #icon-btn-header{
@@ -547,6 +562,9 @@ Next STEP
     margin-bottom: 10px;
     padding: 15px;
     display: none; /* hidden until selection */
+
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
 }
 #finalStep h3 {
     text-align: center;
@@ -570,7 +588,6 @@ Next STEP
 }
 
 #finalStep.show {
-    max-height: 750px; /* adjust depending on content */
     opacity: 1;
     transform: translateY(0);
 }
