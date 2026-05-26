@@ -34,6 +34,26 @@ function loadPage(page, element) {
     }, 100); // match CSS transition duration
 }
 
+//Load adminFrame
+function loadAdminPage(page, element) {
+
+    // target iframe
+    const frame = parent.document.querySelector('iframe[name="adminFrame"]');
+
+    if(frame){
+        frame.src = page;
+    }
+
+    // active state
+    document.querySelectorAll('#adminEntries a').forEach(link => {
+        link.classList.remove('active-admin-link');
+    });
+
+    if(element){
+        element.classList.add('active-admin-link');
+    }
+}
+
 
 /**
  * Load History from sideBAR

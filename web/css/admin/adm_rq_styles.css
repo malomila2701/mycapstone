@@ -1,5 +1,13 @@
 * {
     font-family: Arial, sans-serif !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+*:focus {
+    border:none;
+    outline: none;
+    box-shadow: none;
 }
 
 .modal {
@@ -21,8 +29,9 @@
 }
 .modal-content {
     display: grid;
-    gap: 20px;
+    gap: 10px;
     grid-template-columns: 300px 1fr 400px;
+    align-content: start;
     position:relative;
     top: 0%;
     left: 50%;
@@ -132,10 +141,9 @@ input[type='text'] {
     border: 1px solid darkred;
     color:red;
 }
-/**SideSECTION of MODAL */
+
 .side-section {
     width:100%;
-    height:100%;
     margin: 0;
 }
 
@@ -182,67 +190,66 @@ input[type='text'] {
 
 
 
-/* Title */
-.banner {
+#latest_banner {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+
+    border-radius: 14px;
+    color: #666;
+    background-color: white;
+    overflow: hidden;
+}
+#latest_banner .header{
     display: flex;
     justify-content: space-between;
-    align-items: center; /* keeps items vertically centered */
-    margin-top: 0;
-    margin-left: 0;
-    margin-bottom: 15px;
-    width: 100%; /* use full width of parent */
+    align-items:center;
+    padding: 5px 20px;
+
+
+    outline: none;
+    font-size: 1.1rem;
 }
-.banner-left {
+/* Tableau des derniers congés */
+#latest_banner .header-left{
     display:flex;
+    align-items: center;
+    gap: 8px;
+}
+#latest_banner .header-right{
+    display: flex;
     flex-direction: row;
-    font-family: Segoe, sans-serif;
-    color: #34495e;
-    font-weight: bold;
-    white-space: nowrap;
+    margin: 0px;
 }
-.banner-right{
-    display:flex;
-    flex-direction: row;
-    margin-right: 25px;
+#latest_banner .search-box {
+    position: relative;
+    margin-right: 0;
 }
-.search-box {
-    position:relative;
-    margin-right: 30px;
-}
-.icon-searchbox {
-    position: absolute;
-    top: 9px;
-    right: 2px;
-    background: transparent;
-    width: 17px;
-    height: 17px;
-}
-.search-box input {
-    width: 100%;
-    margin-top: 2px;
+#latest_banner .search-box input {
+    width: 80%;
     color: black;
-    padding: 6px 10px;
-    border: 2px solid #ccc;
-    border-radius: 16px;
+    padding: 6px 9px;
+    border: 1px solid #ccc;
+    border-radius: 14px;
     font-size: 0.9rem;
     outline: none;
     transition: border-color 0.3s;
 }
-.search-box input:focus {
+#latest_banner .search-box input:focus {
     border-color: #0078d7; /* highlight color when focused */
 }
-#dateFilter, #statusFilter, #typeFilter {
-    align-items: center;
-    padding: 3px;
-    background: #eef;
+#dateFilter, #statusFilter {
+    position :relative;
+    padding: 8px;
+    background: whitesmoke;
     color: #333;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid #ccc;
     cursor:pointer;
 
     transition: background 0.6s ease;
 }
-#dateFilter:hover, #statusFilter:hover, #typeFilter:hover {
+#dateFilter:hover, #statusFilter:hover {
     background: white;
 }
 
@@ -254,29 +261,38 @@ input[type='text'] {
     background-color: #ccc;
 }
 
-table {
-    display: none;
-    background: rgba(238, 238, 238, 0.7);
+
+.reqtable {
     width: 100%;
-    opacity: 0;
-    transition: opacity 0.7s ease-in-out 0.6s;
+    height:100%;
+    background: #ffffff;
+
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+.reqtable thead {
+    border: 1px solid transparent;
+    background: #eef;
+    overflow:hidden;
+}
+.reqtable thead th {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #444;
 }
 .reqtable thead th:first-child {
-    border-top-left-radius: 14px;
+    border-top-left-radius: 8px;
+    padding-left: 25px;
+}
+/**Ajout des lignes entre each row */
+.reqtable tr:not(:last-child) td {
+    border-bottom: 1px solid #e5e5e5;
 }
 .reqtable thead th:last-child {
-    border-top-right-radius: 14px;
+    border-top-right-radius: 8px;
 }
-.reqtable td {
-    display:flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 16px;
-    font-size: 16px;
-    border-bottom: 1px solid #ddd;
-    color: #555;
-}
-.reqtable tr:hover {
+.reqtable td:hover {
     background: whitesmoke;
 }
 .reqtable .empty-message {
@@ -293,66 +309,79 @@ table {
     border-radius: 16px;
     padding: 8px;
 }
-.detailsBtn {
+.icon-btn-avatar {
+    position:relative;
+    margin-left: 15px;
+
+    width: 50px;
+    height:50px;
+    padding: 8px;
+
+    background: whitesmoke;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+}
+.icon-btn-avatar svg {
+    width: 70%;
+    height: 70%;
+}
+.icon-btn-avatar.holiday {
+    background:#f8fbff;
+    border: 1px solid #dbeafe;
+}
+.icon-btn-avatar.permission {
+    background:#faeeda;
+    border: 1px solid #e6d7c3;
+}
+.icon-btn-td {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;   /* control spacing */
+    margin: 0;
+
+    background: #ccc;
+    border-radius: 16px;
+    border:none;
+    cursor: pointer;
+}
+.icon-btn-header {
     display: flex;
-    margin-right: 15px;
-    border: none;
+    margin-right: 5px;
     cursor: pointer;
     border-radius: 16px;
+    border: 1px solid #ccc;
     padding: 8px;
-    background: none;
-
-    transition: transform 0.5s ease;
-}
-.detailsBtn:hover{
-    transform: scale(1.2);
+    background: whitesmoke;
 }
 .icon-home {
-    background: transparent;
-    border:none;
     width: 17px;
     height: 17px;
 }
-.icon-home svg:hover {
-    fill:#0078d7;
-}
 
-.avatar {
-    position:relative;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
 
-}
-
-.rq_username {
-    margin-top: 3px;
-    margin-left: 55px;
-    padding-right: 100px;
-    font-weight: 600;
-    font-size: 16px;
-    color: black;
-}
-.rq_label {
-    margin-left: 55px;
-    font-size: 15px;
-    font-weight: lighter;
-}
 
 .status {
-    font-weight: 400;
     display: inline-flex;
+    padding: 3px 10px;
+    border-radius: 99px;
     align-items: center;
     gap: 5px;
+
+    font-weight: 400;
+    font-size: 0.9rem;
 }
 .status-rejected {
-    color: red;
+    background: #f8d7da;
+    color: #721c24;
 }
 .status-approved {
-    color: green;
+    background: #d4edda;
+    color: #155724;
 }
 .status-pending {
-    color: orange;
+    background: #fef3cd;
+    color: #7d5a00;
 }
 
 i {

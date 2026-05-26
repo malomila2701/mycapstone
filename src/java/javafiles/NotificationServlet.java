@@ -69,8 +69,7 @@ public class NotificationServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
-        try (java.sql.Connection conn = java.sql.DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/capstone_project", "root", "admin")) {
+        try (java.sql.Connection conn = DBConnection.connect()) {
             String sql = "UPDATE notifications SET status = 'read' WHERE status = 'unread'";
             PreparedStatement ps = conn.prepareStatement(sql);
             int updated = ps.executeUpdate();
@@ -80,7 +79,7 @@ public class NotificationServlet extends HttpServlet {
             out.print(json.toString());
             out.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("ERROR_DOPOST_NOTIFICATIONSERVLET: " + e.getMessage());
         }
     }
 }

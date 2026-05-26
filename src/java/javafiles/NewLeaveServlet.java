@@ -62,11 +62,11 @@ public class NewLeaveServlet extends HttpServlet {
             }
 
             stmt.close();
-            request.getRequestDispatcher("main_requests.jsp").forward(request, response);
+            request.getRequestDispatcher("main_leave.jsp").forward(request, response);
 
         } catch (IOException | ClassNotFoundException | SQLException | ServletException e) {
             logger.error("NEW LEAVE ERROR : " + e.getMessage());
-            request.getRequestDispatcher("main_requests.jsp").forward(request, response);
+            request.getRequestDispatcher("main_leave.jsp").forward(request, response);
         } catch (Exception ex) {
             System.getLogger(NewLeaveServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } finally {

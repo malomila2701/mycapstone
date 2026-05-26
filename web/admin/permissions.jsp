@@ -21,7 +21,7 @@
         <link rel="stylesheet" 
               href="../css/admin/adm_permission_styles.css">
 
-        <title>JSP Page</title>
+        <title>Admin Permission Page</title>
 
         <!-- FullCalendar script -->
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />

@@ -4,6 +4,8 @@
     Author     : HP
 --%>
 
+<%@page import="java.util.Locale"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="javafiles.UserPermission"%>
 <%@page import="javafiles.UserLeave"%>
 <%@page import="javafiles.UserPending"%>
@@ -16,11 +18,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.1.0/css/all.min.css">
         <link rel="stylesheet" 
               href="../css/admin/adm_rq_styles.css">
 
-        <title>JSP Page</title>
+        <title>Admin Requests Page</title>
 
         <!-- FullCalendar script -->
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
@@ -35,7 +36,12 @@
             List<UserPending> daoPending = dao.getAdminPending();
         %>
 
-        <%                String selectedAvatar = "../images/avatar1.jpg";
+        <%
+            SimpleDateFormat outFmt = new SimpleDateFormat("MMM d", Locale.ENGLISH);
+            SimpleDateFormat yearFmt = new SimpleDateFormat("yyyy");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+            String selectedAvatar = "../images/avatar1.jpg";
         %> 
 
         <!-- Pop-up détails de chaque requête -->
@@ -97,23 +103,21 @@
         </div>
 
 
-        <div style="overflow-y: visible;">
-            <div class="banner">
-
-                <div class="banner-left">
+        <div id="latest_banner">
+            <div class="header">
+                <div class="header-left"> 
+                </div>
+                <div class="header-right">
                     <div class="search-box">
-                        <span class="icon-searchbox"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
-                            </svg>
-                        </span>
                         <input type="text" placeholder="Search by Name or ID">
                     </div>
+                    <span style="position:relative; padding: 8px; font-size: 0.8rem; margin-right: 10px;">Filter by: </span>
                     <select id="dateFilter" style="margin-right: 10px;">
                         <option value="all">All Dates</option>
-                            <option value="today">Today</option>
-                            <option value="yesterday">Yesterday</option>
-                            <option value="last_week">Last Week</option>
-                            <option value="last_month">Last Month</option>
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="last_week">Last Week</option>
+                        <option value="last_month">Last Month</option>
                     </select>
                     <select id="statusFilter">
                         <option value="all">All Status</option>
@@ -122,93 +126,118 @@
                         <option value="rejected">Rejected</option>
                     </select>
                 </div>
-
-                <div class="banner-right">
-                </div>
-
             </div>
-
-            <!-- Horizontal Line between request toolbar and tables-->
-            <div class="bar"></div>
-
 
             <!--
             table
             ALL REQUESTS
             -->  
-            <table class ="reqtable" cellspacing="0" id="alltable" style="opacity:1;">
-                <%
-                    if (daoAll == null || daoAll.isEmpty()) {
-                %>
-                <tbody>
+            <table class="reqtable" cellspacing="0" id="alltable">
+                <thead>
                     <tr>
-                        <td colspan="1" style="text-align: center; color: red;">No pending holidays found.</td>
+                        <th style="padding:12px; text-align:left; padding-left: 30px;">Description</th>
+                        <th style="padding:12px; text-align:center;">Reason</th>
+                        <th style="padding:12px; text-align:center;">Status</th>
+                        <th style="padding:12px; text-align:center;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        if (daoAll == null || daoAll.isEmpty()) {
+                    %>
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: red;">No pending holidays found.</td>
                     </tr>
                     <%
                     } else {
                         for (UserLeave h : daoAll) {
+                            long diffMillis = h.getEndDate().getTime() - h.getStartDate().getTime();
+                            long days = diffMillis / (1000 * 60 * 60 * 24);
+
+                            String status = h.getStatus();
+                            String cssClass = "";
+                            if ("rejected".equalsIgnoreCase(status))
+                                cssClass = "status-rejected";
+                            else if ("approved".equalsIgnoreCase(status))
+                                cssClass = "status-approved";
+                            else if ("pending".equalsIgnoreCase(status))
+                                cssClass = "status-pending";
                     %>
-
                     <tr>
-                        <td>
+                        <td style="padding:10px;">
+                            <div style="display:flex; align-items:center; gap:10px;">
 
-                            <!-- Left: Avatar + Name/Type -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
                                 <!-- Avatar -->
-                                <img src="<%= selectedAvatar%>" alt="User Avatar" style="width: 50px; height: 50px; border-radius: 50%;"/>
-
-                                <!-- Name + Holiday Type -->
-                                <div style="display: flex; flex-direction: column;">
-                                    <span style="font-weight: 600;"><%=h.getFullName()%></span>
-                                    <span style=" font-size: 0.9rem; font-weight: normal;">Holiday from <%= h.getStartDate()%> to <%= h.getEndDate()%></span>
-                                    <span style=" font-size: 0.8rem; color: lightslategray"><%= h.getType()%></span>
-                                </div>
-                            </div>
-
-
-                            <!-- Right: Status + Details Button -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-
-
-                                <% String status = h.getStatus();
-                                    String cssClass = "";
-                                    if ("rejected".equalsIgnoreCase(status)) {
-                                        cssClass = "status-rejected";
-                                    } else if ("approved".equalsIgnoreCase(status)) {
-                                        cssClass = "status-approved";
-                                    } else if ("pending".equalsIgnoreCase(status)) {
-                                        cssClass = "status-pending";
-                                    }%>
-                                <!-- Status with vertical separator -->
-                                <div style="border-left: 1px solid #ccc; padding-left: 10px; display: flex; align-items: center; min-width: 80px; height: 35px; justify-content: center;">
-                                    <span class="status <%= cssClass%>"> 
-                                        <%= h.getStatus()%> </span>
-                                </div>
-
-                                <!-- Details Button with vertical separator -->
-                                <div id="detailsAction" style="border-left: 1px solid #ccc; padding-left: 10px; display: flex; align-items: center; justify-content: center;">
-                                    <button class="detailsBtn" 
-
-                                            data-userid="<%= h.getUserId()%>" 
-                                            data-holidayid="<%= h.getHolidayId()%>" 
-                                            data-username="<%= h.getFullName()%>"
-                                            data-startdate="<%= h.getStartDate()%>"
-                                            data-enddate="<%= h.getEndDate()%>"
-                                            data-motif="<%= h.getMotif()%>"
-                                            data-status="<%= h.getStatus()%>"
-
-                                            style="background: none; border: none; cursor: pointer;">
-
-                                        <span class="icon-home">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" width="20" height="20">
-                                            <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                            <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                                            </svg>
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%= h.getUserId()%>"
+                                         style="width:60px; height:60px; border-radius:50%; background: whitesmoke;" alt="<%= h.getFullName()%>" />
+                                    <div style="display:flex; flex-direction:column;">
+                                        <span style="font-size: 0.9rem; font-weight:600; color: #444; white-space:nowrap;">
+                                            <%= outFmt.format(h.getStartDate())%> &rarr;
+                                            <%= outFmt.format(h.getEndDate())%>,
+                                            <%= yearFmt.format(h.getEndDate())%>                                                
                                         </span>
-                                    </button>
+                                        <span style="font-size:0.8rem; color:lightslategray;"><%=h.getType()%>  &bull; <%=days%> days </span>
+                                    </div>
                                 </div>
 
                             </div>
+                        </td>
+
+                        <!-- REASON -->
+                        <td style="padding:10px; text-align:center; width:250px;">
+
+                            <span style="
+                                  font-size:0.9rem;
+                                  display:block;
+                                  white-space:nowrap;
+                                  overflow:hidden;
+                                  text-overflow:ellipsis;
+                                  ">
+                                <%= h.getMotif()%>
+                            </span>
+
+                        </td>
+
+                        <!-- STATUS -->
+                        <td style="padding:10px; text-align:center; width:120px;">
+
+                            <span class="status <%= cssClass%>">
+                                <%= h.getStatus()%>
+                            </span>
+
+                        </td>
+
+                        <!-- ACTION -->
+                        <td style="padding:10px; text-align:center; width:100px;">
+
+                            <button class="icon-btn-td"
+
+                                    data-userid="<%= h.getUserId()%>" 
+                                    data-type="holidays"
+                                    data-title="<%= h.getType()%>"
+                                    data-holidayid="<%= h.getHolidayId()%>" 
+                                    data-username="<%= h.getFullName()%>"
+                                    data-startdate="<%= h.getStartDate()%>"
+                                    data-enddate="<%= h.getEndDate()%>"
+                                    data-motif="<%= h.getMotif()%>"
+                                    data-status="<%= h.getStatus()%>">
+
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     viewBox="0 0 20 20"
+                                     fill="#666"
+                                     width="18"
+                                     height="18">
+
+                                <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+
+                                <path fill-rule="evenodd"
+                                      d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                                      clip-rule="evenodd" />
+                                </svg>
+
+                            </button>
+
                         </td>
                     </tr>
                     <%
@@ -221,7 +250,7 @@
 
         <script src="../scripts/utils.js"></script>
         <script>
-            const ROWS_PER_PAGE = 3; // change this to whatever limit you want
+            const ROWS_PER_PAGE = 4; // change this to whatever limit you want
             let currentPage = 1;
 
             function paginateTable() {
@@ -325,9 +354,10 @@
 
                     // --- Date ---
                     // The start date is in the second <span> of the first <td>
-                    const spans = row.querySelectorAll('td:first-child div span');
-                    const rawDate = spans[1] ? spans[1].textContent.trim() : '';
-                    const rowDate = new Date(rawDate);
+                    const rawDate =
+                            row.querySelector('td:first-child div div span:first-of-type')
+                            ?.textContent.trim() || '';
+                    const rowDate = new Date(rawDate + ', ' + new Date().getFullYear());
                     rowDate.setHours(0, 0, 0, 0);
 
                     let dateMatch = true;
@@ -353,6 +383,27 @@
                 showEmptyMessageIfNeeded();
             }
 
+            function showEmptyMessageIfNeeded() {
+                const tbody = document.querySelector('#alltable tbody');
+                const visibleRows = Array.from(tbody.querySelectorAll('tr')).filter(row => {
+                    return !row.querySelector('td[colspan]') && row.style.display !== 'none';
+                });
+                // Supprimer ancien message de filtre vide
+                const existing = document.getElementById('filter-empty-msg');
+                if (existing)
+                    existing.remove();
+                if (visibleRows.length === 0) {
+                    const emptyRow = document.createElement('tr');
+                    emptyRow.id = 'filter-empty-msg';
+                    emptyRow.innerHTML = `
+            <td colspan="4" style="padding:30px; background:white; text-align:center;
+                border-bottom-left-radius:16px; border-bottom-right-radius:16px; color:red;">
+                No results for this filter.
+            </td>`;
+                    tbody.appendChild(emptyRow);
+                }
+            }
+
             document.getElementById('statusFilter').addEventListener('change', applyFilters);
             document.getElementById('dateFilter').addEventListener('change', applyFilters);
         </script>
@@ -366,53 +417,55 @@
 
             window.calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
+                eventSources: [],
                 firstDay: 1,
                 showNonCurrentDates: false,
                 hiddenDays: [0]
             });
+
             window.calendar.render();
 
-
             // Open modal for each user button
-            document.querySelectorAll('.detailsBtn').forEach(btn => {
+            document.querySelectorAll('.icon-btn-td').forEach(btn => {
                 btn.addEventListener('click', () => {
 
-                    // ✅ set correct global values
+                    // UserId
                     currentUserId = (btn.dataset.userid || "").trim();
                     selectedEventId = btn.dataset.holidayid;
-                    console.log("Selected user:", currentUserId);
-                    console.log("Selected event:", selectedEventId);
+                    console.log("Selected user_id4Calendar:", window.currentUserId);
+                    console.log("Selected holiday_id4Calendar:", selectedEventId);
+
+
                     const status = btn.dataset.status;
                     const actionsDiv = document.querySelector('.modal-actions');
                     actionsDiv.innerHTML = "";
-                    // buttons
+                    // Conditional buttons
                     if (status === "Pending") {
                         actionsDiv.innerHTML = `
                 <button class="modal-btn" id="approveLeaveBtn" onclick="submitStatus('Approved')">Approve</button>
                 <button class="modal-btn" id="rejectLeaveBtn" onclick="submitStatus('Rejected')">Reject</button>
                 <button class="modal-btn" onclick="document.getElementById('leaveModal').style.display='none'">Cancel</button>
             `;
+                    } else if (status === "Approved" || status === "Rejected") {
+                        actionsDiv.innerHTML = `
+                <button class="modal-btn" onclick="document.getElementById('leaveModal').style.display='none'">Cancel</button>
+            `;
                     } else {
                         actionsDiv.innerHTML = `
-                <button class="modal-btn" onclick="leaveModal.style.display='none'">Cancel</button>
+                <button disabled>No actions available</button>
             `;
                     }
 
-                    // modal fill (FIXED)
-                    document.getElementById('modalId').textContent =
-                            "ID : #" + (btn.dataset.userid || "N/A");
-                    document.getElementById('modalUsername').textContent =
-                            btn.dataset.username || "Unknown";
-                    document.getElementById('modalMotif').textContent =
-                            btn.dataset.motif || "N/A";
-                    document.getElementById('modalStartDate').value =
-                            btn.dataset.startdate || "";
-                    document.getElementById('modalEndDate').value =
-                            btn.dataset.enddate || "";
-                    // show modal
+                    // Fill modal
+                    document.getElementById('modalId').textContent = "ID : #" + (btn.dataset.userid || "N/A");
+                    document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
+                    document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
+                    document.getElementById('modalStartDate').value = btn.dataset.startdate || "";
+                    document.getElementById('modalEndDate').value = btn.dataset.enddate || "";
+
+                    // Show modal
                     document.getElementById('leaveModal').style.display = 'block';
 
-                    // reload calendar safely
                     // Make sure calendar exists
                     if (window.calendar) {
                         // Remove old sources
@@ -424,9 +477,8 @@
                         });
                         //PermissionCalendar
                         window.calendar.addEventSource({
-                            url: '<%= request.getContextPath()%>/CalendarAdminUserLeaveServlet',
+                            url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
                             method: 'GET',
-                            display: 'list-item',
                             extraParams: {
                                 userId: currentUserId
                             }

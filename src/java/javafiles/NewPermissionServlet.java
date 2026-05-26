@@ -66,11 +66,11 @@ public class NewPermissionServlet extends HttpServlet {
             }
 
             stmt.close();
-            request.getRequestDispatcher("main_permissions.jsp").forward(request, response);
+            request.getRequestDispatcher("main_permission.jsp").forward(request, response);
 
         } catch (IOException | ClassNotFoundException | SQLException | ServletException  e) {
             logger.error("NEW PERMISSION ERROR : " + e.getMessage());
-            request.getRequestDispatcher("main_permissions.jsp").forward(request, response);
+            request.getRequestDispatcher("main_permission.jsp").forward(request, response);
         } catch (Exception ex) {
             System.getLogger(NewPermissionServlet.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } finally {

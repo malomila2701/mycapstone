@@ -97,8 +97,8 @@ public class userdataDAO {
                         rs2.getInt("user_id"),
                         rs2.getInt("holidays_id"),
                         rs2.getString("fullname"),
-                        rs2.getString("start_date"),
-                        rs2.getString("end_date"),
+                        rs2.getDate("start_date"),
+                        rs2.getDate("end_date"),
                         rs2.getString("type"),
                         rs2.getString("status"),
                         rs2.getString("motif")
@@ -275,8 +275,8 @@ public class userdataDAO {
                         rs1.getInt("user_id"),
                         rs1.getInt("holidays_id"),
                         rs1.getString("fullname"),
-                        rs1.getString("start_date"),
-                        rs1.getString("end_date"),
+                        rs1.getDate("start_date"),
+                        rs1.getDate("end_date"),
                         rs1.getString("type"),
                         rs1.getString("status"),
                         rs1.getString("motif")

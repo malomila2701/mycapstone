@@ -500,11 +500,11 @@ Main SECTION
     border-radius: 50%;
 }
 .icon-btn-avatar.holiday {
-    background:#f8fbff;
+    background:transparent;
     border: 1px solid #dbeafe;
 }
 .icon-btn-avatar.permission {
-    background:#fdf6ec;
+    background:transparent;
     border: 1px solid #e6d7c3;
 }
 .icon-btn-avatar svg {
@@ -522,6 +522,9 @@ Main SECTION
     border-radius: 16px;
     border:none;
     cursor: pointer;
+}
+.icon-btn-td svg:hover {
+    fill: #3788d8;
 }
 .icon-btn-header {
     display: flex;
@@ -1016,7 +1019,7 @@ h1 {
     flex-direction: column;
     padding: 12px 14px;
 
-    text-align: center;
+    text-align: left;
 }
 .dd .title {
     font-size: 0.9rem;
@@ -1027,7 +1030,7 @@ h1 {
 .dd-label {
     font-size: 0.8rem;
     color: #666;
-    text-align: center;
+    text-align: left;
 }
 /* footer */
 .dd-footer {

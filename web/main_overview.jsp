@@ -90,8 +90,6 @@
         </script>
         <!-- Resources utilisées dans le code -->
         <%
-            String selectedAvatar = "images/avatar1.jpg";
-
             SimpleDateFormat outFmt = new SimpleDateFormat("MMM d", Locale.ENGLISH);
             SimpleDateFormat yearFmt = new SimpleDateFormat("yyyy");
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -198,7 +196,6 @@
                         </div>
 
                         <div class="header-right">
-
                             <button class="icon-btn" id="new-leave-btn" onclick="">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white">
                                 <path fill-rule="evenodd" d="M5.478 5.559A1.5 1.5 0 0 1 6.912 4.5H9A.75.75 0 0 0 9 3H6.912a3 3 0 0 0-2.868 2.118l-2.411 7.838a3 3 0 0 0-.133.882V18a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0 0 17.088 3H15a.75.75 0 0 0 0 1.5h2.088a1.5 1.5 0 0 1 1.434 1.059l2.213 7.191H17.89a3 3 0 0 0-2.684 1.658l-.256.513a1.5 1.5 0 0 1-1.342.829h-3.218a1.5 1.5 0 0 1-1.342-.83l-.256-.512a3 3 0 0 0-2.684-1.658H3.265l2.213-7.191Z" clip-rule="evenodd" />
@@ -239,7 +236,7 @@
                                             <!-- Avatar -->
                                             <button class="icon-btn-avatar holiday">
                                                 <span class="icon-home">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#215f91" class="size-6">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0D7EB8" class="size-6">
                                                     <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                                                     <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                                                     </svg>
@@ -272,7 +269,7 @@
 
                                                                 data-userid="<%= h.getUserId()%>" 
                                                                 data-title="<%=h.getType()%>"
-                                                                data-holidayid="<%= h.getHolidayId()%>" 
+                                                                data-holiday-id="<%= h.getHolidayId()%>" 
                                                                 data-username="<%= h.getName()%>"
                                                                 data-startdate="<%= h.getStartDate()%>"
                                                                 data-enddate="<%= h.getEndDate()%>"
@@ -301,7 +298,7 @@
                                                         <!--BUTTON FOR PENDING TABLE / CANCEL -->
                                                         <button class="icon-btn-td"
                                                                 data-userid="<%= h.getUserId()%>" 
-                                                                data-holidayid="<%= h.getHolidayId()%>" 
+                                                                data-holiday-id="<%= h.getHolidayId()%>" 
                                                                 data-username="<%= h.getName()%>"
                                                                 data-startdate="<%= h.getStartDate()%>"
                                                                 data-enddate="<%= h.getEndDate()%>"
@@ -378,7 +375,7 @@
 
                                                                 data-userid="<%= p.getUserId()%>" 
                                                                 data-title="Permission"
-                                                                data-holidayid="<%= p.getPermissionId()%>" 
+                                                                data-holiday-id="<%= p.getPermissionId()%>" 
                                                                 data-username="<%= p.getFullName()%>"
                                                                 data-startdate="<%= p.getStartDate()%>"
                                                                 data-enddate="<%= p.getEndDate()%>"
@@ -411,7 +408,7 @@
 
                                                                 data-userid="<%= p.getUserId()%>" 
                                                                 data-title="Permission"
-                                                                data-holidayid="<%= p.getPermissionId()%>" 
+                                                                data-holiday-id="<%= p.getPermissionId()%>" 
                                                                 data-username="<%= p.getFullName()%>"
                                                                 data-startdate="<%= p.getStartDate()%>"
                                                                 data-enddate="<%= p.getEndDate()%>"
@@ -495,8 +492,12 @@
                                 }
 
                                 // --- Sort by startDate descending (newest first) ---
-                                combined.sort((a,
-                                        b) -> {
+                                combined.sort(( a,
+                                          
+                                      
+                                      
+                                      
+                                    b) -> {
                                     Date dateA = (a instanceof UserLeave)
                                             ? ((UserLeave) a).getStartDate()
                                             : ((UserPermission) a).getStartDate();
@@ -540,7 +541,7 @@
                                         <div style="display:flex; align-items:center; gap:10px;">
                                             <button class="icon-btn-avatar holiday">
                                                 <span class="icon-home">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1b6ca8" class="size-6">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0D7EB8" class="size-6">
                                                     <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                                                     <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                                                     </svg>
@@ -632,7 +633,7 @@
                                                             data-userid="<%=p.getUserId()%>"
                                                             data-type="permission"
                                                             data-title="Permission"
-                                                            data-holidayid="<%=p.getPermissionId()%>"
+                                                            data-holiday-id="<%=p.getPermissionId()%>"
                                                             data-username="<%=p.getFullName()%>"
                                                             data-startdate="<%=p.getStartDate()%>"
                                                             data-enddate="<%=p.getEndDate()%>"
@@ -889,6 +890,7 @@
                 const data = {
                     id: button.dataset.holidayId,
                     title: button.dataset.title,
+                    type: button.dataset.type,
                     motif: button.dataset.motif,
                     start: button.dataset.start,
                     end: button.dataset.end,

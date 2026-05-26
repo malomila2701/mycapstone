@@ -11,10 +11,6 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.dependencies-json-20250517}</file>
-                    <path-in-war>WEB-INF/classes</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${file.reference.log4j-api-2.3.2.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -25,6 +21,10 @@
                 <library dirs="200">
                     <file>${file.reference.ojdbc11.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.dependencies-json-20250517}</file>
+                    <path-in-war>WEB-INF/classes</path-in-war>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>

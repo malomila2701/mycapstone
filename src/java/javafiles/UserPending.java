@@ -1,17 +1,19 @@
 package javafiles;
 
+import java.sql.Date;
+
 public class UserPending {
 
     private int id;
     private int holidays_id;
     private String fullname;
-    private String start_date;
-    private String end_date;
+    private Date start_date;
+    private Date end_date;
     private String type;
     private String status;
     private String motif;
 
-    public UserPending(int id, int holidays_id, String fullName, String startDate, String endDate, String type, String status, String motif) {
+    public UserPending(int id, int holidays_id, String fullName, Date startDate, Date endDate, String type, String status, String motif) {
         this.id = id;
         this.holidays_id = holidays_id;
         this.fullname = fullName;
@@ -34,11 +36,11 @@ public class UserPending {
         return fullname;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return start_date;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return end_date;
     }
 

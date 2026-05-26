@@ -4,7 +4,7 @@
  */
 package javafiles;
 
-import java.util.Date;
+import java.sql.Date;
 import java.sql.Time;
 
 /**
@@ -38,8 +38,8 @@ public class UserPermission {
     public Integer getPermissionId() { return permission_id; }
     public String getFullName() { return fullname; }
     public Date getStartDate() { return start_date; }
-    public Date getStartTime() { return start_time; }
-    public Date getEndTime() { return end_time; }
+    public Time getStartTime() { return start_time; }
+    public Time getEndTime() { return end_time; }
     public Date getEndDate() { return end_date; }
     public String getStatus() { return status; }
     public String getMotif() { return motif; }
