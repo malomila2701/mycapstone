@@ -30,13 +30,17 @@ public class UpdatePermissionStatusServlet extends HttpServlet {
         //Valeurs récupérées des JSP
         String status = request.getParameter("status");
         int id = Integer.parseInt(request.getParameter("permission_id"));
+        String response_message = request.getParameter("admin_message");
+        
         int userId = Integer.parseInt(request.getParameter("user_id"));
+        
 
         try (Connection conn = DBConnection.connect()) {
-            String sql = "UPDATE permissions SET status=? WHERE permission_id=?";
+            String sql = "UPDATE permissions SET status=?, response_message=? WHERE permission_id=?";
             java.sql.PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, status);
-            ps.setInt(2, id);
+            ps.setString(2, response_message);
+            ps.setInt(3, id);
             ps.executeUpdate();
 
             // 2. Insertion dans notifications

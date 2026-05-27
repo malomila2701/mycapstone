@@ -9,12 +9,28 @@
     box-shadow: none;
 }
 
+:root {
+    --bg:        #F5F4F0;
+    --surface:   #FFFFFF;
+    --border:    rgba(0,0,0,0.08);
+    --border-md: rgba(0,0,0,0.14);
+    --text-1:    #1A1917;
+    --text-2:    #6B6A66;
+    --text-3:    #9E9D99;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --font-display: 'Syne', sans-serif;
+    --font-body:    system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 body{
     font-family: system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 1rem;
     background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
-    color: #666;
+    color: #0F172A; /**Slate 900*/
     height: 100%;
     margin:0 0 0 16%;
     overflow-x: hidden;
@@ -376,11 +392,18 @@ Main SECTION
     margin:0;
     position: relative;
     top: 20%;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
 }
 .card p {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: var(--text-3);
 }
 
 .reqtable {
@@ -501,11 +524,11 @@ Main SECTION
 }
 .icon-btn-avatar.holiday {
     background:transparent;
-    border: 1px solid #dbeafe;
+    border: 1px solid #ccc;
 }
 .icon-btn-avatar.permission {
     background:transparent;
-    border: 1px solid #e6d7c3;
+    border: 1px solid #ccc;
 }
 .icon-btn-avatar svg {
     width: 70%;
@@ -526,6 +549,24 @@ Main SECTION
 .icon-btn-td svg:hover {
     fill: #3788d8;
 }
+.icon-btn-td {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;   /* control spacing */
+    margin: 0;
+
+    background: transparent;
+    border-radius: 16px;
+    border:none;
+    cursor: pointer;
+}
+.icon-btn-status svg {
+    position: relative;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+}
 .icon-btn-header {
     display: flex;
     margin-right: 5px;
@@ -540,7 +581,18 @@ Main SECTION
     width: 17px;
     height: 17px;
 }
-
+.status-home-rejected {
+    background: #721c24;
+    width: 18px;
+    height: 18px;
+    border-radius: 24px;
+}
+.status-home-approved{
+    background:#155724;
+    width: 18px;
+    height: 18px;
+    border-radius: 24px;
+}
 /**Add Request Button*/
 #new-leave-btn {
     display: flex;
@@ -612,29 +664,28 @@ Main SECTION
     align-items: center;
     gap: 5px;
 
-    min-width: 60px;
-    padding: 3px 10px;
-    border-radius: 99px;
+    min-width: 70px;
+    padding: 4px 12px;
+    border-radius: 9999px;
 
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
     font-weight: 400;
-    font-size: 0.9rem;
-}
-.status::before {
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+    font-size: 11px;
 }
 .status-rejected {
-    background: #f8d7da;
-    color: #721c24;
+    background: #fdecea;
+    color: #d93025;
+    fill: #d93025;
 }
 .status-rejected::before {
     background: rgba(114, 28, 36, 0.6);
 }
 .status-approved {
-    background: #d4edda;
-    color: #155724;
+    background: #D1FAE5;
+    border: 1px solid #10B981;
+    color: #065F46;
+    fill: #1a9c5f;
 }
 .status-approved::before {
     background: rgba(21, 87, 36, 0.6);
@@ -828,11 +879,6 @@ Side SECTION
     flex-direction:column;
 }
 
-.agenda-card h3 {
-    color: #444;
-    margin-bottom: 15px;
-}
-
 .agenda-item {
     background: whitesmoke;
     border-radius: 8px;
@@ -853,7 +899,7 @@ Side SECTION
 .agenda-item p {
     margin: 5px 0 0;
     font-size: 0.9rem;
-    color: #666;
+    color: #555;
 }
 
 

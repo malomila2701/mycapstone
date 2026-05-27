@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : home_page
     Created on : 17 nov. 2025, 16:57:58
@@ -188,9 +189,10 @@
                     <div class="header">
                         <div class="header-left"> 
                             <span style="
-                                  font-weight: 500;
-                                  font-size: 1.1rem;
-                                  color: #475569;">
+                                  font-size: 11px;
+                                  text-transform: uppercase;
+                                  letter-spacing: .7px;
+                                  color: #9E9D99;">
 
                                 Pending Requests</span>
                         </div>
@@ -236,7 +238,7 @@
                                             <!-- Avatar -->
                                             <button class="icon-btn-avatar holiday">
                                                 <span class="icon-home">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0D7EB8" class="size-6">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#333" class="size-6">
                                                     <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                                                     <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                                                     </svg>
@@ -244,12 +246,12 @@
                                             </button>
                                             <!-- Name + Holiday Type -->
                                             <div style="display: flex; flex-direction: column;">
-                                                <span style="font-weight: normal; color: #444; white-space: nowrap">
+                                                <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
                                                     <%= outFmt.format(h.getStartDate())%> &rarr;
                                                     <%= outFmt.format(h.getEndDate())%>,
                                                     <%= yearFmt.format(h.getEndDate())%>
                                                 </span>
-                                                <span style="margin-left: 3px; font-size: 0.8rem; color: lightslategray"><%= h.getType()%></span>
+                                                <span style="font-size:0.8rem; font-weight:lighter"><%= h.getType()%></span>
                                             </div>
                                         </div>
 
@@ -348,7 +350,7 @@
                                             <!-- Avatar -->
                                             <button class="icon-btn-avatar permission">
                                                 <span class="icon-home">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#b88a57" class="size-6">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#333" class="size-6">
                                                     <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0 1 12 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 0 1 7.5 5.455V5.25Zm7.5 0v.09a49.488 49.488 0 0 0-6 0v-.09a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5Zm-3 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
                                                     <path d="M3 18.4v-2.796a4.3 4.3 0 0 0 .713.31A26.226 26.226 0 0 0 12 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 0 1-6.477-.427C4.047 21.128 3 19.852 3 18.4Z" />
                                                     </svg>
@@ -356,7 +358,7 @@
                                             </button>                                            
                                             <div style="display:flex; flex-direction:column;">
                                                 <span style="font-weight:600; font-size: 0.9rem; color: #444; white-space:nowrap;"><%= outFmt.format(p.getStartDate())%></span>
-                                                <span style="font-size:0.8rem; color:lightslategray;">Permission &bull; <%= hours%> hrs</span>
+                                                <span style="font-size:0.8rem; font-weight:lighter">Permission &bull; <%= hours%> hrs</span>
                                             </div>
                                         </div>
                                         <div style="display:flex; align-items:center; gap:10px;">
@@ -456,9 +458,10 @@
                     <div class="header">
                         <div class="header-left"> 
                             <span style="
-                                  font-weight: 500;
-                                  font-size: 1.1rem;
-                                  color: #475569;">
+                                  font-size: 11px;
+                                  text-transform: uppercase;
+                                  letter-spacing: .7px;
+                                  color: #9E9D99;">
 
                                 Latest Requests</span>
                         </div>
@@ -497,6 +500,15 @@
                                       
                                       
                                       
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
                                     b) -> {
                                     Date dateA = (a instanceof UserLeave)
                                             ? ((UserLeave) a).getStartDate()
@@ -521,12 +533,16 @@
                                     boolean isLeave = item instanceof UserLeave;
                                     String status = isLeave ? ((UserLeave) item).getStatus() : ((UserPermission) item).getStatus();
                                     String cssClass = "";
+                                    String cssIconStatus = "";
                                     if ("rejected".equalsIgnoreCase(status)) {
                                         cssClass = "status-rejected";
+                                        cssIconStatus = "status-home-rejected";
                                     } else if ("approved".equalsIgnoreCase(status)) {
                                         cssClass = "status-approved";
+                                        cssIconStatus = "status-home-approved";
                                     } else if ("pending".equalsIgnoreCase(status)) {
                                         cssClass = "status-pending";
+                                        cssIconStatus = "status-home-pending";
                                     }
 
                                     if (isLeave) {
@@ -541,25 +557,35 @@
                                         <div style="display:flex; align-items:center; gap:10px;">
                                             <button class="icon-btn-avatar holiday">
                                                 <span class="icon-home">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0D7EB8" class="size-6">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#333" class="size-6">
                                                     <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
                                                     <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                                                     </svg>
                                                 </span>
                                             </button>
                                             <div style="display:flex; flex-direction:column;">
-                                                <span style="font-size: 0.9rem; font-weight:600; color: #444; white-space:nowrap;">
+                                                <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
                                                     <%= outFmt.format(h.getStartDate())%> &rarr;
                                                     <%= outFmt.format(h.getEndDate())%>,
                                                     <%= yearFmt.format(h.getEndDate())%>                                                
                                                 </span>
-                                                <span style="font-size:0.8rem; color:lightslategray;"><%=h.getType()%>  &bull; <%=days%> days </span>
+                                                <span style="font-size:0.8rem; font-weight:lighter"><%=h.getType()%>  &bull; <%=days%> days </span>
                                             </div>
                                         </div>
                                         <!-- Right: status + details -->
                                         <div style="display:flex; align-items:center; gap:10px;">
                                             <div style="border-left:1px solid transparent; padding-left:10px; display:flex; align-items:center; min-width:80px; height:35px; justify-content:center;">
-                                                <span class="status <%=cssClass%>"><%=h.getStatus()%></span>
+
+                                                <span class="status <%=cssClass%>">
+                                                    <div class="icon-btn-status"><div class="icon-home <%=cssIconStatus%>">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                                            <path fill-rule="evenodd" d="M12 3.75a6.715 6.715 0 0 0-3.722 1.118.75.75 0 1 1-.828-1.25 8.25 8.25 0 0 1 12.8 6.883c0 3.014-.574 5.897-1.62 8.543a.75.75 0 0 1-1.395-.551A21.69 21.69 0 0 0 18.75 10.5 6.75 6.75 0 0 0 12 3.75ZM6.157 5.739a.75.75 0 0 1 .21 1.04A6.715 6.715 0 0 0 5.25 10.5c0 1.613-.463 3.12-1.265 4.393a.75.75 0 0 1-1.27-.8A6.715 6.715 0 0 0 3.75 10.5c0-1.68.503-3.246 1.367-4.55a.75.75 0 0 1 1.04-.211ZM12 7.5a3 3 0 0 0-3 3c0 3.1-1.176 5.927-3.105 8.056a.75.75 0 1 1-1.112-1.008A10.459 10.459 0 0 0 7.5 10.5a4.5 4.5 0 1 1 9 0c0 .547-.022 1.09-.067 1.626a.75.75 0 0 1-1.495-.123c.041-.495.062-.996.062-1.503a3 3 0 0 0-3-3Zm0 2.25a.75.75 0 0 1 .75.75c0 3.908-1.424 7.485-3.781 10.238a.75.75 0 0 1-1.14-.975A14.19 14.19 0 0 0 11.25 10.5a.75.75 0 0 1 .75-.75Zm3.239 5.183a.75.75 0 0 1 .515.927 19.417 19.417 0 0 1-2.585 5.544.75.75 0 0 1-1.243-.84 17.915 17.915 0 0 0 2.386-5.116.75.75 0 0 1 .927-.515Z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </div></div>
+
+                                                    <%=h.getStatus()%></span>
+
+
                                             </div>
                                             <div style="border-left:1px solid #ccc; padding-left:10px; padding-right:20px; display:flex;">
                                                 <div style="position:relative; display:inline-block;">
@@ -606,18 +632,18 @@
                                         <div style="display:flex; align-items:center; gap:10px;">
                                             <button class="icon-btn-avatar permission">
                                                 <span class="icon-home">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#b88a57" class="size-6">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#333" class="size-6">
                                                     <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0 1 12 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 0 1 7.5 5.455V5.25Zm7.5 0v.09a49.488 49.488 0 0 0-6 0v-.09a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5Zm-3 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
                                                     <path d="M3 18.4v-2.796a4.3 4.3 0 0 0 .713.31A26.226 26.226 0 0 0 12 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 0 1-6.477-.427C4.047 21.128 3 19.852 3 18.4Z" />
                                                     </svg>
                                                 </span>
                                             </button>
                                             <div style="display:flex; flex-direction:column;">
-                                                <span style="font-weight:600; font-size: 0.9rem; color: #444; white-space:nowrap;">
+                                                <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
                                                     <%= outFmt.format(p.getStartDate())%>,
                                                     <%= yearFmt.format(p.getEndDate())%>
                                                 </span>
-                                                <span style="font-size:0.8rem; color:lightslategray;">
+                                                <span style="font-size:0.8rem; font-weight:lighter">
                                                     Permission &bull; <%= hours%> hrs
                                                 </span>
                                             </div>
@@ -625,7 +651,22 @@
                                         <!-- Right: status + details -->
                                         <div style="display:flex; align-items:center; gap:10px;">
                                             <div style="border-left:1px solid transparent; padding-left:10px; display:flex; align-items:center; min-width:80px; height:35px; justify-content:center;">
-                                                <span class="status <%=cssClass%>"><%=p.getStatus()%></span>
+                                                <span class="status <%=cssClass%>">
+                                                    <div class="icon-btn-status" onclick="toggleHRTooltip(this, '<%=p.getResponseMessage() != null ? p.getResponseMessage().replace("'", "\\'") : ""%>')" style="position:relative; cursor:pointer;">
+                                                        <div class="icon-home <%=cssIconStatus%>">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                                            <path fill-rule="evenodd" d="M12 3.75a6.715 6.715 0 0 0-3.722 1.118.75.75 0 1 1-.828-1.25 8.25 8.25 0 0 1 12.8 6.883c0 3.014-.574 5.897-1.62 8.543a.75.75 0 0 1-1.395-.551A21.69 21.69 0 0 0 18.75 10.5 6.75 6.75 0 0 0 12 3.75ZM6.157 5.739a.75.75 0 0 1 .21 1.04A6.715 6.715 0 0 0 5.25 10.5c0 1.613-.463 3.12-1.265 4.393a.75.75 0 0 1-1.27-.8A6.715 6.715 0 0 0 3.75 10.5c0-1.68.503-3.246 1.367-4.55a.75.75 0 0 1 1.04-.211ZM12 7.5a3 3 0 0 0-3 3c0 3.1-1.176 5.927-3.105 8.056a.75.75 0 1 1-1.112-1.008A10.459 10.459 0 0 0 7.5 10.5a4.5 4.5 0 1 1 9 0c0 .547-.022 1.09-.067 1.626a.75.75 0 0 1-1.495-.123c.041-.495.062-.996.062-1.503a3 3 0 0 0-3-3Zm0 2.25a.75.75 0 0 1 .75.75c0 3.908-1.424 7.485-3.781 10.238a.75.75 0 0 1-1.14-.975A14.19 14.19 0 0 0 11.25 10.5a.75.75 0 0 1 .75-.75Zm3.239 5.183a.75.75 0 0 1 .515.927 19.417 19.417 0 0 1-2.585 5.544.75.75 0 0 1-1.243-.84 17.915 17.915 0 0 0 2.386-5.116.75.75 0 0 1 .927-.515Z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </div>
+                                                        <!--Tooltip -->
+                                                        <div class="hr-tooltip" style="display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); width:220px; background:#fff; border:1px solid #ddd; border-radius:8px; padding:12px; z-index:999; box-shadow:0 4px 12px rgba(0,0,0,0.12); font-size:13px; color:#333;">
+                                                            <div style="font-weight:600; margin-bottom:6px; color:#555;">HR Note:</div>
+                                                            <div class="hr-message" style="color:#222; line-height:1.5;"></div>
+                                                            <div style="position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#ddd;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <%=p.getStatus()%>
+                                                </span>
                                             </div>
                                             <div style="border-left:1px solid #ccc; padding-left:10px; padding-right:20px; display:flex;">
                                                 <div style="position:relative; display:inline-block;">
@@ -666,7 +707,7 @@
                                         } // end if/else isLeave
                                     } // end for combined
                                 } // end else
-                            %>
+%>
                         </tbody>
                     </table>
                     <div class="bar" id="bar2"></div>
@@ -693,7 +734,14 @@
                 </div>
 
                 <div class="agenda-card">
-                    <h3>Agenda</h3>
+                    <span style="font-size: 13px;
+                                  text-transform: uppercase;
+                                  letter-spacing: .7px;
+                                  color: #9E9D99;
+                                  
+                                  line-height: 6;">
+                        Agenda
+                    </span>
                     <div class="agenda-item" id="agenda-item-holiday">
                         <div style="display:flex; flex-direction: row; justify-content: space-between;">
                             <div>
@@ -727,84 +775,84 @@
             </aside>
         </div>
 
-
+        <script src="scripts/utils.js"></script>
         <script>
 
-            let calendar;
-            let cellDate;
-            let hasBlockEvent;
-            let start;
-            let end;
-            const currentUserId = <%= session.getAttribute("user_id")%>;
-            const loader = document.getElementById("loader");
+                            let calendar;
+                            let cellDate;
+                            let hasBlockEvent;
+                            let start;
+                            let end;
+                            const currentUserId = <%= session.getAttribute("user_id")%>;
+                            const loader = document.getElementById("loader");
 
-            document.addEventListener('DOMContentLoaded', function () {
-                var calendarEl = document.getElementById('calendar');
-                calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    firstDay: 1,
-                    weekends: false,
-                    showNonCurrentDates: false,
-                    eventSources: [
+                            document.addEventListener('DOMContentLoaded', function () {
+                                var calendarEl = document.getElementById('calendar');
+                                calendar = new FullCalendar.Calendar(calendarEl, {
+                                    initialView: 'dayGridMonth',
+                                    firstDay: 1,
+                                    weekends: false,
+                                    showNonCurrentDates: false,
+                                    eventSources: [
 
-                        // All holidays 
-                        {
-                            url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
-                            method: 'GET',
-                            className: 'event-block',
-                            display: 'block'},
-                        // User-specific holidays
-                        {
-                            url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
-                            method: 'GET',
-                            className: 'event-list',
-                            display: 'list-item',
-                            extraParams: {
-                                userId: currentUserId
-                            }
-                        }
-                    ],
-                    // Highlight all days of events
-                    eventsSet: function (events) {
+                                        // All holidays 
+                                        {
+                                            url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
+                                            method: 'GET',
+                                            className: 'event-block',
+                                            display: 'block'},
+                                        // User-specific holidays
+                                        {
+                                            url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
+                                            method: 'GET',
+                                            className: 'event-list',
+                                            display: 'list-item',
+                                            extraParams: {
+                                                userId: currentUserId
+                                            }
+                                        }
+                                    ],
+                                    // Highlight all days of events
+                                    eventsSet: function (events) {
 
-                        // reset all cells
-                        document.querySelectorAll('.fc-daygrid-day').forEach(function (cell) {
-                            cell.classList.remove('event-cell');
-                        });
-                        // loop over days
-                        document.querySelectorAll('.fc-daygrid-day').forEach(function (dayCell) {
+                                        // reset all cells
+                                        document.querySelectorAll('.fc-daygrid-day').forEach(function (cell) {
+                                            cell.classList.remove('event-cell');
+                                        });
+                                        // loop over days
+                                        document.querySelectorAll('.fc-daygrid-day').forEach(function (dayCell) {
 
-                            cellDate = dayCell.getAttribute('data-date');
-                            hasBlockEvent = events.some(function (event) {
+                                            cellDate = dayCell.getAttribute('data-date');
+                                            hasBlockEvent = events.some(function (event) {
 
-                                // ONLY highlight for block events
-                                if (!event.classNames.includes('event-block'))
-                                    return false;
-                                start = event.startStr.substring(0, 10);
-                                end = event.endStr ? event.endStr.substring(0, 10) : start;
-                                return cellDate >= start && cellDate < end;
+                                                // ONLY highlight for block events
+                                                if (!event.classNames.includes('event-block'))
+                                                    return false;
+                                                start = event.startStr.substring(0, 10);
+                                                end = event.endStr ? event.endStr.substring(0, 10) : start;
+                                                return cellDate >= start && cellDate < end;
+                                            });
+                                            if (hasBlockEvent) {
+                                                dayCell.classList.add('event-cell');
+                                            }
+                                        });
+                                    },
+                                    eventDidMount: function (info) {
+                                        info.el.setAttribute('data-event-id', info.holidayId);
+                                    },
+                                    loading: function (isLoading) {
+
+                                        if (isLoading) {
+                                            loader.style.display = "block";
+                                            document.getElementById('calendar').style.visibility = 'hidden';
+                                        } else {
+                                            loader.style.display = "none";
+                                            document.getElementById('calendar').style.visibility = 'visible';
+                                        }
+                                    }
+                                });
+                                calendar.render();
                             });
-                            if (hasBlockEvent) {
-                                dayCell.classList.add('event-cell');
-                            }
-                        });
-                    },
-                    eventDidMount: function (info) {
-                        info.el.setAttribute('data-event-id', info.holidayId);
-                    },
-                    loading: function (isLoading) {
-
-                        if (isLoading) {
-                            loader.style.display = "block";
-                            document.getElementById('calendar').style.visibility = 'hidden';
-                        } else {
-                            loader.style.display = "none";
-                            document.getElementById('calendar').style.visibility = 'visible';
-                        }
-                    }
-                });
-                calendar.render();
-            });
         </script>
         <script>
             function applyFilters() {
@@ -910,7 +958,32 @@
                 }
             });
         </script>
-        <script src="scripts/utils.js"></script>
+        <script>
+            function toggleHRTooltip(btn, message) {
+                const tooltip = btn.querySelector('.hr-tooltip');
+                const msgDiv = btn.querySelector('.hr-message');
+
+                // Close any other open tooltips
+                document.querySelectorAll('.hr-tooltip').forEach(t => {
+                    if (t !== tooltip)
+                        t.style.display = 'none';
+                });
+
+                if (tooltip.style.display === 'none') {
+                    msgDiv.textContent = message && message.trim() !== '' ? message : 'No message provided.';
+                    tooltip.style.display = 'block';
+                } else {
+                    tooltip.style.display = 'none';
+                }
+            }
+
+            // Close tooltip when clicking outside
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.icon-btn-status')) {
+                    document.querySelectorAll('.hr-tooltip').forEach(t => t.style.display = 'none');
+                }
+            });
+        </script>
     </body>
 
 </html>

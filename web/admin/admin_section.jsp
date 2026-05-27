@@ -99,20 +99,22 @@
             <iframe id ="adminFrame" name="adminFrame" title="Admin Content Frame" src="dashboard.jsp" scrolling="auto"> </iframe>
         </div>
 
+
+        <script src="../scripts/utils.js"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const navLinks = document.querySelectorAll(".topnav a");
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const navLinks = document.querySelectorAll(".topnav a");
 
-                navLinks.forEach(link => {
-                    link.addEventListener("click", function () {
-                        // Retire .active de tous les liens
-                        navLinks.forEach(l => l.classList.remove("active"));
+                            navLinks.forEach(link => {
+                                link.addEventListener("click", function () {
+                                    // Retire .active de tous les liens
+                                    navLinks.forEach(l => l.classList.remove("active"));
 
-                        // Ajoute .active au lien cliqué
-                        this.classList.add("active");
-                    });
-                });
-            });
+                                    // Ajoute .active au lien cliqué
+                                    this.classList.add("active");
+                                });
+                            });
+                        });
         </script>
         <script>
             const iframe = document.getElementById("adminFrame");

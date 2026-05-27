@@ -131,7 +131,8 @@ public class userdataDAO {
                         rs2.getTime("start_time"),
                         rs2.getTime("end_time"),
                         rs2.getString("status"),
-                        rs2.getString("motif")
+                        rs2.getString("motif"),
+                        rs2.getString("response_message")
                 );
                 pendingList.add(h);
             }
@@ -189,7 +190,7 @@ public class userdataDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DBConnection.connect();
-            PreparedStatement ps = con.prepareStatement("SELECT permissions.user_id, permissions.permission_id, permissions.start_date, permissions.end_date, permissions.start_time, permissions.end_time, permissions.status, permissions.motif, users.user_id, users.fullname FROM permissions INNER JOIN users ON permissions.user_id = users.user_id WHERE users.user_id= ? "
+            PreparedStatement ps = con.prepareStatement("SELECT *, users.fullname FROM permissions INNER JOIN users ON permissions.user_id = users.user_id WHERE users.user_id= ? "
                     + "AND status IN ('approved', 'rejected') ORDER BY end_date DESC LIMIT 3");
 
             ps.setInt(1, userId);
@@ -205,7 +206,8 @@ public class userdataDAO {
                         rs.getTime("start_time"),
                         rs.getTime("end_time"),
                         rs.getString("status"),
-                        rs.getString("motif")
+                        rs.getString("motif"),
+                        rs.getString("response_message")
                 );
                 permList.add(h);
             }
@@ -295,7 +297,7 @@ public class userdataDAO {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con2 = DBConnection.connect();
 
-            PreparedStatement ps2 = con2.prepareStatement("SELECT permissions.user_id, permissions.permission_id, permissions.start_date, permissions.motif, permissions.end_date, permissions.start_time, permissions.end_time, permissions.status, users.user_id, users.fullname "
+            PreparedStatement ps2 = con2.prepareStatement("SELECT *, users.fullname "
                     + "FROM permissions "
                     + "INNER JOIN users ON permissions.user_id = users.user_id "
                     + "ORDER BY permissions.end_date;");
@@ -311,7 +313,8 @@ public class userdataDAO {
                         rs2.getTime("start_time"),
                         rs2.getTime("end_time"),
                         rs2.getString("status"),
-                        rs2.getString("motif")
+                        rs2.getString("motif"),
+                        rs2.getString("response_message")
                 );
                 userList.add(p);
             }

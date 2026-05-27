@@ -46,6 +46,12 @@
     max-width: 310px;
     align-content:center;
 }
+.avatar {
+    align-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
 .modallabel-name {
     margin-left: 15px;
     font-size: 1rem;

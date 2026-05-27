@@ -99,8 +99,8 @@
                         </button>
                     </div>
                     <div id="adminEntries">
-                        <a href="admin/dashboard.jsp" onclick="loadAdminPage('admin/dashboard.jsp', this)">Dashboard</a>
-                        <a href="admin/requests.jsp" onclick="loadAdminPage('admin/requests.jsp', this)">Requests</a>
+                        <a href="admin/dashboard.jsp" target="adminFrame">Dashboard</a>
+                        <a href="admin/requests.jsp" target="adminFrame">Requests</a>
                         <a href="admin/permissions.jsp" target="adminFrame">Permissions</a>
                         <a href="admin/employees.jsp" target="adminFrame">Employees</a>
                         <a href="admin/calendar.jsp" target="adminFrame">Calendar</a>

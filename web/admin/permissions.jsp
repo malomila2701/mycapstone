@@ -92,7 +92,19 @@
                         <input type="hidden" name="permission_id" id="leaveId">
                         <input type="hidden" name="user_id" id="leaveUserId">
                         <input type="hidden" name="status" id="leaveStatus">
+                        <input type="hidden" name="admin_message" id="adminMessage">
                     </form>
+                    <div id="confirmPopup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+                        <div style="background:#fff; border-radius:8px; padding:24px; width:340px; display:flex; flex-direction:column; gap:12px;">
+                            <h3 style="margin:0;">Confirm: <span id="confirmPopupStatus"></span></h3>
+                            <textarea id="adminMessageInput" rows="4" placeholder="Add a message (optional)..." style="resize:vertical; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px;"></textarea>
+                            <input type="hidden" id="pendingStatus">
+                            <div style="display:flex; gap:8px; justify-content:flex-end;">
+                                <button class="modal-btn" onclick="closeConfirmPopup()">Cancel</button>
+                                <button class="modal-btn" onclick="submitWithMessage()">Submit</button>
+                            </div>
+                        </div>
+                    </div>
                 </main>
 
                 <aside class="side-section">
@@ -263,76 +275,76 @@
         <script src="../scripts/utils.js"></script>
 
         <script>
-            const ROWS_PER_PAGE = 5; // change this to whatever limit you want
-            let currentPage = 1;
+                const ROWS_PER_PAGE = 5; // change this to whatever limit you want
+                let currentPage = 1;
 
-            function paginateTable() {
-                const table = document.getElementById('permissiontable');
-                // Only count rows that passed the filter
-                const visibleRows = Array.from(table.querySelectorAll('tbody tr'))
-                        .filter(r => r.dataset.filtered !== 'true' && !r.querySelector('td[colspan]'));
+                function paginateTable() {
+                    const table = document.getElementById('permissiontable');
+                    // Only count rows that passed the filter
+                    const visibleRows = Array.from(table.querySelectorAll('tbody tr'))
+                            .filter(r => r.dataset.filtered !== 'true' && !r.querySelector('td[colspan]'));
 
-                const totalPages = Math.ceil(visibleRows.length / ROWS_PER_PAGE);
+                    const totalPages = Math.ceil(visibleRows.length / ROWS_PER_PAGE);
 
-                // First hide all rows, then show only the current page slice
-                table.querySelectorAll('tbody tr').forEach(r => r.style.display = 'none');
-                visibleRows.forEach((row, index) => {
-                    const inRange = index >= (currentPage - 1) * ROWS_PER_PAGE && index < currentPage * ROWS_PER_PAGE;
-                    row.style.display = inRange ? '' : 'none';
-                });
+                    // First hide all rows, then show only the current page slice
+                    table.querySelectorAll('tbody tr').forEach(r => r.style.display = 'none');
+                    visibleRows.forEach((row, index) => {
+                        const inRange = index >= (currentPage - 1) * ROWS_PER_PAGE && index < currentPage * ROWS_PER_PAGE;
+                        row.style.display = inRange ? '' : 'none';
+                    });
 
-                renderPagination(totalPages);
-            }
-
-            function renderPagination(totalPages) {
-                let container = document.getElementById('pagination-container');
-                if (!container) {
-                    container = document.createElement('div');
-                    container.id = 'pagination-container';
-                    document.getElementById('permissiontable').insertAdjacentElement('afterend', container);
+                    renderPagination(totalPages);
                 }
 
-                container.innerHTML = '';
-                if (totalPages <= 1)
-                    return; // hide if only one page
+                function renderPagination(totalPages) {
+                    let container = document.getElementById('pagination-container');
+                    if (!container) {
+                        container = document.createElement('div');
+                        container.id = 'pagination-container';
+                        document.getElementById('permissiontable').insertAdjacentElement('afterend', container);
+                    }
 
-                // Prev button
-                const prev = document.createElement('button');
-                prev.textContent = '←';
-                prev.className = 'page-btn';
-                prev.disabled = currentPage === 1;
-                prev.onclick = () => {
-                    currentPage--;
-                    paginateTable();
-                };
-                container.appendChild(prev);
+                    container.innerHTML = '';
+                    if (totalPages <= 1)
+                        return; // hide if only one page
 
-                // Page numbers
-                for (let i = 1; i <= totalPages; i++) {
-                    const btn = document.createElement('button');
-                    btn.textContent = i;
-                    btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
-                    btn.onclick = () => {
-                        currentPage = i;
+                    // Prev button
+                    const prev = document.createElement('button');
+                    prev.textContent = '←';
+                    prev.className = 'page-btn';
+                    prev.disabled = currentPage === 1;
+                    prev.onclick = () => {
+                        currentPage--;
                         paginateTable();
                     };
-                    container.appendChild(btn);
+                    container.appendChild(prev);
+
+                    // Page numbers
+                    for (let i = 1; i <= totalPages; i++) {
+                        const btn = document.createElement('button');
+                        btn.textContent = i;
+                        btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+                        btn.onclick = () => {
+                            currentPage = i;
+                            paginateTable();
+                        };
+                        container.appendChild(btn);
+                    }
+
+                    // Next button
+                    const next = document.createElement('button');
+                    next.textContent = '→';
+                    next.className = 'page-btn';
+                    next.disabled = currentPage === totalPages;
+                    next.onclick = () => {
+                        currentPage++;
+                        paginateTable();
+                    };
+                    container.appendChild(next);
                 }
 
-                // Next button
-                const next = document.createElement('button');
-                next.textContent = '→';
-                next.className = 'page-btn';
-                next.disabled = currentPage === totalPages;
-                next.onclick = () => {
-                    currentPage++;
-                    paginateTable();
-                };
-                container.appendChild(next);
-            }
-
-            // Init on load
-            document.addEventListener('DOMContentLoaded', paginateTable);
+                // Init on load
+                document.addEventListener('DOMContentLoaded', paginateTable);
         </script>
         <script>
             function applyFilters() {
@@ -455,10 +467,10 @@
                     // Conditional buttons
                     if (status === "Pending") {
                         actionsDiv.innerHTML = `
-                <button class="modal-btn" id="approveLeaveBtn" onclick="submitStatus('Approved')">Approve</button>
-                <button class="modal-btn" id="rejectLeaveBtn" onclick="submitStatus('Rejected')">Reject</button>
-                <button class="modal-btn" onclick="document.getElementById('leaveModal').style.display='none'">Cancel</button>
-            `;
+        <button class="modal-btn" id="approveLeaveBtn" onclick="openConfirmPopup('Approved')">Approve</button>
+        <button class="modal-btn" id="rejectLeaveBtn"  onclick="openConfirmPopup('Rejected')">Reject</button>
+        <button class="modal-btn" onclick="document.getElementById('leaveModal').style.display='none'">Cancel</button>
+    `;
                     } else if (status === "Approved" || status === "Rejected") {
                         actionsDiv.innerHTML = `
                 <button class="modal-btn" onclick="document.getElementById('leaveModal').style.display='none'">Cancel</button>
@@ -502,6 +514,28 @@
                     }
                 });
             });
+
+            function openConfirmPopup(newStatus) {
+                document.getElementById('confirmPopupStatus').textContent = newStatus;
+                document.getElementById('adminMessageInput').value = '';
+                document.getElementById('pendingStatus').value = newStatus;
+                document.getElementById('confirmPopup').style.display = 'flex';
+            }
+
+            function closeConfirmPopup() {
+                document.getElementById('confirmPopup').style.display = 'none';
+            }
+
+            function submitWithMessage() {
+                const message = document.getElementById('adminMessageInput').value.trim();
+                const newStatus = document.getElementById('pendingStatus').value;
+
+                document.getElementById('leaveId').value = selectedEventId;
+                document.getElementById('leaveStatus').value = newStatus;
+                document.getElementById('leaveUserId').value = currentUserId;
+                document.getElementById('adminMessage').value = message;
+                document.getElementById('statusForm').submit();
+            }
 
             function submitStatus(newStatus) {
 
