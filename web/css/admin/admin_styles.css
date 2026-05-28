@@ -1,15 +1,19 @@
 html, body {
     margin: 0;
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     overflow-x: hidden;
 }
 
 body {
-    margin:0 0 0 16%;
-    width: calc(100% - 15%);
-    overflow:hidden;
+    margin:0 0 0 15%;
+
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
+
+    background: linear-gradient(135deg, #005291 0%, #0077c2 60%, #00aacc 100%);
 }
 
 
@@ -20,23 +24,25 @@ body {
 
     width: 100%;
     min-height: 72px;
+    flex-shrink: 0;
 
-    height: 5%;
     box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
 
     gap: 20px;
 }
 
 .navbar-left {
     display: flex;
+    margin-left: 15px;
     align-items: center;
-    gap: 24px;
+    gap: 10px;
 
     flex: 1;
     min-width: 0;
 }
 .header-badge {
-    background: rgba(255,255,255,0.15);
+    background: #0D7EB8;
     border: 1px solid rgba(255,255,255,0.25);
     border-radius: 8px;
     padding: 4px 10px;
@@ -47,9 +53,9 @@ body {
     font-weight: 500;
 }
 .header-title {
-    font-size: 15px;
+    font-size: 1rem;
     font-weight: 600;
-    color: #fff;
+    color: white;
 }
 .search-box {
     position: relative;
@@ -255,19 +261,18 @@ body {
 
 
 .panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
     width: 100%;
-    height: 100vh;
-    background-color: white;
-    position:relative;
+    background: white;
     box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
     -o-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
     -ms-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+
     overflow: hidden;
 }
 
@@ -294,10 +299,14 @@ body {
 }
 
 #adminFrame {
-    height: 100%;
+    flex: 1;
     width: 100%;
     border: none;
+    display: block;
+
     opacity: 1;
+    overflow: hidden;
+
     transition: opacity 0.6s ease; /* smoother */
 }
 #adminFrame.hidden {

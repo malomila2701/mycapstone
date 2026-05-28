@@ -41,7 +41,7 @@
         <div class="navbar">
             <div class="navbar-left">
                 <span class="header-badge">Admin</span>
-                <span class="header-title">Section</span>
+                <span class="header-title">Dashboard</span>
                 <div class="search-box">
                     <input type="text" placeholder="Search users, reports, settings...">
                 </div>

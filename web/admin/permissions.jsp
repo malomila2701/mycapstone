@@ -47,13 +47,31 @@
         <div id="leaveModal" class="modal">
             <div class="modal-content">
                 <main class="details-section">
-                    <span style="display:flex; flex-direction:row;">
-                        <img src="<%= selectedAvatar%>" alt="User Avatar" class="avatar" style="margin-left: 15px;"/>
-                        <span style="display: flex; flex-direction: column;">
-                            <label class="modallabel-name" id="modalUsername">Unknown</label>
-                            <label class="modallabel-id" id="modalId"> ID: #</label>
+
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 10px;
+                         border: 1px solid #E2E8F0;
+                         border-radius: 20px;
+                         ">
+                        <span style="display:flex; flex-direction:row;">
+                            <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%=userId%>"
+                                 style="width:40px; height:40px; border-radius:50%; background: #eef; margin-left: 15px;" title="" alt="" />
+
+                            <span style="display: flex; flex-direction: column;">
+                                <label class="modallabel-name" id="modalUsername">Unknown</label>
+                                <span style="display: flex; flex-direction: row;">
+                                    <label class="modallabel-email" id="modalUserEmail">
+                                        <span class="icon-btn-modal icon-home">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                            </svg>
+                                        </span>
+                                    </label>
+                                </span>
+                            </span>
                         </span>
-                    </span>
+                    </div>
 
                     <form action="FirstServlet" method="post">
                         <div class="form-group">
@@ -86,7 +104,7 @@
 
                         </div>
                     </form>
-
+                    <!-- Modal Actions -->
                     <div class="modal-actions" id="actionsDiv"></div>
                     <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdatePermissionStatusServlet">
                         <input type="hidden" name="permission_id" id="leaveId">
@@ -106,12 +124,10 @@
                         </div>
                     </div>
                 </main>
-
                 <aside class="side-section">
                     <div id="calendar">
                     </div>
                 </aside>
-
             </div>
         </div>
 
@@ -119,7 +135,90 @@
 
 
 
+        <div>
+            <div style="display:flex; flex-direction: row; justify-content: space-between; margin-top: 10px; margin-right: 25px;">
+                <div style="display:flex; flex-direction: column;">
+                    <span style="padding-left: 20px;
+                          font-size: 1rem;
+                          font-weight: 600;
+                          color: #333;">Pending & Recent Requests</span>
+                    <span style="padding-left: 20px;
+                          font-size: 0.8rem;
+                          font-weight: lighter;">Leave Management & Approval Section</span>
+                </div>
+                <button class="exportBtn" style="display:flex; flex-direction: row;">
+                    <span class="icon-home">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                        <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
+                        <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
+                        </svg>
+                    </span>
+                    Export CSV</button>
+            </div> 
 
+            <div class="cards-section">
+                <div class="card" id="total_card">
+                    <div>
+                        <span class="card_change">
+                            <span class="icon-btn-card icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#3B82F6" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                    <div>
+                        <p>Total Requests</p>
+                        <h2>24</h2>
+                    </div>
+                </div>
+                <div class="card" id="pending_card">
+                    <div>
+                        <span class="card_change">
+                            <span class="icon-btn-card icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#e17100" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                    <div>
+                        <p>Pending</p>
+                        <h2>4</h2>
+                    </div>
+                </div>
+                <div class="card" id="approved_card">
+                    <div>
+                        <span class="card_change">
+                            <span class="icon-btn-card icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#009966" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                    <div>
+                        <p>Approved</p>
+                        <h2>6</h2>
+                    </div>
+                </div>
+                <div class="card" id="rejected_card">
+                    <div>
+                        <span class="card_change">
+                            <span class="icon-btn-card icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ec003f" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                    <div>
+                        <p>Rejected</p>
+                        <h2>3</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <div id="latest_banner">
@@ -127,10 +226,14 @@
                 <div class="header-left"> 
                 </div>
                 <div class="header-right">
-                    <div class="search-box">
-                        <input type="text" placeholder="Search by Name or ID">
-                    </div>
-                    <span style="position:relative; padding: 8px; font-size: 0.8rem; margin-right: 10px;">Filter by: </span>
+                    <span style="position:relative; padding-bottom: 5px;"> 
+                        <span class="icon-btn icon-home" style="margin-right:0; padding-right:0;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#666" class="size-5">
+                            <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </span>
+                    <span style="position:relative; padding-top:10px; padding-right: 2px; font-size: 0.8rem;">Filter by: </span>
                     <select id="dateFilter" style="margin-right: 10px;">
                         <option value="all">All Dates</option>
                         <option value="today">Today</option>
@@ -152,8 +255,9 @@
             <table class ="reqtable" cellspacing="0" id="permissiontable">
                 <thead>
                     <tr>
-                        <th style="padding:12px; text-align:left; padding-left: 30px;">Description</th>
-                        <th style="padding:12px; text-align:center;">Reason</th>
+                        <th style="padding:12px; text-align:left; padding-left: 3%;">Description</th>
+                        <th id="dateHeader" style="padding:12px; text-align:center; cursor:pointer;">Period ↓</th>
+                        <th style="padding:12px; text-align:center;">Motif/Reason</th>
                         <th style="padding:12px; text-align:center;">Status</th>
                         <th style="padding:12px; text-align:center;">Action</th>
                     </tr>
@@ -163,7 +267,7 @@
                 %>
                 <tbody>
                     <tr>
-                        <td colspan="4" style="padding:30px; background:white; text-align:center;
+                        <td colspan="5" style="padding:30px; background:white; text-align:center;
                             border-bottom-left-radius:16px; border-bottom-right-radius:16px; color:red;">
                             No permission records found.
                         </td>
@@ -177,25 +281,31 @@
 
                             String status = p.getStatus();
                             String cssClass = "";
-                            if ("rejected".equalsIgnoreCase(status))
+                            String cssIconStatus = "";
+
+                            if ("rejected".equalsIgnoreCase(status)) {
                                 cssClass = "status-rejected";
-                            else if ("approved".equalsIgnoreCase(status))
+                                cssIconStatus = "status-home-rejected";
+                            } else if ("approved".equalsIgnoreCase(status)) {
                                 cssClass = "status-approved";
-                            else if ("pending".equalsIgnoreCase(status))
+                                cssIconStatus = "status-home-approved";
+                            } else if ("pending".equalsIgnoreCase(status)) {
                                 cssClass = "status-pending";
+                                cssIconStatus = "status-home-pending";
+                            }
                     %>
 
                     <tr>
-                        <td style="padding:10px;">
+                        <td style="padding:10px; width: 300px;">
                             <div style="display:flex; align-items:center; gap:10px;">
 
                                 <!-- Avatar -->
-                                <div style="display:flex; align-items:center; gap:10px;">
+                                <div style="display:flex; align-items:center; gap:10px; padding-left: 3%;">
                                     <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%= p.getUserId()%>"
                                          style="width:60px; height:60px; border-radius:50%; background: whitesmoke;" alt="<%= p.getFullName()%>" />
                                     <div style="display:flex; flex-direction:column;">
-                                        <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap;">
-                                            <%= outFmt.format(p.getStartDate())%>
+                                        <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap; color: #333;">
+                                            <%= p.getFullName()%>
                                         </span>
                                         <span style="font-size:0.8rem; color:lightslategray;">
                                             Permission &bull; <%= hours%> hrs
@@ -206,13 +316,25 @@
                             </div>
                         </td>
 
+                        <td data-date="<%= p.getStartDate().getTime()%>" style="padding:10px; text-align:center; width:150px;">
+                            <div style="display:flex; flex-direction:column;">
+                                <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
+                                    <%= outFmt.format(p.getStartDate())%>,
+                                    <%= yearFmt.format(p.getEndDate())%>
+                                </span>
+                                <span style="font-family: Consolas, sans-serif; font-size:0.8rem; font-weight:lighter; color:lightslategray;">
+                                    ID: REQ-2026-00<%= p.getPermissionId()%> 
+                                </span>
+                            </div>
+                        </td>
+
                         <!-- REASON -->
-                        <td style="padding:10px; text-align:center; width:250px;">
+                        <td style="padding:10px; text-align:center; width:350px;">
 
                             <span style="
                                   font-size:0.9rem;
                                   display:block;
-                                  white-space:nowrap;
+                                  white-space: wrap;
                                   overflow:hidden;
                                   text-overflow:ellipsis;
                                   ">
@@ -224,9 +346,24 @@
                         <!-- STATUS -->
                         <td style="padding:10px; text-align:center; width:120px;">
 
-                            <span class="status <%= cssClass%>">
-                                <%= p.getStatus()%>
-                            </span>
+                            <div class="status <%=cssClass%>">
+                                <div class="icon-btn-status" onclick="toggleHRTooltip(this, '<%=p.getResponseMessage() != null ? p.getResponseMessage().replace("'", "\\'") : ""%>')" style="position:relative; cursor:pointer;">
+                                    <div class="icon-home <%=cssIconStatus%>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                        <path fill-rule="evenodd" d="M12 3.75a6.715 6.715 0 0 0-3.722 1.118.75.75 0 1 1-.828-1.25 8.25 8.25 0 0 1 12.8 6.883c0 3.014-.574 5.897-1.62 8.543a.75.75 0 0 1-1.395-.551A21.69 21.69 0 0 0 18.75 10.5 6.75 6.75 0 0 0 12 3.75ZM6.157 5.739a.75.75 0 0 1 .21 1.04A6.715 6.715 0 0 0 5.25 10.5c0 1.613-.463 3.12-1.265 4.393a.75.75 0 0 1-1.27-.8A6.715 6.715 0 0 0 3.75 10.5c0-1.68.503-3.246 1.367-4.55a.75.75 0 0 1 1.04-.211ZM12 7.5a3 3 0 0 0-3 3c0 3.1-1.176 5.927-3.105 8.056a.75.75 0 1 1-1.112-1.008A10.459 10.459 0 0 0 7.5 10.5a4.5 4.5 0 1 1 9 0c0 .547-.022 1.09-.067 1.626a.75.75 0 0 1-1.495-.123c.041-.495.062-.996.062-1.503a3 3 0 0 0-3-3Zm0 2.25a.75.75 0 0 1 .75.75c0 3.908-1.424 7.485-3.781 10.238a.75.75 0 0 1-1.14-.975A14.19 14.19 0 0 0 11.25 10.5a.75.75 0 0 1 .75-.75Zm3.239 5.183a.75.75 0 0 1 .515.927 19.417 19.417 0 0 1-2.585 5.544.75.75 0 0 1-1.243-.84 17.915 17.915 0 0 0 2.386-5.116.75.75 0 0 1 .927-.515Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <!--Tooltip -->
+                                    <div class="hr-tooltip" style="display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); width:220px; background:#fff; border:1px solid #ddd; border-radius:8px; padding:12px; z-index:999; box-shadow:0 4px 12px rgba(0,0,0,0.12); font-size:13px; color:#333;">
+                                        <div style="font-weight:600; margin-bottom:6px; color:#555;">HR Note:</div>
+                                        <div class="hr-message" style="color:#222; line-height:1.5;"></div>
+                                        <div style="position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#ddd;"></div>
+                                    </div>
+                                </div>
+                                <span>
+                                    <%=p.getStatus()%>
+                                </span>
+                            </div>
 
                         </td>
 
@@ -236,6 +373,7 @@
                             <button class="icon-btn-td"
 
                                     data-userid="<%= p.getUserId()%>" 
+                                    data-useremail="<%= p.getEmail()%>"
                                     data-type="permission"
                                     data-title="Permission"
                                     data-holidayid="<%= p.getPermissionId()%>" 
@@ -275,76 +413,115 @@
         <script src="../scripts/utils.js"></script>
 
         <script>
-                const ROWS_PER_PAGE = 5; // change this to whatever limit you want
-                let currentPage = 1;
+                                    const ROWS_PER_PAGE = 5; // change this to whatever limit you want
+                                    let currentPage = 1;
 
-                function paginateTable() {
-                    const table = document.getElementById('permissiontable');
-                    // Only count rows that passed the filter
-                    const visibleRows = Array.from(table.querySelectorAll('tbody tr'))
-                            .filter(r => r.dataset.filtered !== 'true' && !r.querySelector('td[colspan]'));
+                                    function paginateTable() {
+                                        const table = document.getElementById('permissiontable');
+                                        // Only count rows that passed the filter
+                                        const visibleRows = Array.from(table.querySelectorAll('tbody tr'))
+                                                .filter(r => r.dataset.filtered !== 'true' && !r.querySelector('td[colspan]'));
 
-                    const totalPages = Math.ceil(visibleRows.length / ROWS_PER_PAGE);
+                                        const totalPages = Math.ceil(visibleRows.length / ROWS_PER_PAGE);
 
-                    // First hide all rows, then show only the current page slice
-                    table.querySelectorAll('tbody tr').forEach(r => r.style.display = 'none');
-                    visibleRows.forEach((row, index) => {
-                        const inRange = index >= (currentPage - 1) * ROWS_PER_PAGE && index < currentPage * ROWS_PER_PAGE;
-                        row.style.display = inRange ? '' : 'none';
-                    });
+                                        // First hide all rows, then show only the current page slice
+                                        table.querySelectorAll('tbody tr').forEach(r => r.style.display = 'none');
+                                        visibleRows.forEach((row, index) => {
+                                            const inRange = index >= (currentPage - 1) * ROWS_PER_PAGE && index < currentPage * ROWS_PER_PAGE;
+                                            row.style.display = inRange ? '' : 'none';
+                                        });
 
-                    renderPagination(totalPages);
-                }
+                                        renderPagination(totalPages);
+                                    }
 
-                function renderPagination(totalPages) {
-                    let container = document.getElementById('pagination-container');
-                    if (!container) {
-                        container = document.createElement('div');
-                        container.id = 'pagination-container';
-                        document.getElementById('permissiontable').insertAdjacentElement('afterend', container);
-                    }
+                                    function renderPagination(totalPages) {
+                                        let container = document.getElementById('pagination-container');
+                                        if (!container) {
+                                            container = document.createElement('div');
+                                            container.id = 'pagination-container';
+                                            document.getElementById('permissiontable').insertAdjacentElement('afterend', container);
+                                        }
 
-                    container.innerHTML = '';
-                    if (totalPages <= 1)
-                        return; // hide if only one page
+                                        container.innerHTML = '';
+                                        if (totalPages <= 1)
+                                            return; // hide if only one page
 
-                    // Prev button
-                    const prev = document.createElement('button');
-                    prev.textContent = '←';
-                    prev.className = 'page-btn';
-                    prev.disabled = currentPage === 1;
-                    prev.onclick = () => {
-                        currentPage--;
-                        paginateTable();
-                    };
-                    container.appendChild(prev);
+                                        // Prev button
+                                        const prev = document.createElement('button');
+                                        prev.textContent = '←';
+                                        prev.className = 'page-btn';
+                                        prev.disabled = currentPage === 1;
+                                        prev.onclick = () => {
+                                            currentPage--;
+                                            paginateTable();
+                                        };
+                                        container.appendChild(prev);
 
-                    // Page numbers
-                    for (let i = 1; i <= totalPages; i++) {
-                        const btn = document.createElement('button');
-                        btn.textContent = i;
-                        btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
-                        btn.onclick = () => {
-                            currentPage = i;
-                            paginateTable();
-                        };
-                        container.appendChild(btn);
-                    }
+                                        // Page numbers
+                                        for (let i = 1; i <= totalPages; i++) {
+                                            const btn = document.createElement('button');
+                                            btn.textContent = i;
+                                            btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+                                            btn.onclick = () => {
+                                                currentPage = i;
+                                                paginateTable();
+                                            };
+                                            container.appendChild(btn);
+                                        }
 
-                    // Next button
-                    const next = document.createElement('button');
-                    next.textContent = '→';
-                    next.className = 'page-btn';
-                    next.disabled = currentPage === totalPages;
-                    next.onclick = () => {
-                        currentPage++;
-                        paginateTable();
-                    };
-                    container.appendChild(next);
-                }
+                                        // Next button
+                                        const next = document.createElement('button');
+                                        next.textContent = '→';
+                                        next.className = 'page-btn';
+                                        next.disabled = currentPage === totalPages;
+                                        next.onclick = () => {
+                                            currentPage++;
+                                            paginateTable();
+                                        };
+                                        container.appendChild(next);
+                                    }
 
-                // Init on load
-                document.addEventListener('DOMContentLoaded', paginateTable);
+                                    // Init on load
+                                    document.addEventListener('DOMContentLoaded', paginateTable);
+        </script>
+        <script>
+            const dateHeader = document.getElementById("dateHeader");
+            const tbody = document.querySelector("tbody");
+
+            let newestFirst = true;
+
+            function sortRows() {
+                const rows = Array.from(tbody.querySelectorAll("tr"));
+                rows.sort((a, b) => {
+
+                    const dateA = Number(a.children[1].dataset.date);
+                    const dateB = Number(b.children[1].dataset.date);
+
+                    return newestFirst
+                            ? dateB - dateA
+                            : dateA - dateB;
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+            }
+
+            function updateDateHeader() {
+                dateHeader.textContent = newestFirst
+                        ? "Period ↓"
+                        : "Period ↑";
+            }
+
+            dateHeader.addEventListener("click", () => {
+                newestFirst = !newestFirst;
+                sortRows();
+                updateDateHeader();
+            });
+
+            window.addEventListener("load", () => {
+                newestFirst = true;
+                sortRows();
+                updateDateHeader();
+            });
         </script>
         <script>
             function applyFilters() {
@@ -369,7 +546,7 @@
                     if (row.querySelector('td[colspan]'))
                         return;
 
-                    const statusSpan = row.querySelector('.status');
+                    const statusSpan = row.querySelector('td:nth-child(4) span');
                     if (!statusSpan)
                         return;
 
@@ -378,7 +555,6 @@
                     const statusMatch = selectedStatus === 'all' || rowStatus === selectedStatus;
 
                     // --- Date ---
-                    // The start date is in the second <span> of the first <td>
                     const rawDate =
                             row.querySelector('td:first-child div div span:first-of-type')
                             ?.textContent.trim() || '';
@@ -482,8 +658,8 @@
                     }
 
                     // Fill modal
-                    document.getElementById('modalId').textContent = "ID : #" + (btn.dataset.userid || "N/A");
                     document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
+                    document.getElementById('modalUserEmail').textContent = btn.dataset.useremail || "Unknown";
                     document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
                     document.getElementById('modalStartDate').value = btn.dataset.startdate || "";
                     document.getElementById('modalEndDate').value = btn.dataset.enddate || "";
@@ -555,6 +731,32 @@
                 request.getHeader("Referer");
             }
 
+        </script>
+        <script>
+            function toggleHRTooltip(btn, message) {
+                const tooltip = btn.querySelector('.hr-tooltip');
+                const msgDiv = btn.querySelector('.hr-message');
+
+                // Close any other open tooltips
+                document.querySelectorAll('.hr-tooltip').forEach(t => {
+                    if (t !== tooltip)
+                        t.style.display = 'none';
+                });
+
+                if (tooltip.style.display === 'none') {
+                    msgDiv.textContent = message && message.trim() !== '' ? message : 'No message provided.';
+                    tooltip.style.display = 'block';
+                } else {
+                    tooltip.style.display = 'none';
+                }
+            }
+
+            // Close tooltip when clicking outside
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.icon-btn-status')) {
+                    document.querySelectorAll('.hr-tooltip').forEach(t => t.style.display = 'none');
+                }
+            });
         </script>
     </body>
 </html>

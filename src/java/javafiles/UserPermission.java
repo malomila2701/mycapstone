@@ -15,6 +15,7 @@ public class UserPermission {
     private int id;
     private int permission_id;
     private String fullname;
+    private String email;
     private Date start_date;
     private Date end_date;
     private Time start_time;
@@ -23,10 +24,11 @@ public class UserPermission {
     private String motif;
     private String response_message;
 
-    public UserPermission(int id, int permission_id, String fullName, Date startDate, Date endDate, Time start_time, Time end_time, String status, String motif, String response_message) {
+    public UserPermission(int id, int permission_id, String fullName, String email, Date startDate, Date endDate, Time start_time, Time end_time, String status, String motif, String response_message) {
         this.id = id;
         this.permission_id = permission_id;
         this.fullname = fullName;
+        this.email = email;
         this.start_date = startDate;
         this.end_date = endDate;
         this.start_time = start_time;
@@ -39,6 +41,7 @@ public class UserPermission {
     public Integer getUserId() { return id; }
     public Integer getPermissionId() { return permission_id; }
     public String getFullName() { return fullname; }
+    public String getEmail() { return email; }
     public Date getStartDate() { return start_date; }
     public Time getStartTime() { return start_time; }
     public Time getEndTime() { return end_time; }
