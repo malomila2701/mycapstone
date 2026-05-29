@@ -13,24 +13,50 @@
 
 /**Overlay*/
 .modal {
-    display: none; /* hidden by default */
     position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
-    border: 1px solid #ccc;
-
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex; /* toujours flex */
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
 }
-.modal-btn{
-    padding: 8px 9px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+.modal.active {
+    pointer-events: all;
+    opacity: 0;
+}
+.modal.visible {
+    opacity: 1;
+}
+.modal.visible .modal-content {
+    transform: translateX(-75%) scale(1);
+    opacity: 1;
+}
+.modal-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
     cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    color: #888;
+    display: flex;
+    align-items: center;
+    transition: background 0.15s, color 0.15s;
+}
+.modal-close-btn:hover {
+    background: #e0e0e0;
+    color: #333;
 }
 /**actual modal*/
 .modal-content {
@@ -38,14 +64,15 @@
     gap: 10px;
     grid-template-columns: 300px 1fr 400px;
     align-content: start;
-    position:relative;
-    top: 0%;
+    position: relative;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(0.85);
     width: 700px;
     background: white;
     padding: 25px;
     border-radius: 8px;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .details-section {
@@ -65,94 +92,67 @@
     white-space: nowrap;
 }
 .modallabel-email {
-    margin-left: 18px;
-    font-size: 0.9rem;
-    font-weight: lighter;
-}
-.form-group {
-    display: flex;
-    flex-direction: row;
-    align-items:center;
-    gap: 20px;
-    margin-bottom: 25px;
-    overflow: hidden;
-    &:first-child {
-        margin-top: 20px;
-    }
-}
-.form-group label {
-    width: 50px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #666;
-    white-space: nowrap;
-}
-.form-group input {
-    flex: 1;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-family: Arial, sans-serif;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-input[readonly] {
-    background-color: whitesmoke; /* grey background when locked */
-    border: 1px solid #ccc;
-    color: black;
-    cursor: default;
-}
-.icon-form {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    background: transparent;
-    width: 17px;
-    height: 17px;
-}
-.input-wrapper {
-    position: relative;
-    width: 100%;
-}
-input[type='text'] {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    color: black
-}
-.input-wrapper input {
-    width: 100%;
-    padding: 8px 10px 8px 34px;
+    margin-left: 5px;
+    font-size: 0.7rem;
+    color: lightslategray;
 }
 #modalMotif {
     position: relative;
-    width: 90%;
+    width:98%;
     padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    background: transparent;
+    border: 1px solid transparent;
     resize: none;
     cursor:default;
 }
 .modal-actions{
     position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    justify-content: end;
+    margin-top: 15px;
 }
 .modal-btn{
+    padding: 8px 12px;
+    margin-left: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
     transition: transform 0.3s;
-}
-.modal-btn:hover{
-    transform: scale(1.1);
+
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    font-weight: 600;
+    text-align:center;
 }
 #approveLeaveBtn {
-    background-color: darkseagreen;
+    background: #009966;
     color:white;
 }
-#rejectLeaveBtn {
-    border: 1px solid darkred;
-    color:red;
+#approveLeaveBtn:hover {
+    background: #007a55;
 }
+#rejectLeaveBtn {
+    border: 1px solid #ffccd3;
+    background:#ffe4e6;
+    color:#c70036;
+}
+#rejectLeaveBtn:hover {
+    background: #ffccd3;
+}
+.cancelLeaveBtn {
+    background: transparent;
+    border: 1px solid transparent;
+}
+.cancelLeaveBtn:hover{
+    transform: scale(1.1);
+}
+#resetPendingBtn {
+    background: whitesmoke;
+    border: 1px solid #ccc;
+}
+
+
+
 
 .side-section {
     width:100%;
@@ -416,8 +416,11 @@ body {
     display: flex;
     border: none;
     cursor: pointer;
-    border-radius: 16px;
-    padding: 8px;
+    cursor: default;
+}
+.icon-home-modal {
+    width: 13px;
+    height: 13px;
 }
 .icon-btn-card {
     display: flex;

@@ -25,12 +25,10 @@ function loadPage(page, element) {
     setTimeout(() => {
         // change iframe source after fade out
         iframe.src = page;
-
         // when new page is loaded → fade back IN
         iframe.onload = function () {
             container.classList.remove("fade-out");
         };
-
     }, 100); // match CSS transition duration
 }
 
@@ -40,135 +38,113 @@ function loadPage(page, element) {
  * 
  */
 function loadHistory() {
-    const parentDoc = parent.document;
-    const iframe = parentDoc.getElementById("contentFrame");
-    const rect = iframe.getBoundingClientRect();
-    let overlay = parentDoc.getElementById('page-transition');
+    const iframe = document.getElementById("contentFrame");
+    const container = document.querySelector('main.panel');
+
+    // Create loader overlay if it doesn't exist
+    document.querySelectorAll('#page-transition').forEach(el => el.remove());
+    let overlay = null;
     if (!overlay) {
-        overlay = parentDoc.createElement('div');
+        overlay = document.createElement('div');
         overlay.id = 'page-transition';
         overlay.style.cssText = `
-            position:fixed;
-            left:${rect.left}px;
-            top:${rect.top}px;
-            width:${rect.width}px;
-            height:${rect.height}px;
-            background-image:linear-gradient(to top,#cfd9df 0%,#e2ebf0 100%);
-            opacity:0;
-            pointer-events:none;
-            transition:opacity .25s ease;
-            z-index:9999;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
-            gap:32px;
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .25s ease;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
         `;
-        const loader = parentDoc.createElement('div');
+
+        const loader = document.createElement('div');
         loader.id = 'page-transition-loader';
         loader.style.cssText = `
-            width:40px;
-            height:10px;
-            color:#766DF4;
+            width:40px; height:10px; color:#766DF4;
             background:
-            radial-gradient(farthest-side,currentColor 90%,#0000) left/10px 10px,
-            radial-gradient(farthest-side,currentColor 90%,#0000) center/10px 10px,
-            radial-gradient(farthest-side,currentColor 90%,#0000) right/10px 10px,
-            linear-gradient(currentColor 0 0) center/100% 4px;
-            background-repeat:no-repeat;
-            position:relative;
-            animation:pt-s6 2s infinite linear;
-            opacity:0;
-            transition:opacity .2s ease;
+                radial-gradient(farthest-side,currentColor 90%,#0000) left/10px 10px,
+                radial-gradient(farthest-side,currentColor 90%,#0000) center/10px 10px,
+                radial-gradient(farthest-side,currentColor 90%,#0000) right/10px 10px,
+                linear-gradient(currentColor 0 0) center/100% 4px;
+            background-repeat: no-repeat;
+            position: relative;
+            animation: pt-s6 2s infinite linear;
         `;
         overlay.appendChild(loader);
 
-        const loadingText = parentDoc.createElement('div');
-        loadingText.id = 'page-transition-text';
+        const loadingText = document.createElement('div');
         loadingText.style.cssText = `
-            display:flex;
-            align-items:center;
-            gap:6px;
-            font-size:1.1rem;
-            color:#655BE8;
-            font-family:Segoe, sans-serif;
-            opacity:0;
-            transition:opacity .2s ease;
+            display: flex; align-items: center; gap: 6px;
+            font-size: 1.1rem; color: #655BE8;
+            font-family: Segoe, sans-serif;
         `;
+        loadingText.appendChild(document.createTextNode('Fetching your requests history'));
 
-        const textNode = parentDoc.createTextNode('Fetching your requests history');
-        loadingText.appendChild(textNode);
-
-        const dotsWrap = parentDoc.createElement('span');
-        dotsWrap.style.cssText = `display:inline-flex;gap:4px;align-items:center;margin-left:4px;`;
-        for (let i = 0; i < 3; i++) {
-            const dot = parentDoc.createElement('span');
+        const dotsWrap = document.createElement('span');
+        dotsWrap.style.cssText = 'display:inline-flex;gap:4px;align-items:center;margin-left:4px;';
+        [0, 0.2, 0.4].forEach(delay => {
+            const dot = document.createElement('span');
             dot.style.cssText = `
-                width:7px;
-                height:7px;
-                border-radius:50%;
-                background:#655BE8;
-                display:inline-block;
-                animation:pt-bounce 1.2s ease-in-out infinite;
-                animation-delay:${i * 0.2}s;
+                width:7px; height:7px; border-radius:50%;
+                background:#655BE8; display:inline-block;
+                animation: pt-bounce 1.2s ease-in-out infinite;
+                animation-delay: ${delay}s;
             `;
             dotsWrap.appendChild(dot);
-        }
+        });
         loadingText.appendChild(dotsWrap);
         overlay.appendChild(loadingText);
 
-        const style = parentDoc.createElement('style');
+        const style = document.createElement('style');
         style.textContent = `
-            @keyframes pt-s6{
-                0%{transform:translate(var(--pt-s,0)) rotate(0)}
-                100%{transform:translate(var(--pt-s,0)) rotate(1turn)}
+            @keyframes pt-s6 {
+                0%   { transform: translate(var(--pt-s,0)) rotate(0) }
+                100% { transform: translate(var(--pt-s,0)) rotate(1turn) }
             }
             #page-transition-loader:before,
-            #page-transition-loader:after{
-                content:"";
-                position:absolute;
-                inset:0;
-                background:inherit;
-                animation:pt-s6 2s infinite linear;
+            #page-transition-loader:after {
+                content:""; position:absolute; inset:0;
+                background:inherit; animation:pt-s6 2s infinite linear;
             }
-            #page-transition-loader:before{
-                --pt-s:calc(50% - 5px);
-                animation-direction:reverse;
+            #page-transition-loader:before {
+                --pt-s: calc(50% - 5px);
+                animation-direction: reverse;
             }
-            #page-transition-loader:after{
-                --pt-s:calc(5px - 50%);
-            }
-            @keyframes pt-bounce{
-                0%,60%,100%{opacity:.25;transform:translateY(0);}
-                30%{opacity:1;transform:translateY(-4px);}
+            #page-transition-loader:after { --pt-s: calc(5px - 50%); }
+            @keyframes pt-bounce {
+                0%,60%,100% { opacity:.25; transform:translateY(0); }
+                30%          { opacity:1;   transform:translateY(-4px); }
             }
         `;
-        parentDoc.head.appendChild(style);
-        parentDoc.body.appendChild(overlay);
+        document.head.appendChild(style);
+
+        container.style.position = 'relative';
+        container.appendChild(overlay);
     }
+
+    // Fade in overlay
     requestAnimationFrame(() => {
-        overlay.style.opacity = '1';
-        overlay.style.pointerEvents = 'all';
-        const loader = parentDoc.getElementById('page-transition-loader');
-        if (loader)
-            loader.style.opacity = '1';
-        const text = parentDoc.getElementById('page-transition-text');
-        if (text)
-            text.style.opacity = '1';
+        requestAnimationFrame(() => {
+            overlay.style.opacity = '1';
+            overlay.style.pointerEvents = 'all';
+        });
+    });
+
+    window.addEventListener('message', function onReady(e) {
+        if (e.data === 'pageReady') {
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            window.removeEventListener('message', onReady);
+        }
     });
     setTimeout(() => {
         iframe.src = 'main_history.jsp';
-        iframe.onload = () => {
-            overlay.style.opacity = '0';
-            overlay.style.pointerEvents = 'none';
-            const loader = parentDoc.getElementById('page-transition-loader');
-            if (loader)
-                loader.style.opacity = '0';
-            const text = parentDoc.getElementById('page-transition-text');
-            if (text)
-                text.style.opacity = '0';
-        };
-    }, 250);
+    }, 100);
 }
 
 

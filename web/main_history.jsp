@@ -422,6 +422,8 @@
                                   
                                   
                                   
+                                  
+                                  
                                 b) -> {
                                 Date dateA = (a instanceof UserLeave)
                                         ? ((UserLeave) a).getStartDate()
@@ -662,7 +664,16 @@
 
 
 
+        <script>
+            window.addEventListener('load', function () {
+                window.parent.postMessage('pageReady', '*');
+            });
 
+            window.addEventListener('load', function () {
+                console.log('history page loaded, sending message...');
+                window.parent.postMessage('pageReady', '*');
+            });
+        </script>
         <script>
             window.addEventListener('click', (e) => {
                 const modal = document.getElementById('leaveModal');
