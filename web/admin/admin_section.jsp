@@ -102,49 +102,27 @@
 
         <script src="../scripts/utils.js"></script>
         <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            const navLinks = document.querySelectorAll(".topnav a");
+                        const iframe = document.getElementById("adminFrame");
+                        const loader = document.querySelector(".loader");
 
-                            navLinks.forEach(link => {
-                                link.addEventListener("click", function () {
-                                    // Retire .active de tous les liens
-                                    navLinks.forEach(l => l.classList.remove("active"));
+                        window.addEventListener("message", function (e) {
+                            if (!e.data.adminNav)
+                                return;
 
-                                    // Ajoute .active au lien cliqué
-                                    this.classList.add("active");
-                                });
-                            });
+                            const url = e.data.adminNav;
+
+                            loader.style.display = "block";
+                            iframe.classList.add("hidden");
+
+                            setTimeout(() => {
+                                iframe.src = url;
+                            }, 200);
                         });
-        </script>
-        <script>
-            const iframe = document.getElementById("adminFrame");
-            const loader = document.querySelector(".loader");
 
-            document.querySelectorAll(".topnav a").forEach(link => {
-                link.addEventListener("click", function (e) {
-                    e.preventDefault();
-
-                    const url = this.getAttribute("href");
-                    if (!url || url === "#")
-                        return;
-
-                    loader.style.display = "block";
-
-                    // start fade out
-                    iframe.classList.add("hidden");
-
-                    // wait until fade out is done
-                    setTimeout(() => {
-                        iframe.src = url;
-                    }, 200);
-                });
-            });
-
-            // Fade in when iframe finishes loading
-            iframe.onload = function () {
-                loader.style.display = "none";
-                iframe.classList.remove("hidden");
-            };
+                        iframe.onload = function () {
+                            loader.style.display = "none";
+                            iframe.classList.remove("hidden");
+                        };
         </script>
     </body>
 </html>

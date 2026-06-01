@@ -97,11 +97,11 @@
                         </button>
                     </div>
                     <div id="adminEntries">
-                        <a href="admin/dashboard.jsp" target="adminFrame">Dashboard</a>
-                        <a href="admin/requests.jsp" target="adminFrame">Requests</a>
-                        <a href="admin/permissions.jsp" target="adminFrame">Permissions</a>
-                        <a href="admin/employees.jsp" target="adminFrame">Employees</a>
-                        <a href="admin/calendar.jsp" target="adminFrame">Calendar</a>
+                        <a href="<%= request.getContextPath()%>/admin/dashboard.jsp">Dashboard</a>
+                        <a href="<%= request.getContextPath()%>/admin/requests.jsp">Requests</a>
+                        <a href="<%= request.getContextPath()%>/admin/permissions.jsp">Permissions</a>
+                        <a href="<%= request.getContextPath()%>/admin/employees.jsp">Employees</a>
+                        <a href="<%= request.getContextPath()%>/admin/calendar.jsp">Calendar</a>
                         <a href="#">Reports</a>
                         <a href="#">Settings</a>
                     </div>
@@ -114,6 +114,19 @@
                 <iframe id = "contentFrame" name="contentFrame" title="Main Content Frame" src="main_overview.jsp"> </iframe>
             </main>
         </div>
+        <script>
+            document.querySelectorAll("#adminEntries a").forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const url = this.getAttribute("href");
+                    if (!url || url === "#")
+                        return;
+
+                    const mainFrame = document.getElementById("contentFrame"); // ton id exact ici
+                    mainFrame.contentWindow.postMessage({adminNav: url}, "*");
+                });
+            });
+        </script>
         <script>
             window.addEventListener('message', function (e) {
                 console.log('message received:', e.data);

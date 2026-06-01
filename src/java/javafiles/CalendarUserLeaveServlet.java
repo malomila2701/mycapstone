@@ -44,7 +44,7 @@ public class CalendarUserLeaveServlet extends HttpServlet {
         int userId = (Integer) session.getAttribute("user_id"); // stocké à la connexion
 
         try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement(
-                        "SELECT * FROM holidays WHERE user_id=? and status IN ('approved', 'pending', 'rejected')")) {
+                "SELECT * FROM holidays WHERE user_id=? and status IN ('approved', 'pending', 'rejected')")) {
 
             ResultSet rs = null;
             ps.setInt(1, userId);
@@ -72,6 +72,9 @@ public class CalendarUserLeaveServlet extends HttpServlet {
                     event.put("end", sdf.format(cal.getTime()));
                     event.put("allDay", true);
                     event.put("motif", rs.getString("motif"));
+                    /*********************************************/
+                    event.put("leaveId", rs.getInt("holidays_id"));
+                    event.put("userId", rs.getInt("user_id"));
 
                     // color by status
                     String status = rs.getString("status");

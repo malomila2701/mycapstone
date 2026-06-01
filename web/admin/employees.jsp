@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        
+
         <title>JSP Page</title>
         <link rel="stylesheet" href="../css/admin/adm_employees_styles.css">
 
@@ -26,31 +26,103 @@
             String selectedAvatar = "../images/avatar1.jpg";
         %>
 
+        <div id="leaveModal" class="modal">
+            <div class="modal-content">
+                <!--Bouton close-->
+                <button class="modal-close-btn" onclick="closeEmployeeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                    </svg>
+                </button>
+                <!--Section de details (Nom, email) (Période de congés) (Boutons)-->
+                <main class="details-section">
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 10px;
+                         border: 1px solid #E2E8F0;
+                         border-radius: 20px;
+                         ">
+                        <span style="display:flex; flex-direction:row;">
+                            <img id="modalAvatar"
+                                 style="width:40px; height:40px; border-radius:50%; background: #eef; margin-left: 15px;" title="" alt="" />
+
+                            <span style="display: flex; flex-direction: column;">
+                                <label class="modallabel-name" id="modalUsername">Unknown</label>
+                                <span style="display: flex; flex-direction: row; text-align: center; align-items:center;">
+                                    <span class="icon-btn-modal icon-home-modal" style="margin-left: 15px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                        </svg>
+                                    </span>
+                                    <label class="modallabel-email" id="modalUserEmail"></label>
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                </main>
+                <aside class="side-section">
+                </aside>
+            </div>
+        </div>
+
+
+
+
+
         <div class="layout">
             <!-- ── Main ──────────────────────────────────── -->
             <main class="main">
-                
-                <!-- Stats -->
-                <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-label">Total staff</div>
-                        <div class="stat-value"><%= (v2 != null) ? v2.size() : 0%></div>
-                        <div class="stat-meta"><span class="pill pill-green">Active</span> employees</div>
+
+                <div style="display:flex; flex-direction: row; justify-content: space-between; margin-top: 10px; margin-right: 25px;">
+                    <div style="display:flex; flex-direction: column;">
+                        <span style="padding-left: 20px;
+                              font-size: 1rem;
+                              font-weight: 600;
+                              color: #333;">Employees Section</span>
+                        <span style="padding-left: 20px;
+                              font-size: 0.8rem;
+                              font-weight: lighter;">HR Management</span>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">On leave</div>
-                        <div class="stat-value">—</div>
-                        <div class="stat-meta"><span class="pill pill-amber">Pending</span> requests</div>
+                    <div style="display:flex; flex-direction: row; gap: 15px;">
+                        <button class="toolbarBtn" style="display:flex; flex-direction: row;">
+                            <span class="icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
+                                <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
+                                </svg>
+                            </span>
+                            Export CSV
+                        </button>
+                        <button class="toolbarBtn addEmployee" style="display:flex; flex-direction: row; background:">
+                            <span class="icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+                                </svg>
+                            </span>
+                            Add Employee
+                        </button>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Departments</div>
-                        <div class="stat-value">—</div>
-                        <div class="stat-meta" style="color:var(--text-3)">Across your org</div>
+                </div> 
+
+                <div class="cards-section">
+                    <div class="card" id="total_card">
+                        <p>Total Staff</p>
+                        <h2><%= (v2 != null) ? v2.size() : 0%></h2>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-label">Max leave</div>
-                        <div class="stat-value">30<span style="font-size:16px;font-weight:500;letter-spacing:0;color:var(--text-3)"> days</span></div>
-                        <div class="stat-meta"><span class="pill pill-blue">Per year</span></div>
+
+                    <div class="card" id="pending_card">
+                        <p>On leave</p>
+                        <h2>-</h2>
+                    </div>
+
+                    <div class="card" id="approved_card">
+                        <p>Approved</p>
+                        <h2>6</h2>
+                    </div>
+
+                    <div class="card" id="rejected_card">
+                        <p>MAX LEAVE</p>
+                        <h2>30 days</h2>
                     </div>
                 </div>
 
@@ -83,34 +155,6 @@
                                 value = "—";
                             }
 
-                            /* ── Avatar initials & color (server-side) ── */
-                            String fullName = e.getFullName() != null ? e.getFullName().trim() : "??";
-                            String[] nameParts = fullName.split("\\s+");
-                            StringBuilder iniBuilder = new StringBuilder();
-                            for (int ni = 0; ni < Math.min(2, nameParts.length); ni++) {
-                                if (nameParts[ni].length() > 0) {
-                                    iniBuilder.append(Character.toUpperCase(nameParts[ni].charAt(0)));
-                                }
-                            }
-                            String initials = iniBuilder.toString();
-
-                            String[][] palette = {
-                                {"#EEEDFE", "#3C3489"},
-                                {"#E1F5EE", "#085041"},
-                                {"#FEF3E2", "#92580A"},
-                                {"#FBEAF0", "#72243E"},
-                                {"#E6F1FB", "#0C447C"},
-                                {"#FAECE7", "#712B13"},
-                                {"#EAF3DE", "#27500A"}
-                            };
-                            int hash = 0;
-                            for (char ch : fullName.toCharArray()) {
-                                hash = (hash << 5) - hash + ch;
-                            }
-                            int colorIdx = Math.abs(hash) % palette.length;
-                            String avatarBg = palette[colorIdx][0];
-                            String avatarText = palette[colorIdx][1];
-
                             double animDelay = cardIndex * 0.05;
                             cardIndex++;
                     %>
@@ -123,11 +167,10 @@
                          data-id="<%= userId%>">
 
                         <div class="card-top">
-
-                            <!-- Avatar with initials -->
-                            <div class="avatar" style="background:<%= avatarBg%>;color:<%= avatarText%>">
-                                <%= initials%>
-                            </div>
+                            <!-- Avatar -->
+                            <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%= userId%>"
+                                 style="width:25%; height:25%; border-radius:50%; background:#eef; margin-left:15px;"
+                                 title="" alt="" />
 
                             <div class="card-meta">
                                 <div class="emp-id"># <%= String.format("%06d", userId)%></div>
@@ -137,8 +180,13 @@
 
                             <div class="card-actions">
                                 <!-- Edit -->
-                                <a href="editEmployee.jsp?userId=<%= userId%>" class="act-btn" title="Edit employee" aria-label="Edit <%= e.getFullName()%>">
-                                    <i class="ti ti-edit" aria-hidden="true"></i>
+                                <a href="#"
+                                   class="act-btn"
+                                   data-userid="<%= userId%>"
+                                   data-name="<%= e.getFullName()%>"
+                                   data-email="<%= e.getEmail()%>"
+                                   onclick="openEmployeeModal(this); return false;"
+                                   title="Edit employee">
                                 </a>
                                 <!-- Delete trigger -->
                                 <button class="act-btn danger" title="Delete employee"
@@ -198,13 +246,50 @@
                     <%
                             } // end for
                         }   // end else
-%>
+                    %>
 
                 </div><!-- /emp-grid -->
 
             </main>
         </div>
 
+        <script>
+            function openEmployeeModal(btn) {
+
+                const userId = btn.dataset.userid;
+                const name = btn.dataset.name;
+                const email = btn.dataset.email;
+
+                currentUserId = userId;
+
+                document.getElementById("modalUsername").textContent = name;
+                document.getElementById("modalUserEmail").textContent = email;
+
+                document.getElementById("modalAvatar").src =
+                        "<%= request.getContextPath()%>/AvatarServlet?userId=" + userId;
+
+                const modal = document.getElementById('leaveModal');
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        modal.classList.add('visible');
+                    });
+                });
+            }
+
+            // Pour fermer
+            function closeEmployeeModal() {
+                const modal = document.getElementById('leaveModal');
+                modal.classList.remove('visible');
+                document.body.style.overflow = '';
+                modal.addEventListener('transitionend', () => {
+                    modal.classList.remove('active');
+                }, {once: true});
+            }
+        </script>
         <script>
             /* ── Search / filter ───────────────────────── */
             function filterCards() {

@@ -147,7 +147,7 @@
                         </div>
                         <!--Modal Actions when status is approved/rejected-->
                         <div id="actions-reviewed" style="display:none">
-                            <button class="modal-btn" id="resetPendingBtn" onclick="closeModal()">
+                            <button class="modal-btn" id="resetPendingBtn" onclick="openConfirmPopup('Pending')">
                                 <span class="icon-btn-modal icon-home">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                                     <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
@@ -167,12 +167,16 @@
                         <input type="hidden" name="permission_id" id="leaveId">
                         <input type="hidden" name="user_id" id="leaveUserId">
                         <input type="hidden" name="status" id="leaveStatus">
-                        <input type="hidden" name="admin_message" id="adminMessage">
+                        <input type="hidden" name="admin_message" id="leaveAdminMessage">
                     </form>
 
                 </main>
                 <aside class="side-section">
-                    <div id="calendar">
+                    <div style="position: relative; min-height: 150px;">
+                        <div id="calendarLoader" class="chart-loader-wrapper">
+                            <div class="loader" id="loader"></div>
+                        </div>
+                        <div id="calendar"></div>
                     </div>
                 </aside>
             </div>
@@ -229,7 +233,7 @@
                         </span>
                     </div>
                     <div>
-                        <p>Total Requests</p>
+                        <p>Total Employees</p>
                         <h2>24</h2>
                     </div>
                 </div>
@@ -612,7 +616,7 @@
                 const selectedDate = document.getElementById('dateFilter').value.toLowerCase();
                 const rows = document.querySelectorAll('#permissiontable tbody tr');
 
-                // --- Date range boundaries ---
+                // --- Date range boundaries --- */
                 const now = new Date();
                 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                 const yesterday = new Date(today);
@@ -695,14 +699,26 @@
             let calendar;
             let selectedEventId = null;
             let currentUserId = null;
+
+
             const detailsAction = document.querySelector('.detailsAction');
+            const loader = document.getElementById("loader");
 
             window.calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 eventSources: [],
                 firstDay: 1,
                 showNonCurrentDates: false,
-                hiddenDays: [0]
+                hiddenDays: [0],
+                loading: function (isLoading) {
+                    if (isLoading) {
+                        loader.style.display = "block";
+                        calendarEl.style.visibility = 'hidden';
+                    } else {
+                        loader.style.display = "none";
+                        calendarEl.style.visibility = 'visible';
+                    }
+                }
             });
 
             window.calendar.render();
@@ -781,40 +797,36 @@
                 document.getElementById('leaveId').value = selectedEventId;
                 document.getElementById('leaveStatus').value = newStatus;
                 document.getElementById('leaveUserId').value = currentUserId;
-                document.getElementById('adminMessage').value = message;
+                document.getElementById('leaveAdminMessage').value = message;
                 document.getElementById('statusForm').submit();
+
+                updateStatusBadge(leaveId, newStatus);
             }
 
-            function submitStatus(newStatus) {
-                if (!selectedEventId) {
-                    alert("No event selected!");
+            function updateStatusBadge(leaveId, newStatus) {
+                const badge = document.querySelector(`[data-leave-id="${leaveId}"] .status-badge`);
+                const icon = document.querySelector(`[data-leave-id="${leaveId}"] .status-icon`);
+
+                const statusMap = {
+                    Rejected: {cls: 'status-rejected', iconCls: 'status-home-rejected', label: 'Rejected'},
+                    Approved: {cls: 'status-approved', iconCls: 'status-home-approved', label: 'Approved'},
+                    Pending: {cls: 'status-pending', iconCls: 'status-home-pending', label: 'Pending'},
+                };
+
+                const entry = statusMap[newStatus];
+                if (!entry)
                     return;
+
+                if (badge) {
+                    badge.classList.remove('status-rejected', 'status-approved', 'status-pending');
+                    badge.classList.add(entry.cls);
+                    badge.textContent = entry.label;
                 }
 
-                fetch('YourServlet', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: `leaveId=${selectedEventId}&leaveStatus=${newStatus}&leaveUserId=${currentUserId}`
-                })
-                        .then(res => {
-                            if (res.ok) {
-                                document.getElementById('modalStatus').textContent = newStatus;
-                                document.getElementById('modalStatus').className = `status-badge ${newStatus.toLowerCase()}`;
-
-                                document.querySelectorAll('#actionsDiv > div').forEach(d => d.style.display = 'none');
-                                document.getElementById('actions-reviewed').style.display = 'flex';
-
-                                const row = document.querySelector(`tr[data-id="${selectedEventId}"]`);
-                                if (row) {
-                                    const statusCell = row.querySelector('.status-cell');
-                                    if (statusCell)
-                                        statusCell.textContent = newStatus;
-                                }
-                            } else {
-                                alert('Error updating status');
-                            }
-                        })
-                        .catch(err => console.error(err));
+                if (icon) {
+                    icon.classList.remove('status-home-rejected', 'status-home-approved', 'status-home-pending');
+                    icon.classList.add(entry.iconCls);
+                }
             }
         </script>
         <script>
