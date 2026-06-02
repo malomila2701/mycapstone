@@ -19,6 +19,9 @@
 
     </head>
     <body>
+        <script>
+            const contextPath = '<%= request.getContextPath()%>';
+        </script>
         <%
             userdataDAO dao = new userdataDAO();
             List<EmployeeInfo> v2 = dao.getEmployeeInfo();
@@ -35,7 +38,7 @@
                     </svg>
                 </button>
                 <!--Section de details (Nom, email) (Période de congés) (Boutons)-->
-                <main class="details-section">
+                <div class="details-section">
                     <div style="
                          background: #f3f6fa;
                          padding: 10px;
@@ -59,9 +62,7 @@
                             </span>
                         </span>
                     </div>
-                </main>
-                <aside class="side-section">
-                </aside>
+                </div>
             </div>
         </div>
 
@@ -184,15 +185,18 @@
                                    class="act-btn"
                                    data-userid="<%= userId%>"
                                    data-name="<%= e.getFullName()%>"
-                                   data-email="<%= e.getEmail()%>"
+                                   data-email="<%= e.getEmail() != null ? e.getEmail() : ""%>"
+                                   data-role="<%= e.getRole() != null ? e.getRole() : ""%>"
+                                   data-latestleave="<%= value%>"
                                    onclick="openEmployeeModal(this); return false;"
                                    title="Edit employee">
+                                    <span class="icon-home icon-btn-td">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="black" class="size-5">
+                                        <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
+                                        <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
+                                        </svg>
+                                    </span>
                                 </a>
-                                <!-- Delete trigger -->
-                                <button class="act-btn danger" title="Delete employee"
-                                        onclick="confirmDelete(<%=userId%>)">
-                                    <i class="ti ti-trash" aria-hidden="true"></i>
-                                </button>
                             </div>
                         </div>
 
@@ -259,11 +263,19 @@
                 const userId = btn.dataset.userid;
                 const name = btn.dataset.name;
                 const email = btn.dataset.email;
+                const d = btn.dataset;
 
                 currentUserId = userId;
 
                 document.getElementById("modalUsername").textContent = name;
                 document.getElementById("modalUserEmail").textContent = email;
+                document.getElementById('modalUserId').value = d.userid;
+                document.getElementById('inputName').value = d.name;
+                document.getElementById('inputRole').value = d.role;
+                document.getElementById('inputEmail').value = d.email;
+                document.getElementById('inputPhone').value = d.phone;
+                document.getElementById('inputEntrance').value = d.entrance;   // format YYYY-MM-DD
+                document.getElementById('inputLatestLeave').value = d.latestleave;
 
                 document.getElementById("modalAvatar").src =
                         "<%= request.getContextPath()%>/AvatarServlet?userId=" + userId;
@@ -332,6 +344,8 @@
         </script>
 
         <script src="../scripts/utils.js"></script>
+
+        <%@ include file="/employeeEditModal.jspf" %>
     </body>
 </html>
 

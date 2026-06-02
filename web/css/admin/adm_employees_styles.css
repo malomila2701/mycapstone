@@ -99,6 +99,10 @@
     width: 18px;
     height: 18px;
 }
+.act-btn svg {
+    width: 17px;
+    height: 17px;
+}
 .status-home-rejected {
     background: #721c24;
     width: 18px;
