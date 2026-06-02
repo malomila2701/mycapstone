@@ -74,7 +74,7 @@
             <!-- ── Main ──────────────────────────────────── -->
             <main class="main">
 
-                <div style="display:flex; flex-direction: row; justify-content: space-between; margin-top: 10px; margin-right: 25px;">
+                <div style="display:flex; flex-direction: row; justify-content: space-between; margin-top: 10px;">
                     <div style="display:flex; flex-direction: column;">
                         <span style="padding-left: 20px;
                               font-size: 1rem;
