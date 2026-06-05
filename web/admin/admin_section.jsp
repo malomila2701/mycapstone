@@ -73,7 +73,7 @@
                         </span>
                     </button>
 
-                    <button class="header_icon" id="header_icon_logout">
+                    <button class="header_icon" id="header_icon_logout" onclick="handleLogout()">
                         <span style="margin-left: 10px; font-size: 0.9rem; color: #666;">
                             Log out
                         </span>
@@ -101,6 +101,15 @@
 
 
         <script src="../scripts/utils.js"></script>
+        <script>
+                            function handleLogout() {
+                                fetch('<%= request.getContextPath()%>/LogoutServlet', {
+                                    method: 'POST'
+                                }).then(() => {
+                                    window.top.location.href = '<%= request.getContextPath()%>/hello.jsp';
+                                });
+                            }
+        </script>
         <script>
                         const iframe = document.getElementById("adminFrame");
                         const loader = document.querySelector(".loader");

@@ -22,26 +22,41 @@ import org.json.JSONObject;
  */
 @WebServlet("/UpdateLeaveStatusServlet")
 public class UpdateLeaveStatusServlet extends HttpServlet {
-    
+
     private static final Logger logger = LogManager.getLogger(UpdateLeaveStatusServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
+        int userId = Integer.parseInt(request.getParameter("userid"));
         int id = Integer.parseInt(request.getParameter("holidayid"));
         String status = request.getParameter("status");
+        String response_message = request.getParameter("response_message");
+        
 
         try (Connection conn = DBConnection.connect()) {
-            String sql = "UPDATE holidays SET status=? WHERE holidays_id=?";
+            String sql = "UPDATE holidays SET status=?, response_message=? WHERE holiday_id=?";
             java.sql.PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, status);
-            ps.setInt(2, id);
+            ps.setString(2, response_message);
+            ps.setInt(3, id);
             ps.executeUpdate();
+
+            // 2. Insertion dans notifications
+            String sqlNotif = "INSERT INTO notifications (user_id, holiday_id, message, created_at) VALUES (?,?,?, ?, NOW())";
+            java.sql.PreparedStatement psNotif = conn.prepareStatement(sqlNotif);
+            psNotif.setInt(1, userId);
+            psNotif.setInt(2, id);
+            psNotif.setNull(3, java.sql.Types.INTEGER);
+            psNotif.setString(4, "Permission #" + id + " has been : " + status + "!");
+            psNotif.executeUpdate();
+
+            conn.commit(); // tout valider
+
         } catch (Exception e) {
             logger.error("Error UPDATING status:" + e.getMessage());
         }
-
         // redirect back (important)
         response.sendRedirect(request.getContextPath() + "/admin/requests.jsp");
     }

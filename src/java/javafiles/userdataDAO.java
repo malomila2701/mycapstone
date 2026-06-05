@@ -116,7 +116,7 @@ public class userdataDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con2 = DBConnection.connect();
-            PreparedStatement ps2 = con2.prepareStatement("SELECT *, users.fullname FROM permissions INNER JOIN users ON permissions.user_id = users.user_id WHERE users.user_id= ? AND status='pending' ORDER BY end_date DESC LIMIT 3");
+            PreparedStatement ps2 = con2.prepareStatement("SELECT *, users.fullname AS fullname, users.email AS email FROM permissions INNER JOIN users ON permissions.user_id = users.user_id WHERE users.user_id= ? AND status='pending' ORDER BY end_date DESC LIMIT 3");
 
             ps2.setInt(1, userId);
             ResultSet rs2 = ps2.executeQuery();
@@ -156,7 +156,7 @@ public class userdataDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DBConnection.connect();
-            PreparedStatement ps = con.prepareStatement("SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.end_date, holidays.type, holidays.status, holidays.motif, users.user_id, users.fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? "
+            PreparedStatement ps = con.prepareStatement("SELECT *, users.user_id, users.fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? "
                     + "AND status IN ('approved','rejected') ORDER BY end_date DESC LIMIT 3");
 
             ps.setInt(1, userId);
@@ -171,7 +171,8 @@ public class userdataDAO {
                         rs.getDate("end_date"),
                         rs.getString("type"),
                         rs.getString("status"),
-                        rs.getString("motif")
+                        rs.getString("motif"),
+                        rs.getString("response_message")
                 );
                 leaveList.add(h);
             }
@@ -234,7 +235,7 @@ public class userdataDAO {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con2 = DBConnection.connect();
 
-            PreparedStatement ps2 = con2.prepareStatement("SELECT holidays.user_id, holidays.holidays_id, holidays.start_date, holidays.motif, holidays.type, holidays.end_date, holidays.status,users.user_id, users.fullname "
+            PreparedStatement ps2 = con2.prepareStatement("SELECT *,users.user_id, users.fullname "
                     + "FROM holidays "
                     + "INNER JOIN users ON holidays.user_id = users.user_id "
                     + "ORDER BY holidays.end_date;");
@@ -249,7 +250,8 @@ public class userdataDAO {
                         rs2.getDate("end_date"),
                         rs2.getString("type"),
                         rs2.getString("status"),
-                        rs2.getString("motif")
+                        rs2.getString("motif"),
+                        rs2.getString("response_message")
                 );
                 userList.add(h);
             }
@@ -427,6 +429,30 @@ public class userdataDAO {
             logger.error("ERROR RETRIEVING INDIVIDUAL USER LEAVES: " + e.getMessage());
         }
         return eventList;
+    }
+
+    public List<Agenda> getAgenda(int userId) {
+        List<Agenda> agendaList = new ArrayList<>();
+        try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement(
+                "SELECT * FROM agenda ORDER BY start_date ASC, start_time ASC")) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Agenda a = new Agenda(
+                        rs.getInt("agenda_id"),
+                        rs.getString("title"),
+                        rs.getDate("start_date"),
+                        rs.getDate("end_date"),
+                        rs.getString("type"),
+                        rs.getTime("start_time"),
+                        rs.getTime("end_time"),
+                        rs.getString("event")
+                );                          
+                agendaList.add(a);          
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return agendaList;
     }
 
 }

@@ -19,8 +19,10 @@ public class UserLeave {
     private String type;
     private String status;
     private String motif;
+    private String response_message;
 
-    public UserLeave(int id, int holidays_id, String fullName, Date startDate, Date endDate, String type, String status, String motif) {
+
+    public UserLeave(int id, int holidays_id, String fullName, Date startDate, Date endDate, String type, String status, String motif, String response_message ) {
         this.id = id;
         this.holidays_id = holidays_id;
         this.fullname = fullName;
@@ -29,6 +31,7 @@ public class UserLeave {
         this.type = type;
         this.status = status;
         this.motif = motif;
+        this.response_message = response_message;
     }
     
     public Integer getUserId() { return id; }
@@ -39,5 +42,6 @@ public class UserLeave {
     public String getType() { return type; }
     public String getStatus() { return status; }
     public String getMotif() { return motif; }
+    public String getResponseMessage() { return response_message; }
 }
 

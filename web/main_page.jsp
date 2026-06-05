@@ -102,8 +102,6 @@
                         <a href="<%= request.getContextPath()%>/admin/permissions.jsp">Permissions</a>
                         <a href="<%= request.getContextPath()%>/admin/employees.jsp">Employees</a>
                         <a href="<%= request.getContextPath()%>/admin/calendar.jsp">Calendar</a>
-                        <a href="#">Reports</a>
-                        <a href="#">Settings</a>
                     </div>
                 </div>
 

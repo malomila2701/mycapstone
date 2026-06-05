@@ -89,37 +89,89 @@
                                 Permission Period
                             </label>
 
+                            <%-- Date row --%>
                             <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
-
                                 <div style="display:flex; align-items:center; margin-left: 5px; gap:4px; padding-bottom: 5px;">
-                                    <span class="icon-btn-modal icon-home-modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                    <span class="icon-btn-modal icon-home-modal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
                                         <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                                        </svg></span>
+                                        </svg>
+                                    </span>
                                     <label id="modalStartDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
                                 </div>
-
                                 &rarr;
-
                                 <div style="display:flex; align-items:center; gap:4px;">
-                                    <span class="icon-btn-modal icon-home-modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                    <span class="icon-btn-modal icon-home-modal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
                                         <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                                        </svg></span>
-                                    <label id="modalEndDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label> 
+                                        </svg>
+                                    </span>
+                                    <label id="modalEndDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
                                 </div>
                             </div>
+
+                            <%-- Time row --%>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center; margin-top: 4px;">
+                                <div style="display:flex; align-items:center; margin-left: 5px; gap:4px;">
+                                    <span class="icon-btn-modal icon-home-modal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                    <label id="modalStartTime" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                </div>
+                                &rarr;
+                                <div style="display:flex; align-items:center; gap:4px;">
+                                    <span class="icon-btn-modal icon-home-modal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                    <label id="modalEndTime" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
 
-                    <label style="margin-top: 10px; margin-left: 10px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;" for="modalMotif"> Reason/Motif </label> 
+                    <label style="
+                           margin-top: 10px;
+                           margin-left: 10px;
+                           font-size: 0.7rem;
+                           font-weight: 600;
+                           text-transform: uppercase;
+                           color: lightslategray;
+                           white-space: nowrap;" 
+                           for="modalMotif"> 
+                        Reason/Motif </label> 
                     <div style="
                          background: #f3f6fa;
                          padding: 10px;
                          border: 1px solid #ccc;
                          border-radius: 20px;
-                         margin-top: 5px;
-                         ">
+                         margin-top: 5px;">
                         <textarea id="modalMotif" readonly></textarea>
                     </div>
+
+                    <label style="
+                           margin-top: 10px;
+                           margin-left: 10px;
+                           font-size: 0.7rem;
+                           font-weight: 600;
+                           text-transform: uppercase;
+                           color: lightslategray;
+                           white-space: nowrap;" 
+                           for="modalMotif"> 
+                        HR Note: </label> 
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 10px;
+                         border: 1px solid #ccc;
+                         border-radius: 20px;
+                         margin-top: 5px;">
+                        <textarea id="modalResponseMessage" readonly></textarea>
+                    </div>
+
                     <span style="border-bottom: 1px solid #ccc; width: 100%;"></span>
                     <!-- Modal Actions & form with hidden data -->
                     <div class="modal-actions" id="actionsDiv">
@@ -171,17 +223,9 @@
                     </form>
 
                 </main>
-                <aside class="side-section">
-                    <div style="position: relative; min-height: 150px;">
-                        <div id="calendarLoader" class="chart-loader-wrapper">
-                            <div class="loader" id="loader"></div>
-                        </div>
-                        <div id="calendar"></div>
-                    </div>
-                </aside>
             </div>
         </div>
-
+        <!--Still in modal-->
         <div id="confirmPopup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
             <div style="background:#fff; border-radius:8px; padding:24px; width:340px; display:flex; flex-direction:column; gap:12px;">
                 <h3 style="margin:0;">Confirm: <span id="confirmPopupStatus"></span></h3>
@@ -206,10 +250,10 @@
                     <span style="padding-left: 20px;
                           font-size: 1rem;
                           font-weight: 600;
-                          color: #333;">Pending & Recent Requests</span>
+                          color: #333;">Pending & Recent Permissions</span>
                     <span style="padding-left: 20px;
                           font-size: 0.8rem;
-                          font-weight: lighter;">Leave Management & Approval Section</span>
+                          font-weight: lighter;">Permission Management & Approval Section</span>
                 </div>
                 <button class="exportBtn" style="display:flex; flex-direction: row;">
                     <span class="icon-home">
@@ -233,8 +277,8 @@
                         </span>
                     </div>
                     <div>
-                        <p>Total Employees</p>
-                        <h2>24</h2>
+                        <p>Total Requests</p>
+                        <h2>6</h2>
                     </div>
                 </div>
                 <div class="card" id="pending_card">
@@ -372,7 +416,7 @@
                                         <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap; color: #333;">
                                             <%= p.getFullName()%>
                                         </span>
-                                        <span style="font-size:0.8rem; color:lightslategray;">
+                                        <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
                                             Permission &bull; <%= hours%> hrs
                                         </span>
                                     </div>
@@ -429,14 +473,12 @@
                                     <%=p.getStatus()%>
                                 </span>
                             </div>
-
                         </td>
 
                         <!-- ACTION -->
                         <td style="padding:10px; text-align:center; width:100px;">
 
                             <button class="icon-btn-td"
-
                                     data-userid="<%= p.getUserId()%>" 
                                     data-useremail="<%= p.getEmail()%>"
                                     data-type="permission"
@@ -448,20 +490,17 @@
                                     data-starttime="<%= p.getStartTime()%>"
                                     data-endtime="<%= p.getEndTime()%>"
                                     data-motif="<%= p.getMotif()%>"
-                                    data-status="<%= p.getStatus()%>">
+                                    data-status="<%= p.getStatus()%>"
+                                    data-responsemessage="<%=p.getResponseMessage()%>">
 
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 20 20"
-                                     fill="#666"
-                                     width="18"
-                                     height="18">
+                                <span class="icon-home">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </span>
 
-                                <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
 
-                                <path fill-rule="evenodd"
-                                      d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
-                                      clip-rule="evenodd" />
-                                </svg>
 
                             </button>
 
@@ -498,7 +537,7 @@
                                     }
         </script>
         <script>
-            const ROWS_PER_PAGE = 5; // change this to whatever limit you want
+            const ROWS_PER_PAGE = 4; // change this to whatever limit you want
             let currentPage = 1;
 
             function paginateTable() {
@@ -694,34 +733,12 @@
             document.getElementById('dateFilter').addEventListener('change', applyFilters);
         </script>
         <script>
-
-            const calendarEl = document.getElementById('calendar');
-            let calendar;
             let selectedEventId = null;
             let currentUserId = null;
 
 
             const detailsAction = document.querySelector('.detailsAction');
-            const loader = document.getElementById("loader");
 
-            window.calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                eventSources: [],
-                firstDay: 1,
-                showNonCurrentDates: false,
-                hiddenDays: [0],
-                loading: function (isLoading) {
-                    if (isLoading) {
-                        loader.style.display = "block";
-                        calendarEl.style.visibility = 'hidden';
-                    } else {
-                        loader.style.display = "none";
-                        calendarEl.style.visibility = 'visible';
-                    }
-                }
-            });
-
-            window.calendar.render();
 
             // Open modal for each user button
             document.querySelectorAll('.icon-btn-td').forEach(btn => {
@@ -749,33 +766,15 @@
                     document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
                     document.getElementById('modalUserEmail').textContent = btn.dataset.useremail || "Unknown";
                     document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
+                    document.getElementById('modalResponseMessage').textContent = btn.dataset.responsemessage || "N/A";
                     document.getElementById('modalStartDate').textContent = btn.dataset.startdate || "";
                     document.getElementById('modalEndDate').textContent = btn.dataset.enddate || "";
+                    document.getElementById('modalStartTime').textContent =  '—';
+                    document.getElementById('modalEndTime').textContent =  '—';
 
                     // Show modal
                     openModal();
 
-                    // Make sure calendar exists
-                    if (window.calendar) {
-                        // Remove old sources
-                        window.calendar.removeAllEventSources();
-                        // Add holidays source
-                        window.calendar.addEventSource({
-                            url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
-                            method: 'GET'
-                        });
-                        //PermissionCalendar
-                        window.calendar.addEventSource({
-                            url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
-                            method: 'GET',
-                            display: 'list-item',
-                            extraParams: {
-                                userId: currentUserId
-                            }
-                        });
-                        // Refresh events
-                        window.calendar.refetchEvents();
-                    }
                 });
             });
 

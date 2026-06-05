@@ -4,6 +4,8 @@
     Author     : HP
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="javafiles.Agenda"%>
 <%@page import="java.util.Date"%>
 <%@page import="javafiles.UserPermission"%>
 <%@page import="javafiles.UserLeave"%>
@@ -44,6 +46,9 @@
                 List<UserPermission> v3 = dao.getUserPermission(userId);
                 List<UserPending> daoPending = dao.getLeavePending(userId);
                 List<UserPermission> daoPermissionPending = dao.getPermissionPending(userId);
+                List<Agenda> agendaList = dao.getAgenda(userId);
+                SimpleDateFormat timeFmt = new SimpleDateFormat("hh:mm a");
+                SimpleDateFormat dateFmt = new SimpleDateFormat("MMM d");
             %>
         </script>
     </head>
@@ -80,7 +85,7 @@
                          border-radius: 20px;
                          ">
                         <span style="display:flex; flex-direction:row;">
-                            <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%=userId%>"
+                            <img id="modalAvatar" src=""
                                  style="width:40px; height:40px; border-radius:50%; background: #eef; margin-left: 15px;" title="" alt="" />
 
                             <span style="display: flex; flex-direction: column;">
@@ -138,6 +143,27 @@
                          margin-top: 5px;
                          ">
                         <textarea id="modalMotif" readonly></textarea>
+                    </div>
+
+                    <div id="hr_note" style="display:block;">
+                        <label style="
+                               margin-top: 10px;
+                               margin-left: 10px;
+                               font-size: 0.7rem;
+                               font-weight: 600;
+                               text-transform: uppercase;
+                               color: lightslategray;
+                               white-space: nowrap;" 
+                               for="modalMotif"> 
+                            HR Note: </label> 
+                        <div style="
+                             background: #f3f6fa;
+                             padding: 10px;
+                             border: 1px solid #ccc;
+                             border-radius: 20px;
+                             margin-top: 5px;">
+                            <textarea id="modalResponseMessage" readonly></textarea>
+                        </div>
                     </div>
                     <span style="border-bottom: 1px solid #ccc; width: 100%;"></span>
                     <!-- Modal Actions & form with hidden data -->
@@ -218,8 +244,8 @@
         <div class="dashboard">
             <main class="cards-section">
 
-                <div style="display:flex; flex-direction: row; justify-content: space-between; margin-top: 10px; margin-right: 25px;">
-                    <div style="display:flex; flex-direction: column;">
+                <div style="display:flex; flex-direction: row; justify-content: space-between; margin-top: 10px; margin-right: 25px; width: 100%;">
+                    <div style="display:flex; flex-direction: column; width: 100%;">
                         <span style="padding-left: 20px;
                               font-size: 1rem;
                               font-weight: 600;
@@ -245,14 +271,27 @@
             </main>
 
             <aside class="side-section">
+                <%
+                    Agenda nextHoliday = null;
+                    java.util.Date today = new java.util.Date();
+                    if (agendaList != null) {
+                        for (Agenda a : agendaList) {
+                            if ("holiday".equalsIgnoreCase(a.getType())
+                                    && "National Holiday".equalsIgnoreCase(a.getEvent())
+                                    && a.getStartDate() != null
+                                    && !a.getStartDate().before(today)) {
+                                nextHoliday = a;
+                                break;
+                            }
+                        }
+                    }
+                %>
 
                 <div class="agenda-card">
                     <div class="agenda-header">
                         <h3>Agenda</h3>
-
                         <div class="agenda-actions">
                             <button id="newAgendaBtn">+ New</button>
-
                             <div id="agendaMenu" class="agenda-menu">
                                 <button onclick="openAgendaModal('holiday')">Next Holiday</button>
                                 <button onclick="openAgendaModal('task')">New Task</button>
@@ -261,11 +300,17 @@
                     </div>
 
                     <div id="agendaContainer">
-                        <div class="agenda-item" id="agenda-item-holiday">
-                            <div style="display:flex; flex-direction: row; justify-content: space-between;">
+
+                        <%-- Position 1: next national holiday --%>
+                        <div class="agenda-item agenda-item-holiday" id="agenda-item-holiday">
+                            <div style="display:flex; flex-direction:row; justify-content:space-between;">
                                 <div>
                                     <h4>Next National Holiday:</h4>
-                                    <p>Easter Monday ( Apr 6 )</p>
+                                    <% if (nextHoliday != null) {%>
+                                    <p><%= nextHoliday.getTitle()%> ( <%= dateFmt.format(nextHoliday.getStartDate())%> )</p>
+                                    <% } else { %>
+                                    <p>No upcoming holidays</p>
+                                    <% } %>
                                 </div>
                                 <div class="icon-btn">
                                     <span class="icon-home">
@@ -276,26 +321,66 @@
                                     </span>
                                 </div>
                             </div>
+                        </div>
 
-                        </div>
+                        <%-- Remaining items (tasks + non-national holidays) --%>
+                        <%
+                            if (agendaList != null) {
+                                java.util.List<Agenda> remaining = new java.util.ArrayList<>();
+                                for (Agenda a : agendaList) {
+                                    boolean isNationalHoliday = "National Holiday".equalsIgnoreCase(a.getEvent());
+                                    if (!isNationalHoliday) {
+                                        remaining.add(a);
+                                    }
+                                }
+                                remaining.sort(( x,   
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                    y) -> {
+                                    if (x.getStartDate() == null) {
+                                        return 1;
+                                    }
+                                    if (y.getStartDate() == null) {
+                                        return -1;
+                                    }
+                                    return x.getStartDate().compareTo(y.getStartDate());
+                                });
+                                for (Agenda a : remaining) {
+                        %>
                         <div class="agenda-item">
-                            <h4>History 12</h4>
-                            <p>Lecture on Cold War (10:00 AM - 11:30 AM)</p>
+                            <h4><%= a.getTitle()%></h4>
+                            <p>
+                                <%= a.getEvent() != null ? a.getEvent() + " · " : ""%><%= dateFmt.format(a.getStartDate())%>
+                                <% if (a.getStartTime() != null && a.getEndTime() != null) {%>
+                                (<%= timeFmt.format(a.getStartTime())%> - <%= timeFmt.format(a.getEndTime())%>)
+                                <% } %>
+                            </p>
                         </div>
-                        <div class="agenda-item">
-                            <h4>History 11</h4>
-                            <p>Lecture on Cold War (10:00 AM - 11:30 AM)</p>
-                        </div>
-                        <div class="agenda-item">
-                            <h4>History 10A</h4>
-                            <p>Debate Prep (4:30 PM - 5:30 PM)</p>
-                        </div>
-                    </div>
-                </div>
+                        <%  }
+                            }
+                        %>
+
+                    </div><%-- end agendaContainer --%>
+                </div><%-- end agenda-card --%>
             </aside>
         </div>
 
         <script>
+            function formatDate(date) {
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return y + '-' + m + '-' + d;
+            }
+
 
             let calendar;
             let cellDate;
@@ -320,7 +405,7 @@
 
                         // All holidays 
                         {
-                            url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
+                            url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
                             method: 'GET',
                             className: 'event-block',
                             display: 'block'
@@ -330,10 +415,7 @@
                             url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
                             method: 'GET',
                             className: 'event-list',
-                            display: 'list-item',
-                            extraParams: {
-                                userId: currentUserId
-                            }
+                            display: 'list-item'
                         }
                     ],
                     // Highlight all days of events
@@ -364,37 +446,51 @@
                     eventClick: function (info) {
                         const event = info.event;
                         const props = event.extendedProps;
+
+                        if (event.classNames.includes('event-block'))
+                            return;
+
+                        console.log('eventClick fired');
+                        console.log('props:', props);
+
                         selectedEventId = props.leaveId;
                         currentUserId = props.userId;
-                        // Infos utilisateur
+
                         document.getElementById('modalUsername').textContent = props.fullName || 'Unknown';
                         document.getElementById('modalUserEmail').textContent = props.email || '';
-                        // Avatar
-                        document.querySelector('#leaveModal img').src =
+
+                        document.getElementById('modalAvatar').src =
                                 '<%= request.getContextPath()%>/AvatarServlet?userId=' + props.userId;
-                        // Période
-                        document.getElementById('modalStartDate').textContent = event.startStr;
-                        document.getElementById('modalEndDate').textContent = event.endStr || event.startStr;
-                        // Motif
+
+                        const endDisplay = event.end
+                                ? new Date(event.end.getTime() - 86400000)
+                                : event.start;
+                        document.getElementById('modalStartDate').textContent = formatDate(event.start);
+                        document.getElementById('modalEndDate').textContent = formatDate(endDisplay);
+
                         document.getElementById('modalMotif').value = props.motif || '';
-                        // Hidden fields du statusForm
+                        document.getElementById('modalResponseMessage').value = props.responseMessage || '';
+
                         document.getElementById('leaveId').value = props.leaveId;
                         document.getElementById('leaveUserId').value = props.userId;
                         document.getElementById('leaveStatus').value = props.status;
-                        // Boutons selon statut
+
                         document.getElementById('actions-pending').style.display = 'none';
                         document.getElementById('actions-reviewed').style.display = 'none';
                         document.getElementById('actions-none').style.display = 'none';
-                        const status = (props.status || '').toLowerCase();
-                        if (status === 'pending') {
-                            document.getElementById('actions-pending').style.display = 'flex';
-                        } else if (status === 'approved' || status === 'rejected') {
-                            document.getElementById('actions-reviewed').style.display = 'flex';
+
+                        const status = (props.status || '');
+                        console.log('status value hitting switch:', props.status);
+                        if (status === 'Pending') {
+                            document.getElementById('actions-pending').style.display = 'block';
+                            document.getElementById('hr_note').style.display = 'none';
+                        } else if (status === 'Approved' || status === 'Rejected') {
+                            document.getElementById('actions-reviewed').style.display = 'block';
                         } else {
+                            console.warn('status did not match any condition:', status);
                             document.getElementById('actions-none').style.display = 'block';
                         }
 
-                        // Ouvre le modal
                         openModal();
                     },
                     eventDidMount: function (info) {
@@ -434,7 +530,7 @@
         <h4>Next National Holiday:</h4>
         <p>${name} &nbsp;|&nbsp; ${date}</p>
         <p style="font-size:0.8rem; color:#215f91;">${type}</p>
-    `;
+        `;
 
                 fetch(contextPath + '/addHoliday', {
                     method: 'POST',
@@ -522,12 +618,12 @@
             <input type="text" placeholder="e.g. Easter Monday" id="taskTitle">
         </div>
         <div class="agenda-item">
-    <div class="item-label">Start date</div>
-    <input type="date" id="holidayStartDate">
+        <div class="item-label">Start date</div>
+        <input type="date" id="holidayStartDate">
         </div>
-    <div class="agenda-item">
-    <div class="item-label">End date</div>
-    <input type="date" id="holidayEndDate">
+        <div class="agenda-item">
+        <div class="item-label">End date</div>
+        <input type="date" id="holidayEndDate">
         </div>
         <div class="agenda-item">
             <div class="item-label" id="holidayType">Type</div>
@@ -538,25 +634,25 @@
             </select>
         </div>`;
             const taskBody = `
-  <div class="agenda-item">
-    <div class="item-label">Task title</div>
-    <input type="text" id="taskTitle" placeholder="e.g. Prepare report">
-  </div>
-  <div class="agenda-item">
-    <div class="item-label">Date</div>
-    <input type="date" id="taskDate">
-  </div>
-  <div class="agenda-item" style="display:flex; gap:12px;">
-    <div style="flex:1">
-      <div class="item-label">Start time</div>
-      <input type="time" id="taskStart">
-    </div>
-    <div style="flex:1">
-      <div class="item-label">End time</div>
-      <input type="time" id="taskEnd">
-    </div>
-  </div>
- `;
+        <div class="agenda-item">
+        <div class="item-label">Task title</div>
+        <input type="text" id="taskTitle" placeholder="e.g. Prepare report">
+        </div>
+        <div class="agenda-item">
+        <div class="item-label">Date</div>
+        <input type="date" id="taskDate">
+        </div>
+        <div class="agenda-item" style="display:flex; gap:12px;">
+        <div style="flex:1">
+        <div class="item-label">Start time</div>
+        <input type="time" id="taskStart">
+        </div>
+        <div style="flex:1">
+        <div class="item-label">End time</div>
+        <input type="time" id="taskEnd">
+        </div>
+        </div>
+        `;
 
             /* ── Modal open/close ── */
             function openAgendaModal(type) {

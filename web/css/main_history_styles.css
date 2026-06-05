@@ -274,12 +274,12 @@ ICONES
     height: 70%;
 }
 .icon-btn-avatar.holiday {
-    background:#f8fbff;
-    border: 1px solid #dbeafe;
+    background:transparent;
+    border: 1px solid #ccc;
 }
 .icon-btn-avatar.permission {
-    background:#faeeda;
-    border: 1px solid #e6d7c3;
+    background:transparent;
+    border: 1px solid #ccc;
 }
 .icon-btn-td {
     display: inline-flex;
@@ -320,7 +320,7 @@ body{
 
     min-height: 100vh;
 
-    margin-right: 1.5%;
+    margin-left: 15px;
     overflow-x: hidden;
 
 
@@ -588,15 +588,46 @@ Main SECTION
     overflow: hidden;
 }
 .banner .header-left {
-    padding: 10px 0px 5px 15px;
-    font-size: 1.1rem;
-    color: #475569;
+    display:flex;
+    align-items:center;
+    padding-left: 15px;
+
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: #9E9D99;
+    line-height: 2;
+
 }
 .chart-wrap {
     position: relative;
     padding: 25px;
     height: 200px; /* fixed chart area */
 }
+.legend-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 4px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-line { display: flex; align-items: center; }
+.legend-line-track { width: 28px; height: 2px; background: #2563eb; border-radius: 2px; }
+.legend-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #2563eb; border: 2px solid #fff;
+  outline: 1.5px solid #2563eb;
+  margin-left: -4px; margin-right: -4px;
+}
+.legend-label { font-size: 13px; color: #7480a0; }
+.legend-meta { display: flex; align-items: center; gap: 16px; }
+.legend-stat { display: flex; flex-direction: column; align-items: flex-end; }
+.legend-stat-val { font-size: 15px; font-weight: 500; line-height: 1.2; }
+.legend-stat-sub { font-size: 11px; color: #a0a8c0; }
+.legend-divider { width: 1px; height: 28px; background: #e5e7ef; }
+
 #leavesChart {
     width: 100% !important;
     height: 100% !important;
@@ -732,9 +763,10 @@ Main SECTION
 
 
 .reqtable {
-    width: 100%;
+    width: 98%;
     height:100%;
     background: #ffffff;
+    margin: 5px 15px;
 
     border-collapse: separate;
     border-spacing: 0;
@@ -743,7 +775,19 @@ Main SECTION
 .reqtable thead {
     border: 1px solid transparent;
     background: #eef;
+
+    margin: 10px 20px;
     overflow:hidden;
+}
+.reqtable thead th {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #444;
+    white-space:nowrap;
+}
+.reqtable thead th:hover {
+    color: #444;
 }
 .reqtable thead th:first-child {
     border-top-left-radius: 8px;
@@ -782,13 +826,19 @@ Main SECTION
 /* Tableau des derniers congés */
 #latest_banner .header-left{
     display:flex;
-    align-items: center;
     gap: 8px;
+
+    align-items:center;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    color: #9E9D99;
+    line-height: 1;
 }
 #latest_banner .header-right{
     display: flex;
     flex-direction: row;
-    margin: 0px;
+    margin-right:0;
 }
 #latest_banner .search-box {
     position: relative;
@@ -846,19 +896,42 @@ Main SECTION
 
 
 .status {
-    font-weight: 400;
     display: inline-flex;
     align-items: center;
     gap: 5px;
+
+    min-width: 70px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    font-weight: 400;
+    font-size: 11px;
 }
 .status-rejected {
-    color: red;
+    background: #fdecea;
+    color: #d93025;
+    fill: #d93025;
+}
+.status-rejected::before {
+    background: rgba(114, 28, 36, 0.6);
 }
 .status-approved {
-    color: green;
+    background: #D1FAE5;
+    border: 1px solid #10B981;
+    color: #065F46;
+    fill: #e6f7ee;
+}
+.status-approved::before {
+    background: rgba(21, 87, 36, 0.6);
 }
 .status-pending {
-    color: orange;
+    background: #fef3cd;
+    color: #7d5a00;
+}
+.status-pending::before {
+    background: rgba(125, 90, 0, 0.6);
 }
 
 .bar {

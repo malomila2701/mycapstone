@@ -37,7 +37,7 @@ public class CalendarHolidaysServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement("SELECT *, users.fullname AS fullname FROM holidays JOIN users ON holidays.user_id = users.user_id WHERE status IN ('approved')")) {
+        try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement("SELECT *, users.fullname AS fullname, users.email AS email FROM holidays JOIN users ON holidays.user_id = users.user_id WHERE status IN ('approved', 'pending')")) {
 
             ResultSet rs = null;
 
@@ -58,7 +58,7 @@ public class CalendarHolidaysServlet extends HttpServlet {
                     if (addedIds.contains(holidayId)) {
                         continue;
                     }
-                    
+
                     addedIds.add(holidayId);
 
                     JSONObject event = new JSONObject();
@@ -69,11 +69,16 @@ public class CalendarHolidaysServlet extends HttpServlet {
                     cal.add(Calendar.DATE, 1);
 
                     event.put("id", holidayId);
+                    event.put("userId", rs.getInt("user_id"));
                     event.put("title", rs.getString("fullname"));
                     event.put("start", sdf.format(rs.getDate("start_date")));
                     event.put("end", sdf.format(cal.getTime()));
                     event.put("allDay", true);
                     event.put("motif", rs.getString("motif"));
+                    event.put("responseMessage", rs.getString("response_message"));
+
+                    event.put("fullName", rs.getString("fullname")); // JOIN users table
+                    event.put("email", rs.getString("email"));        // JOIN users table
 
                     // color by status
                     String status = rs.getString("status");
@@ -91,7 +96,7 @@ public class CalendarHolidaysServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.getWriter().write(events.toString());
             } catch (SQLException e1) {
-                logger.error("Error linkage to db: " + e1.getMessage());
+                logger.error("Error linkage to db_holidays: " + e1.getMessage());
             }
             ps.close();
             conn.close();

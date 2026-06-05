@@ -234,6 +234,29 @@
                                 Requests Collection
                             </div> 
                         </div>
+                        <!--Legend-->
+                        <div class="legend-wrap">
+                            <div class="legend-item">
+                                <div class="legend-line">
+                                    <div class="legend-line-track"></div>
+                                    <div class="legend-dot"></div>
+                                    <div class="legend-line-track"></div>
+                                </div>
+                                <span class="legend-label">Approved leaves per month</span>
+                            </div>
+
+                            <div class="legend-meta" id="legend-meta" style="display:none">
+                                <div class="legend-stat">
+                                    <span class="legend-stat-val" id="legend-total">—</span>
+                                    <span class="legend-stat-sub">total this year</span>
+                                </div>
+                                <div class="legend-divider"></div>
+                                <div class="legend-stat">
+                                    <span class="legend-stat-val" id="legend-peak">—</span>
+                                    <span class="legend-stat-sub">peak month</span>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Canvas -->
                         <div class="chart-wrap">
                             <div class="chart-loader-wrapper">
@@ -374,7 +397,7 @@
                         <div class="search-box">
                             <input type="text" placeholder="Search by Name or ID">
                         </div>
-                        <span style="position:relative; padding: 8px; font-size: 0.8rem; margin-right: 10px; white-space: nowrap;">Filter by: </span>
+                        <span style="display:flex; align-items: center; font-size: 0.8rem; margin-right: 10px; white-space: nowrap;">Filter by: </span>
                         <select id="dateFilter" style="margin-right: 10px;">
                             <option value="all">All Dates</option>
                             <option value="today">Today</option>
@@ -399,8 +422,9 @@
                 <table class="reqtable" cellspacing="0" id="latest_b">
                     <thead>
                         <tr>
-                            <th style="padding:12px; text-align:left; padding-left: 30px;">Description</th>
-                            <th style="padding:12px; text-align:center;">Reason</th>
+                            <th style="padding:12px; text-align:left; padding-left: 3%;">Description</th>
+                            <th id="dateHeader" style="padding:12px; text-align:center; cursor:pointer;">Period ↓</th>
+                            <th style="padding:12px; text-align:center;">Motif/Reason</th>
                             <th style="padding:12px; text-align:center;">Status</th>
                             <th style="padding:12px; text-align:center;">Action</th>
                         </tr>
@@ -419,11 +443,6 @@
                             // --- Sort by startDate descending (newest first) ---
                             combined.sort(( a,
                                       
-                                  
-                                  
-                                  
-                                  
-                                  
                                 b) -> {
                                 Date dateA = (a instanceof UserLeave)
                                         ? ((UserLeave) a).getStartDate()
@@ -437,7 +456,7 @@
                             if (combined.isEmpty()) {
                         %>
                         <tr>
-                            <td colspan="4" style="padding:30px; background:white; text-align:center;
+                            <td colspan="5" style="padding:30px; background:white; text-align:center;
                                 border-bottom-left-radius:16px; border-bottom-right-radius:16px; color:red;">
                                 No latest holidays found.
                             </td>
@@ -462,60 +481,97 @@
 
                                     String status = h.getStatus();
                                     String cssClass = "";
-                                    if ("rejected".equalsIgnoreCase(status))
+                                    String cssIconStatus = "";
+
+                                    if ("rejected".equalsIgnoreCase(status)) {
                                         cssClass = "status-rejected";
-                                    else if ("approved".equalsIgnoreCase(status))
+                                        cssIconStatus = "status-home-rejected";
+                                    } else if ("approved".equalsIgnoreCase(status)) {
                                         cssClass = "status-approved";
-                                    else if ("pending".equalsIgnoreCase(status))
+                                        cssIconStatus = "status-home-approved";
+                                    } else if ("pending".equalsIgnoreCase(status)) {
                                         cssClass = "status-pending";
+                                        cssIconStatus = "status-home-pending";
+                                    }
+
                         %>
                         <tr data-id="<%=h.getHolidayId()%>" data-type="leave">
 
                             <!-- DESCRIPTION -->
-                            <td style="padding:10px;">
+                            <td style="padding:10px; width: 300px;">
                                 <div style="display:flex; align-items:center; gap:10px;">
 
                                     <!-- Avatar -->
-                                    <div style="display:flex; align-items:center; gap:10px;">
+                                    <div style="display:flex; align-items:center; gap:10px; padding-left: 3%;">
                                         <button class="icon-btn-avatar holiday">
                                             <span class="icon-home">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#215f91" class="size-6">
-                                                <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
-                                                <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                                <path d="M10 2a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 2ZM10 15a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 15ZM10 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM15.657 5.404a.75.75 0 1 0-1.06-1.06l-1.061 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM6.464 14.596a.75.75 0 1 0-1.06-1.06l-1.06 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM18 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 18 10ZM5 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 5 10ZM14.596 15.657a.75.75 0 0 0 1.06-1.06l-1.06-1.061a.75.75 0 1 0-1.06 1.06l1.06 1.06ZM5.404 6.464a.75.75 0 0 0 1.06-1.06l-1.06-1.06a.75.75 0 1 0-1.061 1.06l1.06 1.06Z" />
                                                 </svg>
                                             </span>
                                         </button>
                                         <div style="display:flex; flex-direction:column;">
-                                            <span style="font-size: 0.9rem; font-weight:600; white-space:nowrap;">
-                                                <%= outFmt.format(h.getStartDate())%> &rarr;
-                                                <%= outFmt.format(h.getEndDate())%>,
-                                                <%= yearFmt.format(h.getEndDate())%>                                                
+                                            <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap; color: #333;">
+                                                <%= h.getFullName()%>
                                             </span>
-                                            <span style="font-size:0.8rem; color:lightslategray;"><%=h.getType()%>  &bull; <%=days%> days </span>
+                                            <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
+                                                Holiday &bull; <%= days%> hrs
+                                            </span>
                                         </div>
                                     </div>
 
                                 </div>
                             </td>
 
+                            <td data-date="<%= h.getStartDate().getTime()%>" style="padding:10px; text-align:center; width:150px;">
+                                <div style="display:flex; flex-direction:column;">
+                                    <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
+                                        <%= outFmt.format(h.getStartDate())%>,
+                                        <%= yearFmt.format(h.getEndDate())%>
+                                    </span>
+                                    <span style="font-family: Consolas, sans-serif; font-size:0.8rem; font-weight:lighter; color:lightslategray;">
+                                        ID: REQ-2026-00<%= h.getHolidayId()%> 
+                                    </span>
+                                </div>
+                            </td>
+
                             <!-- REASON -->
-                            <td style="padding:10px; text-align:center; width:250px;">
+                            <td style="padding:10px; text-align:center; width:350px;">
+
                                 <span style="
                                       font-size:0.9rem;
-                                      white-space:nowrap;
+                                      display:block;
+                                      white-space: wrap;
                                       overflow:hidden;
                                       text-overflow:ellipsis;
-                                      display:block;
                                       ">
                                     <%= h.getMotif()%>
                                 </span>
+
                             </td>
 
                             <!-- STATUS -->
                             <td style="padding:10px; text-align:center; width:120px;">
-                                <span class="status <%= cssClass%>">
-                                    <%= h.getStatus()%>
-                                </span>
+
+                                <div class="status <%=cssClass%>">
+                                    <div class="icon-btn-status" onclick="toggleHRTooltip(this, '<%=h.getResponseMessage() != null ? h.getResponseMessage().replace("'", "\\'") : ""%>')" style="position:relative; cursor:pointer;">
+                                        <div class="icon-home <%=cssIconStatus%>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                            <path fill-rule="evenodd" d="M12 3.75a6.715 6.715 0 0 0-3.722 1.118.75.75 0 1 1-.828-1.25 8.25 8.25 0 0 1 12.8 6.883c0 3.014-.574 5.897-1.62 8.543a.75.75 0 0 1-1.395-.551A21.69 21.69 0 0 0 18.75 10.5 6.75 6.75 0 0 0 12 3.75ZM6.157 5.739a.75.75 0 0 1 .21 1.04A6.715 6.715 0 0 0 5.25 10.5c0 1.613-.463 3.12-1.265 4.393a.75.75 0 0 1-1.27-.8A6.715 6.715 0 0 0 3.75 10.5c0-1.68.503-3.246 1.367-4.55a.75.75 0 0 1 1.04-.211ZM12 7.5a3 3 0 0 0-3 3c0 3.1-1.176 5.927-3.105 8.056a.75.75 0 1 1-1.112-1.008A10.459 10.459 0 0 0 7.5 10.5a4.5 4.5 0 1 1 9 0c0 .547-.022 1.09-.067 1.626a.75.75 0 0 1-1.495-.123c.041-.495.062-.996.062-1.503a3 3 0 0 0-3-3Zm0 2.25a.75.75 0 0 1 .75.75c0 3.908-1.424 7.485-3.781 10.238a.75.75 0 0 1-1.14-.975A14.19 14.19 0 0 0 11.25 10.5a.75.75 0 0 1 .75-.75Zm3.239 5.183a.75.75 0 0 1 .515.927 19.417 19.417 0 0 1-2.585 5.544.75.75 0 0 1-1.243-.84 17.915 17.915 0 0 0 2.386-5.116.75.75 0 0 1 .927-.515Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <!--Tooltip -->
+                                        <div class="hr-tooltip" style="display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); width:220px; background:#fff; border:1px solid #ddd; border-radius:8px; padding:12px; z-index:999; box-shadow:0 4px 12px rgba(0,0,0,0.12); font-size:13px; color:#333;">
+                                            <div style="font-weight:600; margin-bottom:6px; color:#555;">HR Note:</div>
+                                            <div class="hr-message" style="color:#222; line-height:1.5;"></div>
+                                            <div style="position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#ddd;"></div>
+                                        </div>
+                                    </div>
+                                    <span>
+                                        <%=h.getStatus()%>
+                                    </span>
+                                </div>
+
                             </td>
 
                             <!-- ACTION -->
@@ -523,12 +579,14 @@
 
                                 <button class="icon-btn-td"
 
-                                        data-holidayid="<%= h.getHolidayId()%>"
+                                        data-userid="<%= h.getUserId()%>" 
                                         data-type="holidays"
                                         data-title="<%= h.getType()%>"
-                                        data-motif="<%=h.getMotif()%>"
+                                        data-holidayid="<%= h.getHolidayId()%>" 
+                                        data-username="<%= h.getFullName()%>"
                                         data-startdate="<%= h.getStartDate()%>"
                                         data-enddate="<%= h.getEndDate()%>"
+                                        data-motif="<%= h.getMotif()%>"
                                         data-status="<%= h.getStatus()%>">
 
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -536,7 +594,9 @@
                                          fill="#666"
                                          width="18"
                                          height="18">
+
                                     <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+
                                     <path fill-rule="evenodd"
                                           d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
                                           clip-rule="evenodd" />
@@ -557,34 +617,40 @@
 
                             String status = p.getStatus();
                             String cssClass = "";
-                            if ("rejected".equalsIgnoreCase(status))
+                            String cssIconStatus = "";
+
+                            if ("rejected".equalsIgnoreCase(status)) {
                                 cssClass = "status-rejected";
-                            else if ("approved".equalsIgnoreCase(status))
+                                cssIconStatus = "status-home-rejected";
+                            } else if ("approved".equalsIgnoreCase(status)) {
                                 cssClass = "status-approved";
-                            else if ("pending".equalsIgnoreCase(status))
+                                cssIconStatus = "status-home-approved";
+                            } else if ("pending".equalsIgnoreCase(status)) {
                                 cssClass = "status-pending";
+                                cssIconStatus = "status-home-pending";
+                            }
                         %>
                         <tr data-id="<%=p.getPermissionId()%>" data-type="permission">
 
                             <!-- DESCRIPTION -->
-                            <td style="padding:10px;">
+                            <td style="padding:10px; width: 300px;">
                                 <div style="display:flex; align-items:center; gap:10px;">
 
                                     <!-- Avatar -->
-                                    <div style="display:flex; align-items:center; gap:10px;">
+                                    <div style="display:flex; align-items:center; gap:10px; padding-left: 3%;">
                                         <button class="icon-btn-avatar permission">
                                             <span class="icon-home">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#854f0b" class="size-6">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#333" class="size-6">
                                                 <path fill-rule="evenodd" d="M7.5 5.25a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0 1 12 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 0 1 7.5 5.455V5.25Zm7.5 0v.09a49.488 49.488 0 0 0-6 0v-.09a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5Zm-3 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
                                                 <path d="M3 18.4v-2.796a4.3 4.3 0 0 0 .713.31A26.226 26.226 0 0 0 12 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 0 1-6.477-.427C4.047 21.128 3 19.852 3 18.4Z" />
                                                 </svg>
                                             </span>
                                         </button>
                                         <div style="display:flex; flex-direction:column;">
-                                            <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap;">
-                                                <%= outFmt.format(p.getStartDate())%>
+                                            <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap; color: #333;">
+                                                <%= p.getFullName()%>
                                             </span>
-                                            <span style="font-size:0.8rem; color:lightslategray;">
+                                            <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
                                                 Permission &bull; <%= hours%> hrs
                                             </span>
                                         </div>
@@ -593,13 +659,25 @@
                                 </div>
                             </td>
 
+                            <td data-date="<%= p.getStartDate().getTime()%>" style="padding:10px; text-align:center; width:150px;">
+                                <div style="display:flex; flex-direction:column;">
+                                    <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
+                                        <%= outFmt.format(p.getStartDate())%>,
+                                        <%= yearFmt.format(p.getEndDate())%>
+                                    </span>
+                                    <span style="font-family: Consolas, sans-serif; font-size:0.8rem; font-weight:lighter; color:lightslategray;">
+                                        ID: REQ-2026-00<%= p.getPermissionId()%> 
+                                    </span>
+                                </div>
+                            </td>
+
                             <!-- REASON -->
-                            <td style="padding:10px; text-align:center; width:250px;">
+                            <td style="padding:10px; text-align:center; width:350px;">
 
                                 <span style="
                                       font-size:0.9rem;
                                       display:block;
-                                      white-space:nowrap;
+                                      white-space: wrap;
                                       overflow:hidden;
                                       text-overflow:ellipsis;
                                       ">
@@ -611,9 +689,24 @@
                             <!-- STATUS -->
                             <td style="padding:10px; text-align:center; width:120px;">
 
-                                <span class="status <%= cssClass%>">
-                                    <%= p.getStatus()%>
-                                </span>
+                                <div class="status <%=cssClass%>">
+                                    <div class="icon-btn-status" onclick="toggleHRTooltip(this, '<%=p.getResponseMessage() != null ? p.getResponseMessage().replace("'", "\\'") : ""%>')" style="position:relative; cursor:pointer;">
+                                        <div class="icon-home <%=cssIconStatus%>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                            <path fill-rule="evenodd" d="M12 3.75a6.715 6.715 0 0 0-3.722 1.118.75.75 0 1 1-.828-1.25 8.25 8.25 0 0 1 12.8 6.883c0 3.014-.574 5.897-1.62 8.543a.75.75 0 0 1-1.395-.551A21.69 21.69 0 0 0 18.75 10.5 6.75 6.75 0 0 0 12 3.75ZM6.157 5.739a.75.75 0 0 1 .21 1.04A6.715 6.715 0 0 0 5.25 10.5c0 1.613-.463 3.12-1.265 4.393a.75.75 0 0 1-1.27-.8A6.715 6.715 0 0 0 3.75 10.5c0-1.68.503-3.246 1.367-4.55a.75.75 0 0 1 1.04-.211ZM12 7.5a3 3 0 0 0-3 3c0 3.1-1.176 5.927-3.105 8.056a.75.75 0 1 1-1.112-1.008A10.459 10.459 0 0 0 7.5 10.5a4.5 4.5 0 1 1 9 0c0 .547-.022 1.09-.067 1.626a.75.75 0 0 1-1.495-.123c.041-.495.062-.996.062-1.503a3 3 0 0 0-3-3Zm0 2.25a.75.75 0 0 1 .75.75c0 3.908-1.424 7.485-3.781 10.238a.75.75 0 0 1-1.14-.975A14.19 14.19 0 0 0 11.25 10.5a.75.75 0 0 1 .75-.75Zm3.239 5.183a.75.75 0 0 1 .515.927 19.417 19.417 0 0 1-2.585 5.544.75.75 0 0 1-1.243-.84 17.915 17.915 0 0 0 2.386-5.116.75.75 0 0 1 .927-.515Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <!--Tooltip -->
+                                        <div class="hr-tooltip" style="display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); width:220px; background:#fff; border:1px solid #ddd; border-radius:8px; padding:12px; z-index:999; box-shadow:0 4px 12px rgba(0,0,0,0.12); font-size:13px; color:#333;">
+                                            <div style="font-weight:600; margin-bottom:6px; color:#555;">HR Note:</div>
+                                            <div class="hr-message" style="color:#222; line-height:1.5;"></div>
+                                            <div style="position:absolute; top:100%; left:50%; transform:translateX(-50%); border:6px solid transparent; border-top-color:#ddd;"></div>
+                                        </div>
+                                    </div>
+                                    <span>
+                                        <%=p.getStatus()%>
+                                    </span>
+                                </div>
 
                             </td>
 
@@ -623,6 +716,7 @@
                                 <button class="icon-btn-td"
 
                                         data-userid="<%= p.getUserId()%>" 
+                                        data-useremail="<%= p.getEmail()%>"
                                         data-type="permission"
                                         data-title="Permission"
                                         data-holidayid="<%= p.getPermissionId()%>" 
@@ -646,17 +740,15 @@
                                           d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
                                           clip-rule="evenodd" />
                                     </svg>
-
                                 </button>
 
                             </td>
-
                         </tr>
                         <%
                                     } // end for UserPermission
                                 }
                             } // end else
-                        %>
+%>
                     </tbody>
                 </table>
             </div>

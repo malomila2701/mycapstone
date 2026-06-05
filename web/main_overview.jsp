@@ -130,7 +130,7 @@
                         </span>
                     </button>
 
-                    <button class="header_icon" id="header_icon_logout">
+                    <button class="header_icon" id="header_icon_logout" onclick="handleLogout()">
                         <span style="margin-left: 10px; font-size: 0.9rem; color: #666;">
                             Log out
                         </span>
@@ -197,7 +197,7 @@
                         </div>
 
                         <div class="header-right">
-                            <button class="icon-btn" id="new-leave-btn" onclick="">
+                            <button class="icon-btn" id="new-leave-btn" onclick="navigateWithLoader('main_leave.jsp')">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white">
                                 <path fill-rule="evenodd" d="M5.478 5.559A1.5 1.5 0 0 1 6.912 4.5H9A.75.75 0 0 0 9 3H6.912a3 3 0 0 0-2.868 2.118l-2.411 7.838a3 3 0 0 0-.133.882V18a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-4.162c0-.299-.045-.596-.133-.882l-2.412-7.838A3 3 0 0 0 17.088 3H15a.75.75 0 0 0 0 1.5h2.088a1.5 1.5 0 0 1 1.434 1.059l2.213 7.191H17.89a3 3 0 0 0-2.684 1.658l-.256.513a1.5 1.5 0 0 1-1.342.829h-3.218a1.5 1.5 0 0 1-1.342-.83l-.256-.512a3 3 0 0 0-2.684-1.658H3.265l2.213-7.191Z" clip-rule="evenodd" />
                                 <path fill-rule="evenodd" d="M12 2.25a.75.75 0 0 1 .75.75v6.44l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 1.06-1.06l1.72 1.72V3a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
@@ -496,6 +496,8 @@
                                 combined.sort(( a,
                                           
                                       
+                                      
+                                      
                                     b) -> {
                                     Date dateA = (a instanceof UserLeave)
                                             ? ((UserLeave) a).getStartDate()
@@ -764,82 +766,97 @@
 
         <script src="scripts/utils.js"></script>
         <script>
+                            function navigateWithLoader(page) {
+                                loader.style.display = 'block';
+                                window.location.href = page;
+                            }
+        </script>
+        <script>
+            function handleLogout() {
+                fetch('<%= request.getContextPath()%>/LogoutServlet', {
+                    method: 'POST'
+                }).then(() => {
+                    window.top.location.href = '<%= request.getContextPath()%>/hello.jsp';
+                });
+            }
+        </script>
+        <script>
 
-                            let calendar;
-                            let cellDate;
-                            let hasBlockEvent;
-                            let start;
-                            let end;
-                            const currentUserId = <%= session.getAttribute("user_id")%>;
-                            const loader = document.getElementById("loader");
+            let calendar;
+            let cellDate;
+            let hasBlockEvent;
+            let start;
+            let end;
+            const currentUserId = <%= session.getAttribute("user_id")%>;
+            const loader = document.getElementById("loader");
 
-                            document.addEventListener('DOMContentLoaded', function () {
-                                var calendarEl = document.getElementById('calendar');
-                                calendar = new FullCalendar.Calendar(calendarEl, {
-                                    initialView: 'dayGridMonth',
-                                    firstDay: 1,
-                                    weekends: false,
-                                    showNonCurrentDates: false,
-                                    eventSources: [
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendarEl = document.getElementById('calendar');
+                calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    firstDay: 1,
+                    weekends: false,
+                    showNonCurrentDates: false,
+                    eventSources: [
 
-                                        // All holidays 
-                                        {
-                                            url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
-                                            method: 'GET',
-                                            className: 'event-block',
-                                            display: 'block'},
-                                        // User-specific holidays
-                                        {
-                                            url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
-                                            method: 'GET',
-                                            className: 'event-list',
-                                            display: 'list-item',
-                                            extraParams: {
-                                                userId: currentUserId
-                                            }
-                                        }
-                                    ],
-                                    // Highlight all days of events
-                                    eventsSet: function (events) {
+                        // All holidays 
+                        {
+                            url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
+                            method: 'GET',
+                            className: 'event-block',
+                            display: 'block'},
+                        // User-specific holidays
+                        {
+                            url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
+                            method: 'GET',
+                            className: 'event-list',
+                            display: 'list-item',
+                            extraParams: {
+                                userId: currentUserId
+                            }
+                        }
+                    ],
+                    // Highlight all days of events
+                    eventsSet: function (events) {
 
-                                        // reset all cells
-                                        document.querySelectorAll('.fc-daygrid-day').forEach(function (cell) {
-                                            cell.classList.remove('event-cell');
-                                        });
-                                        // loop over days
-                                        document.querySelectorAll('.fc-daygrid-day').forEach(function (dayCell) {
+                        // reset all cells
+                        document.querySelectorAll('.fc-daygrid-day').forEach(function (cell) {
+                            cell.classList.remove('event-cell');
+                        });
+                        // loop over days
+                        document.querySelectorAll('.fc-daygrid-day').forEach(function (dayCell) {
 
-                                            cellDate = dayCell.getAttribute('data-date');
-                                            hasBlockEvent = events.some(function (event) {
+                            cellDate = dayCell.getAttribute('data-date');
+                            hasBlockEvent = events.some(function (event) {
 
-                                                // ONLY highlight for block events
-                                                if (!event.classNames.includes('event-block'))
-                                                    return false;
-                                                start = event.startStr.substring(0, 10);
-                                                end = event.endStr ? event.endStr.substring(0, 10) : start;
-                                                return cellDate >= start && cellDate < end;
-                                            });
-                                            if (hasBlockEvent) {
-                                                dayCell.classList.add('event-cell');
-                                            }
-                                        });
-                                    },
-                                    eventDidMount: function (info) {
-                                        info.el.setAttribute('data-event-id', info.holidayId);
-                                    },
-                                    loading: function (isLoading) {
-
-                                        if (isLoading) {
-                                            loader.style.display = "block";
-                                            document.getElementById('calendar').style.visibility = 'hidden';
-                                        } else {
-                                            loader.style.display = "none";
-                                            document.getElementById('calendar').style.visibility = 'visible';
-                                        }
-                                    }
-                                });
-                                calendar.render();
+                                // ONLY highlight for block events
+                                if (!event.classNames.includes('event-block'))
+                                    return false;
+                                start = event.startStr.substring(0, 10);
+                                end = event.endStr ? event.endStr.substring(0, 10) : start;
+                                return cellDate >= start && cellDate < end;
                             });
+                            if (hasBlockEvent) {
+                                dayCell.classList.add('event-cell');
+                            }
+                        });
+                    },
+                    eventDidMount: function (info) {
+                        info.el.setAttribute('data-event-id', info.holidayId);
+                    },
+                    loading: function (isLoading) {
+
+                        if (isLoading) {
+                            loader.style.display = "block";
+                            document.getElementById('calendar').style.visibility = 'hidden';
+                        } else {
+                            loader.style.display = "none";
+                            document.getElementById('calendar').style.visibility = 'visible';
+                        }
+                    }
+                });
+                calendar.render();
+            });
         </script>
         <script>
             function applyFilters() {

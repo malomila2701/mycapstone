@@ -24,8 +24,8 @@ public class InsertAvatar {
 
     public static void main(String[] args) throws Exception {
         // Change these for each user
-        int userId = 101;
-        String imagePath = "C:\\Users\\HP\\Documents\\personal\\it_admin_avatar.png";
+        int userId = 106;
+        String imagePath = "/Users/JeanSamuel/Documents/PRIME_internship/lulu-meyers.png";
         String mimeType = "image/png";
 
         byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));

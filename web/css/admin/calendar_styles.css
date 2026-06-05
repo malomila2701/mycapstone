@@ -282,7 +282,7 @@ body{
     position: relative;
     left: 50%;
     transform: translateX(-50%) scale(0.85);
-    width: 700px;
+    width: 350px;
     background: white;
     padding: 25px;
     border-radius: 8px;
@@ -304,7 +304,7 @@ body{
     font-size: 0.7rem;
     color: lightslategray;
 }
-#modalMotif {
+#modalMotif, #modalResponseMessage {
     position: relative;
     width:98%;
     padding: 10px;
@@ -377,8 +377,12 @@ body{
 
 .banner {
     margin-left: 0px;
+    padding: 10px;
     grid-column: 1 / -1; /* spans all columns */
-    border-radius: 14px;
+    border-radius: 20px;
+    border: 1px solid #E2E8F0;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.1);
     background:white;
 }
 
@@ -483,6 +487,7 @@ body{
     background: white;
     display: flex;
     position: relative;
+    top: 10%;
     right: 4%;
     border-radius: 16px;       /* rounded corners */
     padding: 10px;
