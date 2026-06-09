@@ -355,7 +355,7 @@
                                                 </span>
                                             </button>                                            
                                             <div style="display:flex; flex-direction:column;">
-                                                <span style="font-weight:600; font-size: 0.9rem; color: #444; white-space:nowrap;"><%= outFmt.format(p.getStartDate())%></span>
+                                                <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;"><%= outFmt.format(p.getStartDate())%></span>
                                                 <span style="font-size:0.8rem; font-weight:lighter">Permission &bull; <%= hours%> hrs</span>
                                             </div>
                                         </div>

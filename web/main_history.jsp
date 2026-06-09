@@ -443,6 +443,7 @@
                             // --- Sort by startDate descending (newest first) ---
                             combined.sort(( a,
                                       
+                                  
                                 b) -> {
                                 Date dateA = (a instanceof UserLeave)
                                         ? ((UserLeave) a).getStartDate()
@@ -511,10 +512,10 @@
                                             </span>
                                         </button>
                                         <div style="display:flex; flex-direction:column;">
-                                            <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap; color: #333;">
+                                            <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
                                                 <%= h.getFullName()%>
                                             </span>
-                                            <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
+                                            <span style="font-size: 11x; color:lightslategray; white-space: nowrap;">
                                                 Holiday &bull; <%= days%> hrs
                                             </span>
                                         </div>
@@ -539,7 +540,9 @@
                             <td style="padding:10px; text-align:center; width:350px;">
 
                                 <span style="
-                                      font-size:0.9rem;
+                                      font-size:12px;
+                                      font-weight: 600;
+                                      color: #444;
                                       display:block;
                                       white-space: wrap;
                                       overflow:hidden;
@@ -647,10 +650,10 @@
                                             </span>
                                         </button>
                                         <div style="display:flex; flex-direction:column;">
-                                            <span style="font-weight:600; font-size: 0.9rem; white-space:nowrap; color: #333;">
+                                            <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
                                                 <%= p.getFullName()%>
                                             </span>
-                                            <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
+                                            <span style="font-size:11px; color:lightslategray; white-space: nowrap;">
                                                 Permission &bull; <%= hours%> hrs
                                             </span>
                                         </div>
@@ -675,7 +678,9 @@
                             <td style="padding:10px; text-align:center; width:350px;">
 
                                 <span style="
-                                      font-size:0.9rem;
+                                      font-size:12px;
+                                      font-weight: 600;
+                                      color: #444;
                                       display:block;
                                       white-space: wrap;
                                       overflow:hidden;
@@ -748,7 +753,7 @@
                                     } // end for UserPermission
                                 }
                             } // end else
-%>
+                        %>
                     </tbody>
                 </table>
             </div>
