@@ -184,7 +184,7 @@
                         </div>
                     </div>
                     <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdateLeaveStatusServlet">
-                        <input type="hidden" name="permission_id" id="leaveId">
+                        <input type="hidden" name="holidays_id" id="leaveId">
                         <input type="hidden" name="user_id" id="leaveUserId">
                         <input type="hidden" name="status" id="leaveStatus">
                         <input type="hidden" name="admin_message" id="leaveAdminMessage">

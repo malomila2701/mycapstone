@@ -102,36 +102,36 @@
 
         <script src="../scripts/utils.js"></script>
         <script>
-                            function handleLogout() {
-                                fetch('<%= request.getContextPath()%>/LogoutServlet', {
-                                    method: 'POST'
-                                }).then(() => {
-                                    window.top.location.href = '<%= request.getContextPath()%>/hello.jsp';
-                                });
-                            }
+            function handleLogout() {
+                fetch('<%= request.getContextPath()%>/LogoutServlet', {
+                    method: 'POST'
+                }).then(() => {
+                    window.top.location.href = '<%= request.getContextPath()%>/hello.jsp';
+                });
+            }
         </script>
         <script>
-                        const iframe = document.getElementById("adminFrame");
-                        const loader = document.querySelector(".loader");
+            const iframe = document.getElementById("adminFrame");
+            const loader = document.querySelector(".loader");
 
-                        window.addEventListener("message", function (e) {
-                            if (!e.data.adminNav)
-                                return;
+            window.addEventListener("message", function (e) {
+                if (!e.data.adminNav)
+                    return;
 
-                            const url = e.data.adminNav;
+                const url = e.data.adminNav;
 
-                            loader.style.display = "block";
-                            iframe.classList.add("hidden");
+                loader.style.display = "block";
+                iframe.classList.add("hidden");
 
-                            setTimeout(() => {
-                                iframe.src = url;
-                            }, 200);
-                        });
+                setTimeout(() => {
+                    iframe.src = url;
+                }, 200);
+            });
 
-                        iframe.onload = function () {
-                            loader.style.display = "none";
-                            iframe.classList.remove("hidden");
-                        };
+            iframe.onload = function () {
+                loader.style.display = "none";
+                iframe.classList.remove("hidden");
+            };
         </script>
     </body>
 </html>

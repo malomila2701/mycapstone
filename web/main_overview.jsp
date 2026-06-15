@@ -165,7 +165,14 @@
 
                 <div class="card">
                     <span class="card_change up">+12%</span>
-                    <h2>24</h2>
+                    <script>
+                        fetch('<%=request.getContextPath()%>/LeaveBalanceServlet')
+                                .then(res => res.json())
+                                .then(data => {
+                                    document.getElementById('leave-balance').textContent = data.leaveBalance;
+                                });
+                    </script>
+                    <h2 id="leave-balance"> days</h2>
                     <p>Leave Balance</p>
                 </div>
                 <div class="card">
@@ -498,6 +505,7 @@
                                       
                                       
                                       
+                                      
                                     b) -> {
                                     Date dateA = (a instanceof UserLeave)
                                             ? ((UserLeave) a).getStartDate()
@@ -696,7 +704,7 @@
                                         } // end if/else isLeave
                                     } // end for combined
                                 } // end else
-                            %>
+%>
                         </tbody>
                     </table>
                     <div class="bar" id="bar2"></div>

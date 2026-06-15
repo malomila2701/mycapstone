@@ -446,13 +446,81 @@ public class userdataDAO {
                         rs.getTime("start_time"),
                         rs.getTime("end_time"),
                         rs.getString("event")
-                );                          
-                agendaList.add(a);          
+                );
+                agendaList.add(a);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return agendaList;
+    }
+
+    public LeaveBalance getLeaveBalanceByUser(int userId) throws SQLException, Exception {
+        String sql = """
+        SELECT 
+            u.user_id,
+            u.fullname,
+            COALESCE(SUM(DATEDIFF(h.end_date, h.start_date) + 1), 0) AS days_used,
+            24 
+            - COALESCE(SUM(DATEDIFF(h.end_date, h.start_date) + 1), 0)
+            + ((TIMESTAMPDIFF(MONTH, '2026-01-01', CURDATE()) - COUNT(DISTINCT DATE_FORMAT(h.start_date, '%Y-%m'))) * 2.2)
+            AS leave_balance
+        FROM users u
+        LEFT JOIN holidays h 
+            ON h.user_id = u.user_id 
+            AND h.status = 'Approved'
+            AND h.start_date >= '2026-01-01'
+        WHERE u.user_id = ?
+        GROUP BY u.user_id, u.fullname
+    """;
+
+        try (Connection con = DBConnection.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    LeaveBalance lb = new LeaveBalance();
+                    lb.setUserId(rs.getInt("user_id"));
+                    lb.setFullname(rs.getString("fullname"));
+                    lb.setDaysUsed(rs.getDouble("days_used"));
+                    lb.setLeaveBalance(rs.getDouble("leave_balance"));
+                    return lb;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<LeaveBalance> getAllLeaveBalances() throws SQLException, Exception {
+        String sql = """
+        SELECT 
+            u.user_id,
+            u.fullname,
+            COALESCE(SUM(DATEDIFF(h.end_date, h.start_date) + 1), 0) AS days_used,
+            24 
+            - COALESCE(SUM(DATEDIFF(h.end_date, h.start_date) + 1), 0)
+            + ((MONTH(CURDATE()) - COUNT(DISTINCT DATE_FORMAT(h.start_date, '%Y-%m'))) * 2.2)
+            AS leave_balance
+        FROM users u
+        LEFT JOIN holidays h 
+            ON h.user_id = u.user_id 
+            AND h.status = 'Approved'
+            AND YEAR(h.start_date) = YEAR(CURDATE())
+        GROUP BY u.user_id, u.fullname
+    """;
+
+        List<LeaveBalance> list = new ArrayList<>();
+        try (Connection con = DBConnection.connect(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                LeaveBalance lb = new LeaveBalance();
+                lb.setUserId(rs.getInt("user_id"));
+                lb.setFullname(rs.getString("fullname"));
+                lb.setDaysUsed(rs.getDouble("days_used"));
+                lb.setLeaveBalance(rs.getDouble("leave_balance"));
+                list.add(lb);
+            }
+        }
+        return list;
     }
 
 }

@@ -29,14 +29,14 @@ public class UpdateLeaveStatusServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        int userId = Integer.parseInt(request.getParameter("userid"));
-        int id = Integer.parseInt(request.getParameter("holidayid"));
+        int userId = Integer.parseInt(request.getParameter("user_id"));
+        int id = Integer.parseInt(request.getParameter("holidays_id"));
         String status = request.getParameter("status");
         String response_message = request.getParameter("response_message");
         
 
         try (Connection conn = DBConnection.connect()) {
-            String sql = "UPDATE holidays SET status=?, response_message=? WHERE holiday_id=?";
+            String sql = "UPDATE holidays SET status=?, response_message=? WHERE holidays_id=?";
             java.sql.PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, status);
             ps.setString(2, response_message);
@@ -55,7 +55,7 @@ public class UpdateLeaveStatusServlet extends HttpServlet {
             conn.commit(); // tout valider
 
         } catch (Exception e) {
-            logger.error("Error UPDATING status:" + e.getMessage());
+            logger.error("Error UPDATING HOLIDAY status:" + e.getMessage());
         }
         // redirect back (important)
         response.sendRedirect(request.getContextPath() + "/admin/requests.jsp");
