@@ -84,16 +84,7 @@
                               font-size: 0.8rem;
                               font-weight: lighter;">HR Management</span>
                     </div>
-                    <div style="display:flex; flex-direction: row; gap: 15px;">
-                        <button class="toolbarBtn" style="display:flex; flex-direction: row;">
-                            <span class="icon-home">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
-                                <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-                                </svg>
-                            </span>
-                            Export CSV
-                        </button>
+                    <div style="display:flex; flex-direction: row; gap: 15px; margin-right: 2%;">
                         <button class="toolbarBtn addEmployee" style="display:flex; flex-direction: row; background:">
                             <span class="icon-home">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
@@ -123,7 +114,7 @@
 
                     <div class="card" id="rejected_card">
                         <p>MAX LEAVE</p>
-                        <h2>30 days</h2>
+                        <h2>24 days<span style="font-weight: 300">/year</span></h2>
                     </div>
                 </div>
 
@@ -231,7 +222,7 @@
                             <div class="leave-bar-wrap">
                                 <div class="leave-bar-label">
                                     <span>Leave balance</span>
-                                    <span>24 / 30 days</span><%-- TODO: e.getLeaveBalance() --%>
+                                    <span id="balance-<%= userId%>">...</span>
                                 </div>
                                 <div class="leave-bar">
                                     <%-- TODO: replace 24 with e.getLeaveBalance() --%>
@@ -250,13 +241,26 @@
                     <%
                             } // end for
                         }   // end else
-                    %>
+%>
 
                 </div><!-- /emp-grid -->
 
             </main>
         </div>
 
+        <script>
+            document.querySelectorAll('input[name="selectedUsers"]').forEach(input => {
+                const userId = input.value;
+                fetch('<%= request.getContextPath()%>/LeaveBalanceServlet?user_id=' + userId)
+                        .then(res => res.json())
+                        .then(data => {
+                            document.getElementById('balance-' + userId).textContent
+                                    = data.leaveBalance.toFixed(1) + ' / 24 days';
+                            document.getElementById('bar-' + userId).style.width
+                                    = Math.min((data.leaveBalance / 24) * 100, 100) + '%';
+                        });
+            });
+        </script>
         <script>
             function openEmployeeModal(btn) {
 
