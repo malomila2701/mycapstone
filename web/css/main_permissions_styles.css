@@ -265,14 +265,14 @@ body{
 #stepProgress {
     position: fixed;
     margin-top:0;
-    left: 50%;
-    transform: translateX(-50%);
     background: transparent;
     padding: 15px 0;
     z-index: 999;
     max-width: 450px;
     width: 100%;
     display: flex;
+    
+    justify-items: center;
     justify-content: space-between;
     align-items: center;
     position: relative;
@@ -370,6 +370,7 @@ Main SECTION
 }
 #user_banner {
     grid-column: 1 / -1; /* spans all columns */
+    width: 90%;
     margin-left: 0px;
     margin-right: 15px;
     border-radius: 14px;

@@ -170,14 +170,15 @@
                                 .then(res => res.json())
                                 .then(data => {
                                     document.getElementById('leave-balance').textContent = data.leaveBalance;
+                                    document.getElementById('days-used').textContent = data.daysUsed;
                                 });
                     </script>
-                    <h2 id="leave-balance"> days</h2>
+                    <h2 id="leave-balance"></h2>
                     <p>Leave Balance</p>
                 </div>
                 <div class="card">
                     <span class="card_change down">-9%</span>
-                    <h2>22</h2>
+                    <h2 id="days-used"></h2>
                     <p>Leave taken this year</p>
                 </div>
                 <div class="card" id="permission_card">

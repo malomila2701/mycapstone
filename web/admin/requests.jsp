@@ -770,6 +770,8 @@
                 document.getElementById('leaveStatus').value = newStatus;
                 document.getElementById('leaveUserId').value = currentUserId;
                 document.getElementById('leaveAdminMessage').value = message;
+                
+                
                 document.getElementById('statusForm').submit();
 
                 updateStatusBadge(leaveId, newStatus);
