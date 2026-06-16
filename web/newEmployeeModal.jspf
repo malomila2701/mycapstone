@@ -1,0 +1,313 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<%-- ============================================================
+     newEmployeeModal.jspf
+     Fragment à inclure UNE SEULE FOIS, avant </body>.
+     Appelé via : newEmployeeModal()
+     Sauvegarde via : UpdateEmployeeServlet (POST JSON)
+     ============================================================ --%>
+
+<style>
+    /* Overlay */
+    .em-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        animation: em-fade-in .15s ease;
+    }
+    @keyframes em-fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Card */
+    .em-card {
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e4e4e4;
+        width: 100%;
+        max-width: 440px;
+        box-shadow: 0 8px 32px rgba(0,0,0,.12);
+        animation: em-slide-up .18s ease;
+        overflow: hidden;
+    }
+    @keyframes em-slide-up {
+        from {
+            transform: translateY(12px);
+            opacity: 0;
+        }
+        to   {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Header */
+    .em-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .em-header-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .em-close {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #999;
+        font-size: 18px;
+        line-height: 1;
+        padding: 2px 4px;
+        border-radius: 6px;
+        transition: background .15s, color .15s;
+    }
+    .em-close:hover {
+        background: #f4f4f4;
+        color: #333;
+    }
+
+    /* Card top */
+    .em-card-top {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+    }
+    .em-avatar {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: #e8f0fe;
+        color: #3b5bdb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 17px;
+        flex-shrink: 0;
+        letter-spacing: .5px;
+    }
+    .em-card-meta {
+        flex: 1;
+        min-width: 0;
+    }
+    .em-emp-id {
+        font-size: 11px;
+        color: #aaa;
+        margin-bottom: 4px;
+    }
+
+    /* Inputs */
+    .em-input {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #e4e4e4;
+        border-radius: 8px;
+        padding: 6px 10px;
+        font-size: 13px;
+        color: #222;
+        background: #fafafa;
+        transition: border-color .15s, background .15s;
+        outline: none;
+    }
+    .em-input:focus {
+        border-color: #6c8ef0;
+        background: #fff;
+    }
+    .em-input[type="range"] {
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .em-input-name {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    .em-input-role {
+        font-size: 12px;
+        border-radius: 99px;
+        text-align: center;
+        padding: 3px 10px;
+    }
+
+    /* Divider */
+    .em-divider {
+        height: 1px;
+        background: #f0f0f0;
+        margin: 0 16px;
+    }
+
+    /* Details grid */
+    .em-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 14px 16px;
+    }
+    .em-detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .em-full {
+        grid-column: 1 / -1;
+    }
+    .em-label {
+        font-size: 11px;
+        color: #aaa;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .em-leave-counter {
+        font-weight: 600;
+        color: #555;
+    }
+
+    /* Leave bar */
+    .em-leave-section {
+        padding: 12px 16px;
+    }
+    .em-leave-bar-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #888;
+        margin-bottom: 7px;
+    }
+    .em-leave-bar {
+        background: #f0f0f0;
+        border-radius: 99px;
+        height: 7px;
+        overflow: hidden;
+    }
+    .em-leave-bar-fill {
+        height: 100%;
+        background: #6c8ef0;
+        border-radius: 99px;
+        transition: width .25s ease;
+    }
+
+    /* Footer */
+    .em-footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-top: 1px solid #f0f0f0;
+    }
+    .em-btn {
+        border-radius: 8px;
+        padding: 7px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background .15s, opacity .15s;
+    }
+    .em-btn-cancel {
+        background: none;
+        border: 1px solid #ddd;
+        color: #555;
+        margin-left: auto;
+    }
+    .em-btn-cancel:hover {
+        background: #f6f6f6;
+    }
+    .em-btn-save {
+        background: #6c8ef0;
+        border: none;
+        color: #fff;
+    }
+    .em-btn-save:hover {
+        background: #5a7de0;
+    }
+    .em-btn-save:disabled {
+        opacity: .55;
+        cursor: not-allowed;
+    }
+
+    /* Toast / Error */
+    .em-toast, .em-error {
+        font-size: 12px;
+        display: none;
+        align-items: center;
+        gap: 5px;
+    }
+    .em-toast {
+        color: #2e7d32;
+    }
+    .em-error {
+        color: #c62828;
+    }
+</style>
+
+<div id="newEmployeeModal" class="em-overlay" role="dialog" style="display:none;">
+    <div class="em-card">
+
+        <div class="em-header">
+            <span class="em-header-title">
+                <i class="ti ti-user-plus"></i> New Employee
+            </span>
+            <button class="em-close" onclick="closeNewEmployeeModal()">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+
+        <div class="em-card-top">
+            <div class="em-avatar">?</div>
+            <div class="em-card-meta">
+                <div class="em-emp-id"># New</div>
+                <input id="new-em-name" class="em-input em-input-name" type="text" placeholder="Full name" />
+                <input id="new-em-role" class="em-input em-input-role" type="text" placeholder="Role" />
+            </div>
+        </div>
+
+        <div class="em-divider"></div>
+
+        <div class="em-details">
+            <div class="em-detail-item">
+                <label class="em-label" for="new-em-entrance">Entrance</label>
+                <input id="new-em-entrance" class="em-input" type="date" />
+            </div>
+            <div class="em-detail-item">
+                <label class="em-label" for="new-em-phone">Phone</label>
+                <input id="new-em-phone" class="em-input" type="tel" placeholder="(+225) 000-000-00" />
+            </div>
+            <div class="em-detail-item em-full">
+                <label class="em-label" for="new-em-email">Email</label>
+                <input id="new-em-email" class="em-input" type="email" placeholder="email@company.com" />
+            </div>
+        </div>
+
+        <div class="em-divider"></div>
+
+        <div class="em-footer">
+            <span class="em-toast" id="new-em-toast"><i class="ti ti-check"></i> Created successfully</span>
+            <span class="em-error" id="new-em-error"><i class="ti ti-alert-circle"></i> <span id="new-em-error-msg"></span></span>
+            <button class="em-btn em-btn-cancel" onclick="closeNewEmployeeModal()">Cancel</button>
+            <button class="em-btn em-btn-save" onclick="newEmSave()">Create</button>
+        </div>
+
+    </div>
+</div>

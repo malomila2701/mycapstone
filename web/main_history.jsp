@@ -19,6 +19,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <title>User History Page</title>
 
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
@@ -397,7 +399,7 @@
                         <div class="search-box">
                             <input type="text" placeholder="Search by Name or ID">
                         </div>
-                        <span style="display:flex; align-items: center; font-size: 0.8rem; margin-right: 10px; white-space: nowrap;">Filter by: </span>
+                        <span style="display:flex; align-items: center; font-size: 0.8rem; margin-left: 10px; margin-right: 10px; white-space: nowrap;">Filter by: </span>
                         <select id="dateFilter" style="margin-right: 10px;">
                             <option value="all">All Dates</option>
                             <option value="today">Today</option>
@@ -413,7 +415,6 @@
                         <select id="statusFilter">
                             <option value="all">All Status</option>
                             <option value="approved">Approved</option>
-                            <option value="pending">Pending</option>
                             <option value="rejected">Rejected</option>
                         </select>
                     </div>
@@ -423,7 +424,7 @@
                     <thead>
                         <tr>
                             <th style="padding:12px; text-align:left; padding-left: 3%;">Description</th>
-                            <th id="dateHeader" style="padding:12px; text-align:center; cursor:pointer;">Period ↓</th>
+                            <th id="dateHeader" style="padding:12px; text-align:center; cursor:pointer;">Period ↓↑</th>
                             <th style="padding:12px; text-align:center;">Motif/Reason</th>
                             <th style="padding:12px; text-align:center;">Status</th>
                             <th style="padding:12px; text-align:center;">Action</th>
@@ -442,7 +443,6 @@
 
                             // --- Sort by startDate descending (newest first) ---
                             combined.sort(( a,
-                                      
                                   
                                 b) -> {
                                 Date dateA = (a instanceof UserLeave)
@@ -476,10 +476,11 @@
 
                                     long diffMillis = end.getTime() - start.getTime();
                                     long days = diffMillis / (1000 * 60 * 60 * 24);
+                                    String dayLabel = days > 1 ? days + " days" : days + " day";
+
                                     /**
                                      * .END
                                      */
-
                                     String status = h.getStatus();
                                     String cssClass = "";
                                     String cssIconStatus = "";
@@ -515,8 +516,8 @@
                                             <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
                                                 <%= h.getFullName()%>
                                             </span>
-                                            <span style="font-size: 11x; color:lightslategray; white-space: nowrap;">
-                                                Holiday &bull; <%= days%> hrs
+                                            <span style="font-size: 11px; color:lightslategray; white-space: nowrap;">
+                                                Holiday &bull; <%= dayLabel%>
                                             </span>
                                         </div>
                                     </div>
@@ -526,9 +527,10 @@
 
                             <td data-date="<%= h.getStartDate().getTime()%>" style="padding:10px; text-align:center; width:150px;">
                                 <div style="display:flex; flex-direction:column;">
-                                    <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
-                                        <%= outFmt.format(h.getStartDate())%>,
-                                        <%= yearFmt.format(h.getEndDate())%>
+                                    <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap; gap: 5px;">
+                                        <%= outFmt.format(h.getStartDate())%> 
+                                        →
+                                        <%= outFmt.format(h.getEndDate())%>
                                     </span>
                                     <span style="font-family: Consolas, sans-serif; font-size:0.8rem; font-weight:lighter; color:lightslategray;">
                                         ID: REQ-2026-00<%= h.getHolidayId()%> 
@@ -592,18 +594,12 @@
                                         data-motif="<%= h.getMotif()%>"
                                         data-status="<%= h.getStatus()%>">
 
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         viewBox="0 0 20 20"
-                                         fill="#666"
-                                         width="18"
-                                         height="18">
-
-                                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-
-                                    <path fill-rule="evenodd"
-                                          d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
-                                          clip-rule="evenodd" />
-                                    </svg>
+                                    <span class="icon-home">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </span>
 
                                 </button>
 
@@ -617,6 +613,7 @@
 
                             long diffMillis = p.getEndTime().getTime() - p.getStartTime().getTime();
                             long hours = diffMillis / (1000 * 60 * 60);
+                            String hourLabel = hours > 1 ? hours + " hrs" : hours + " hr";
 
                             String status = p.getStatus();
                             String cssClass = "";
@@ -654,7 +651,7 @@
                                                 <%= p.getFullName()%>
                                             </span>
                                             <span style="font-size:11px; color:lightslategray; white-space: nowrap;">
-                                                Permission &bull; <%= hours%> hrs
+                                                Permission &bull; <%= hourLabel%>
                                             </span>
                                         </div>
                                     </div>
@@ -665,8 +662,7 @@
                             <td data-date="<%= p.getStartDate().getTime()%>" style="padding:10px; text-align:center; width:150px;">
                                 <div style="display:flex; flex-direction:column;">
                                     <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
-                                        <%= outFmt.format(p.getStartDate())%>,
-                                        <%= yearFmt.format(p.getEndDate())%>
+                                        <%= outFmt.format(p.getStartDate())%>
                                     </span>
                                     <span style="font-family: Consolas, sans-serif; font-size:0.8rem; font-weight:lighter; color:lightslategray;">
                                         ID: REQ-2026-00<%= p.getPermissionId()%> 
@@ -733,18 +729,12 @@
                                         data-motif="<%= p.getMotif()%>"
                                         data-status="<%= p.getStatus()%>">
 
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         viewBox="0 0 20 20"
-                                         fill="#666"
-                                         width="18"
-                                         height="18">
-
-                                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-
-                                    <path fill-rule="evenodd"
-                                          d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
-                                          clip-rule="evenodd" />
-                                    </svg>
+                                    <span class="icon-home">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </span>
                                 </button>
 
                             </td>
@@ -753,14 +743,22 @@
                                     } // end for UserPermission
                                 }
                             } // end else
-                        %>
+%>
                     </tbody>
                 </table>
             </div>
         </div>
 
 
-
+        <script>
+            function handleLogout() {
+                fetch('<%= request.getContextPath()%>/LogoutServlet', {
+                    method: 'POST'
+                }).then(() => {
+                    window.top.location.href = '<%= request.getContextPath()%>/hello.jsp';
+                });
+            }
+        </script>
         <script>
             window.addEventListener('load', function () {
                 window.parent.postMessage('pageReady', '*');
@@ -805,6 +803,7 @@
         </script>
         <script>
             function applyFilters() {
+
                 const selectedStatus = document.getElementById('statusFilter').value.toLowerCase();
                 const selectedType = document.getElementById('typeFilter').value.toLowerCase();
                 const selectedDate = document.getElementById('dateFilter').value.toLowerCase();
@@ -818,20 +817,24 @@
                 lastWeekStart.setDate(today.getDate() - 7);
                 const lastMonthStart = new Date(today);
                 lastMonthStart.setMonth(today.getMonth() - 1);
+
+
                 rows.forEach(row => {
                     if (row.querySelector('td[colspan]'))
                         return;
                     const statusSpan = row.querySelector('.status');
                     if (!statusSpan)
                         return;
+
                     // --- Status ---
-                    const rowStatus = statusSpan.textContent.trim().toLowerCase();
+                    const rowStatus = statusSpan.querySelector('span:last-of-type')?.textContent.trim().toLowerCase() || '';
                     const statusMatch = selectedStatus === 'all' || rowStatus === selectedStatus;
+
                     // --- Type ---
-                    const descSpan = row.querySelectorAll('td:first-child div span');
-                    const descText = descSpan[1] ? descSpan[1].textContent.trim().toLowerCase() : '';
-                    const rowType = descText.includes('holidays') ? 'leave' : 'permission';
+                    const avatarBtn = row.querySelector('.icon-btn-avatar');
+                    const rowType = avatarBtn?.classList.contains('holiday') ? 'leave' : 'permission';
                     const typeMatch = selectedType === 'all' || rowType === selectedType;
+
                     // --- Date ---
                     // The start date is in the second <span> of the first <td>
                     const spans = row.querySelectorAll('td:first-child div span');
@@ -880,6 +883,30 @@
             document.getElementById('statusFilter').addEventListener('change', applyFilters);
             document.getElementById('typeFilter').addEventListener('change', applyFilters);
             document.getElementById('dateFilter').addEventListener('change', applyFilters);
+        </script>
+        <script>
+            let sortAsc = true;
+
+            document.getElementById('dateHeader').addEventListener('click', function () {
+                const table = document.getElementById('latest_b'); // ton id de table ici
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'))
+                        .filter(r => !r.querySelector('td[colspan]'));
+
+                rows.sort((a, b) => {
+                    const dateA = parseInt(a.querySelector('td[data-date]').dataset.date);
+                    const dateB = parseInt(b.querySelector('td[data-date]').dataset.date);
+                    return sortAsc ? dateA - dateB : dateB - dateA;
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+
+                sortAsc = !sortAsc;
+                this.textContent = `Period ${sortAsc ? '↓' : '↑'}`;
+
+                currentPage = 1;
+                paginateTable();
+            });
         </script>
         <script>
             const calendarEl = document.getElementById('calendar');

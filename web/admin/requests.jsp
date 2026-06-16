@@ -63,7 +63,7 @@
                          border-radius: 20px;
                          ">
                         <span style="display:flex; flex-direction:row;">
-                            <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%=userId%>"
+                            <img id="modalAvatar" src=""
                                  style="width:40px; height:40px; border-radius:50%; background: #eef; margin-left: 15px;" title="" alt="" />
 
                             <span style="display: flex; flex-direction: column;">
@@ -381,6 +381,7 @@
 
                             long diffMillis = h.getEndDate().getTime() - h.getStartDate().getTime();
                             long days = diffMillis / (1000 * 60 * 60 * 24);
+                            String dayLabel = days > 1 ? days + " days" : days + " day";
 
                             String status = h.getStatus();
                             String cssClass = "";
@@ -410,7 +411,7 @@
                                             <%= h.getFullName()%>
                                         </span>
                                         <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
-                                            <%=h.getType()%> &bull; <%= days%>hrs
+                                            <%=h.getType()%> &bull; <%= dayLabel %>
                                         </span>
                                     </div>
                                 </div>
@@ -421,8 +422,9 @@
                         <td data-date="<%= h.getStartDate().getTime()%>" style="padding:10px; text-align:center; width:150px;">
                             <div style="display:flex; flex-direction:column;">
                                 <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
-                                    <%= outFmt.format(h.getStartDate())%>,
-                                    <%= yearFmt.format(h.getEndDate())%>
+                                    <%= outFmt.format(h.getStartDate())%> 
+                                    →
+                                    <%= outFmt.format(h.getEndDate())%>
                                 </span>
                                 <span style="font-family: Consolas, sans-serif; font-size:0.8rem; font-weight:lighter; color:lightslategray;">
                                     ID: REQ-2026-00<%= h.getHolidayId()%> 
@@ -528,7 +530,7 @@
                                     }
         </script>
         <script>
-            let sortAsc = true;
+            let sortAsc = false;
 
             document.getElementById('dateHeader').addEventListener('click', function () {
                 const table = document.getElementById('alltable');
@@ -545,7 +547,6 @@
                 rows.forEach(row => tbody.appendChild(row));
 
                 sortAsc = !sortAsc;
-                this.textContent = `Period ${sortAsc ? '↓' : '↑'}`;
 
                 currentPage = 1;
                 paginateTable();
@@ -741,13 +742,19 @@
                     document.getElementById('modalLeaveType').textContent = btn.dataset.type || "";
                     document.getElementById('modalResponseMessage').textContent = btn.dataset.responsemessage || "N/A";
 
-                    // Récupère la div.status de la même ligne
+                    // Récupère la div.status de la même ligne 
                     const row = btn.closest('tr');
                     const statusDiv = row.querySelector('.status');
 
                     const modalStatusContainer = document.getElementById('modalStatusContainer');
                     modalStatusContainer.innerHTML = '';
                     modalStatusContainer.appendChild(statusDiv.cloneNode(true));
+
+                    //Récupère l'avatar du selected user
+                    const contextPath = '${pageContext.request.contextPath}';
+                    const modalAvatar = document.getElementById('modalAvatar');
+                    modalAvatar.src = '';  // ← refresh
+                    modalAvatar.src = contextPath + '/AvatarServlet?userId=' + userId;
 
                     // Show modal
                     openModal();

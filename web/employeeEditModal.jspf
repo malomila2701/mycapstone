@@ -7,119 +7,6 @@
      Sauvegarde via : UpdateEmployeeServlet (POST JSON)
      ============================================================ --%>
 
-<%-- ── OVERLAY + MODAL ─────────────────────────────────────── --%>
-<div id="employeeModal" class="em-overlay" role="dialog" aria-modal="true"
-     aria-labelledby="em-title" style="display:none;">
-
-    <div class="em-card">
-
-        <%-- ── Header ──────────────────────────────────────── --%>
-        <div class="em-header">
-            <span id="em-title" class="em-header-title">
-                <i class="ti ti-edit" aria-hidden="true"></i> Edit employee
-            </span>
-            <button class="em-close" onclick="closeEmployeeModal()" aria-label="Close modal">
-                <i class="ti ti-x"></i>
-            </button>
-        </div>
-
-        <%-- ── Card top : avatar + name + role ────────────── --%>
-        <div class="em-card-top">
-            <!-- Avatar -->
-            <img id="em-avatar-img"
-                 src=""
-                 style="width:58px; height:58px; border-radius:50%; background:#eef;"
-                 alt="Avatar" />
-
-            <div class="em-card-meta">
-                <div class="em-emp-id"># <span id="em-id-display">000000</span></div>
-                <input  id="em-name"
-                        class="em-input em-input-name"
-                        type="text"
-                        placeholder="Full name"
-                        aria-label="Full name" />
-                <input  id="em-role"
-                        class="em-input em-input-role"
-                        type="text"
-                        placeholder="Role"
-                        aria-label="Role" />
-            </div>
-        </div>
-
-        <div class="em-divider"></div>
-
-        <%-- ── Detail fields ───────────────────────────────── --%>
-        <div class="em-details">
-
-            <div class="em-detail-item">
-                <label class="em-label" for="em-entrance">Entrance</label>
-                <input id="em-entrance" class="em-input" type="date" aria-label="Entrance date" />
-            </div>
-
-            <div class="em-detail-item">
-                <label class="em-label" for="em-phone">Phone</label>
-                <input id="em-phone" class="em-input" type="tel"
-                       placeholder="(+225) 000-000-00" aria-label="Phone" />
-            </div>
-
-            <div class="em-detail-item em-full">
-                <label class="em-label" for="em-email">Email</label>
-                <input id="em-email" class="em-input" type="email"
-                       placeholder="email@company.com" aria-label="Email" />
-            </div>
-
-            <div class="em-detail-item">
-                <label class="em-label" for="em-latest-leave">Latest leave</label>
-                <input id="em-latest-leave" class="em-input" type="date" aria-label="Latest leave date" />
-            </div>
-
-            <div class="em-detail-item">
-                <label class="em-label" for="em-leave-balance">
-                    Leave used <span id="em-leave-counter" class="em-leave-counter">24 / 30</span>
-                </label>
-                <input id="em-leave-balance" class="em-input" type="range"
-                       min="0" max="30" step="1" value="24"
-                       oninput="emUpdateLeaveBar(this.value)"
-                       aria-label="Leave balance" />
-            </div>
-
-        </div>
-
-        <div class="em-divider"></div>
-
-        <%-- ── Leave progress bar ──────────────────────────── --%>
-        <div class="em-leave-section">
-            <div class="em-leave-bar-label">
-                <span>Leave balance</span>
-                <span id="em-leave-text">24 / 30 days</span>
-            </div>
-            <div class="em-leave-bar">
-                <div class="em-leave-bar-fill" id="em-leave-fill" style="width:80%"></div>
-            </div>
-        </div>
-
-        <%-- ── Footer ──────────────────────────────────────── --%>
-        <div class="em-footer">
-            <span class="em-toast" id="em-toast">
-                <i class="ti ti-check" aria-hidden="true"></i> Saved successfully
-            </span>
-            <span class="em-error" id="em-error">
-                <i class="ti ti-alert-circle" aria-hidden="true"></i> <span id="em-error-msg"></span>
-            </span>
-            <button class="em-btn em-btn-cancel" onclick="closeEmployeeModal()">Cancel</button>
-            <button class="em-btn em-btn-save"   onclick="emSaveEmployee()">
-                Save changes
-            </button>
-        </div>
-
-        <%-- hidden field to carry the userId --%>
-        <input type="hidden" id="em-user-id" value="" />
-
-    </div><%-- /em-card --%>
-</div><%-- /em-overlay --%>
-
-
-<%-- ── STYLES ───────────────────────────────────────────────── --%>
 <style>
     /* Overlay */
     .em-overlay {
@@ -374,6 +261,118 @@
         color: #c62828;
     }
 </style>
+
+<%-- ── OVERLAY + MODAL ─────────────────────────────────────── --%>
+<div id="employeeModal" class="em-overlay" role="dialog" aria-modal="true"
+     aria-labelledby="em-title" style="display:none;">
+
+    <div class="em-card">
+
+        <%-- ── Header ──────────────────────────────────────── --%>
+        <div class="em-header">
+            <span id="em-title" class="em-header-title">
+                <i class="ti ti-edit" aria-hidden="true"></i> Edit employee
+            </span>
+            <button class="em-close" onclick="closeEmployeeModal()" aria-label="Close modal">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+
+        <%-- ── Card top : avatar + name + role ────────────── --%>
+        <div class="em-card-top">
+            <!-- Avatar -->
+            <img id="em-avatar-img"
+                 src=""
+                 style="width:58px; height:58px; border-radius:50%; background:#eef;"
+                 alt="Avatar" />
+
+            <div class="em-card-meta">
+                <div class="em-emp-id"># <span id="em-id-display">000000</span></div>
+                <input  id="em-name"
+                        class="em-input em-input-name"
+                        type="text"
+                        placeholder="Full name"
+                        aria-label="Full name" />
+                <input  id="em-role"
+                        class="em-input em-input-role"
+                        type="text"
+                        placeholder="Role"
+                        aria-label="Role" />
+            </div>
+        </div>
+
+        <div class="em-divider"></div>
+
+        <%-- ── Detail fields ───────────────────────────────── --%>
+        <div class="em-details">
+
+            <div class="em-detail-item">
+                <label class="em-label" for="em-entrance">Entrance</label>
+                <input id="em-entrance" class="em-input" type="date" aria-label="Entrance date" />
+            </div>
+
+            <div class="em-detail-item">
+                <label class="em-label" for="em-phone">Phone</label>
+                <input id="em-phone" class="em-input" type="tel"
+                       placeholder="(+225) 000-000-00" aria-label="Phone" />
+            </div>
+
+            <div class="em-detail-item em-full">
+                <label class="em-label" for="em-email">Email</label>
+                <input id="em-email" class="em-input" type="email"
+                       placeholder="email@company.com" aria-label="Email" />
+            </div>
+
+            <div class="em-detail-item">
+                <label class="em-label" for="em-latest-leave">Latest leave</label>
+                <input id="em-latest-leave" class="em-input" type="date" aria-label="Latest leave date" />
+            </div>
+
+            <div class="em-detail-item">
+                <label class="em-label" for="em-leave-balance">
+                    Leave used <span id="em-leave-counter" class="em-leave-counter">24 / 30</span>
+                </label>
+                <input id="em-leave-balance" class="em-input" type="range"
+                       min="0" max="30" step="1" value="24"
+                       oninput="emUpdateLeaveBar(this.value)"
+                       aria-label="Leave balance" />
+            </div>
+
+        </div>
+
+        <div class="em-divider"></div>
+
+        <%-- ── Leave progress bar ──────────────────────────── --%>
+        <div class="em-leave-section">
+            <div class="em-leave-bar-label">
+                <span>Leave balance</span>
+                <span id="em-leave-text">24 / 30 days</span>
+            </div>
+            <div class="em-leave-bar">
+                <div class="em-leave-bar-fill" id="em-leave-fill" style="width:80%"></div>
+            </div>
+        </div>
+
+        <%-- ── Footer ──────────────────────────────────────── --%>
+        <div class="em-footer">
+            <span class="em-toast" id="em-toast">
+                <i class="ti ti-check" aria-hidden="true"></i> Saved successfully
+            </span>
+            <span class="em-error" id="em-error">
+                <i class="ti ti-alert-circle" aria-hidden="true"></i> <span id="em-error-msg"></span>
+            </span>
+            <button class="em-btn em-btn-cancel" onclick="closeEmployeeModal()">Cancel</button>
+            <button class="em-btn em-btn-save"   onclick="emSaveEmployee()">
+                Save changes
+            </button>
+        </div>
+
+        <%-- hidden field to carry the userId --%>
+        <input type="hidden" id="em-user-id" value="" />
+
+    </div><%-- /em-card --%>
+</div><%-- /em-overlay --%>
+
 
 
 <%-- ── JAVASCRIPT ───────────────────────────────────────────── --%>

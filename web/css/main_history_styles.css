@@ -288,10 +288,13 @@ ICONES
     padding: 8px;   /* control spacing */
     margin: 0;
 
-    background: #ccc;
+    background: transparent;
     border-radius: 16px;
     border:none;
     cursor: pointer;
+}
+.icon-btn-td svg:hover{
+    stroke: #0078d7;
 }
 .icon-btn-header {
     display: flex;
@@ -788,6 +791,9 @@ Main SECTION
 }
 .reqtable thead th:hover {
     color: #444;
+}
+#dateHeader:hover {
+    color: #766DF4;
 }
 .reqtable thead th:first-child {
     border-top-left-radius: 8px;

@@ -84,14 +84,16 @@
                               font-size: 0.8rem;
                               font-weight: lighter;">HR Management</span>
                     </div>
-                    <div style="display:flex; flex-direction: row; gap: 15px; margin-right: 2%;">
-                        <button class="toolbarBtn addEmployee" style="display:flex; flex-direction: row; background:">
+                    <div style="display:flex; flex-direction: row; gap: 15px; margin-right: 2%; font-weight: 600;">
+                        <button class="toolbarBtn addEmployee"
+                                style="display:flex; flex-direction: row;"
+                                onclick="openNewEmployeeModal()">
                             <span class="icon-home">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" class="size-5">
+                                <path d="M10 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM1.615 16.428a1.224 1.224 0 0 1-.569-1.175 6.002 6.002 0 0 1 11.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 0 1 7 18a9.953 9.953 0 0 1-5.385-1.572ZM16.25 5.75a.75.75 0 0 0-1.5 0v2h-2a.75.75 0 0 0 0 1.5h2v2a.75.75 0 0 0 1.5 0v-2h2a.75.75 0 0 0 0-1.5h-2v-2Z" />
                                 </svg>
                             </span>
-                            ADD EMPLOYEE
+                            New Employee
                         </button>
                     </div>
                 </div> 
@@ -181,12 +183,13 @@
                                    data-latestleave="<%= value%>"
                                    onclick="openEmployeeModal(this); return false;"
                                    title="Edit employee">
-                                    <span class="icon-home icon-btn-td">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="black" class="size-5">
-                                        <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
-                                        <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
-                                        </svg>
-                                    </span>
+                                    <button class="icon-btn-td">
+                                        <span class="icon-home">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                    </button>
                                 </a>
                             </div>
                         </div>
@@ -196,7 +199,7 @@
                         <div class="card-details">
                             <div class="detail-item">
                                 <span class="detail-label">Entrance</span>
-                                <span class="detail-val">2024-03-21</span><%-- TODO: e.getEntrance() --%>
+                                <span class="detail-val">2025-01-01</span><%-- TODO: e.getEntrance() --%>
                             </div>
                             <div class="detail-item">
                                 <span class="detail-label">Seniority</span>
@@ -256,44 +259,49 @@
                         .then(data => {
                             document.getElementById('balance-' + userId).textContent
                                     = data.leaveBalance.toFixed(1) + ' / 24 days';
-                            document.getElementById('bar-' + userId).style.width
-                                    = Math.min((data.leaveBalance / 24) * 100, 100) + '%';
                         });
             });
         </script>
         <script>
-            function openEmployeeModal(btn) {
+            function openEmployeeModal(btn = null) {
+                const d = (btn && btn.dataset) ? btn.dataset : {};
 
-                const userId = btn.dataset.userid;
-                const name = btn.dataset.name;
-                const email = btn.dataset.email;
-                const d = btn.dataset;
+                /* Populate fields */
+                document.getElementById('em-user-id').value = d.userid || '';
+                document.getElementById('em-id-display').textContent = String(d.userid || '0').padStart(6, '0');
+                document.getElementById('em-name').value = d.name || '';
+                document.getElementById('em-role').value = d.role || '';
+                document.getElementById('em-email').value = d.email || '';
+                document.getElementById('em-phone').value = d.phone || '';
+                document.getElementById('em-entrance').value = d.entrance || '';
+                document.getElementById('em-latest-leave').value = d.latestleave || '';
 
-                currentUserId = userId;
+                document.getElementById('em-avatar-img').src = d.userid
+                        ? contextPath + '/AvatarServlet?userId=' + d.userid
+                        : '';
 
-                document.getElementById("modalUsername").textContent = name;
-                document.getElementById("modalUserEmail").textContent = email;
-                document.getElementById('modalUserId').value = d.userid;
-                document.getElementById('inputName').value = d.name;
-                document.getElementById('inputRole').value = d.role;
-                document.getElementById('inputEmail').value = d.email;
-                document.getElementById('inputPhone').value = d.phone;
-                document.getElementById('inputEntrance').value = d.entrance;   // format YYYY-MM-DD
-                document.getElementById('inputLatestLeave').value = d.latestleave;
+                const balance = parseInt(d.leavebalance) || 0;
+                document.getElementById('em-leave-balance').value = balance;
+                emUpdateLeaveBar(balance);
 
-                document.getElementById("modalAvatar").src =
-                        "<%= request.getContextPath()%>/AvatarServlet?userId=" + userId;
+                // titre dynamique
+                document.getElementById('em-title').innerHTML =
+                        d.userid ? '<i class="ti ti-edit"></i> Edit employee'
+                        : '<i class="ti ti-user-plus"></i> New employee';
 
-                const modal = document.getElementById('leaveModal');
+                /* Reset feedback */
+                document.getElementById('em-toast').style.display = 'none';
+                document.getElementById('em-error').style.display = 'none';
 
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
+                /* Show overlay */
+                const overlay = document.getElementById('employeeModal');
+                overlay.style.display = 'flex';
+                setTimeout(() => document.getElementById('em-name').focus(), 50);
 
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        modal.classList.add('visible');
-                    });
-                });
+                overlay.onclick = function (e) {
+                    if (e.target === overlay)
+                        closeEmployeeModal();
+                };
             }
 
             // Pour fermer
@@ -346,9 +354,71 @@
             /* ── Init ──────────────────────────────────── */
             updateCount();
         </script>
+        <script>
+            function openNewEmployeeModal() {
+                // vide les champs
+                ['new-em-name', 'new-em-role', 'new-em-email', 'new-em-phone', 'new-em-entrance']
+                        .forEach(id => document.getElementById(id).value = '');
+
+                document.getElementById('new-em-toast').style.display = 'none';
+                document.getElementById('new-em-error').style.display = 'none';
+
+                const overlay = document.getElementById('newEmployeeModal');
+                overlay.style.display = 'flex';
+                overlay.onclick = e => {
+                    if (e.target === overlay)
+                        closeNewEmployeeModal();
+                };
+                setTimeout(() => document.getElementById('new-em-name').focus(), 50);
+            }
+
+            function closeNewEmployeeModal() {
+                document.getElementById('newEmployeeModal').style.display = 'none';
+            }
+
+            function newEmSave() {
+                const name = document.getElementById('new-em-name').value.trim();
+                if (!name) {
+                    document.getElementById('new-em-error-msg').textContent = 'Full name is required.';
+                    document.getElementById('new-em-error').style.display = 'flex';
+                    return;
+                }
+
+                const payload = {
+                    name: name,
+                    role: document.getElementById('new-em-role').value.trim(),
+                    email: document.getElementById('new-em-email').value.trim(),
+                    phone: document.getElementById('new-em-phone').value.trim(),
+                    entrance: document.getElementById('new-em-entrance').value
+                };
+
+                fetch('CreateEmployeeServlet', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                })
+                        .then(res => {
+                            if (!res.ok)
+                                throw new Error('Server error ' + res.status);
+                            return res.json();
+                        })
+                        .then(() => {
+                            document.getElementById('new-em-toast').style.display = 'flex';
+                            setTimeout(() => {
+                                closeNewEmployeeModal();
+                                location.reload();
+                            }, 1500);
+                        })
+                        .catch(err => {
+                            document.getElementById('new-em-error-msg').textContent = err.message;
+                            document.getElementById('new-em-error').style.display = 'flex';
+                        });
+            }
+        </script>
 
         <script src="../scripts/utils.js"></script>
 
+        <%@ include file="/newEmployeeModal.jspf" %>
         <%@ include file="/employeeEditModal.jspf" %>
     </body>
 </html>
