@@ -17,6 +17,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" 
               href="../css/admin/adm_rq_styles.css">
@@ -111,11 +112,42 @@
                         </form>
                     </div>
 
-                    <label style="margin-top: 10px; margin-left: 10px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;" for="modalMotif"> Reason/Motif </label> 
+                    <div style="display: flex; flex-direction: row; gap: 12px; margin-top: 10px;">
+
+                        <!-- Type de congé -->
+                        <div style="
+                             flex: 1;
+                             background: transparent;
+                             padding: 10px 15px;
+                             border: 1px solid #E2E8F0;
+                             border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Leave Type
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+                                <span class="icon-btn-modal icon-home-modal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0078d7" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" />
+                                    </svg>
+                                </span>
+                                <span id="modalLeaveType" style=" padding: 4px 12px; border: 1px solid #E2E8F0; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; color: #333;"></span>
+                            </div>
+                        </div>
+
+                        <!-- Statut -->
+                        <div style="flex: 1; background: #f3f6fa; padding: 10px 15px; border: 1px solid #E2E8F0; border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Status
+                            </label>
+                            <div id="modalStatusContainer" style="margin-top: 4px;"></div>
+                        </div>
+                    </div>
+
+                    <label style="margin-top: 20px; margin-left: 10px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;" for="modalMotif"> Reason/Motif </label> 
                     <div style="
-                         background: #f3f6fa;
-                         padding: 10px;
-                         border: 1px solid #ccc;
+                         background: transparent;
+                         padding: 5px;
+                         border: 1px solid #444;
                          border-radius: 20px;
                          margin-top: 5px;
                          ">
@@ -123,7 +155,7 @@
                     </div>
 
                     <label style="
-                           margin-top: 10px;
+                           margin-top: 20px;
                            margin-left: 10px;
                            font-size: 0.7rem;
                            font-weight: 600;
@@ -134,8 +166,8 @@
                         HR Note: </label> 
                     <div style="
                          background: #f3f6fa;
-                         padding: 10px;
-                         border: 1px solid #ccc;
+                         padding: 5px;
+                         border: 1px solid #444;
                          border-radius: 20px;
                          margin-top: 5px;">
                         <textarea id="modalResponseMessage" readonly></textarea>
@@ -191,14 +223,6 @@
                     </form>
 
                 </main>
-                <aside class="side-section">
-                    <div style="position: relative; min-height: 150px;">
-                        <div id="calendarLoader" class="chart-loader-wrapper">
-                            <div class="loader" id="loader"></div>
-                        </div>
-                        <div id="calendar"></div>
-                    </div>
-                </aside>
             </div>
         </div>
         <!--Still in modal-->
@@ -338,7 +362,7 @@
                 <thead>
                     <tr>
                         <th style="padding:12px; text-align:left; padding-left: 3%;">Description</th>
-                        <th id="dateHeader" style="padding:12px; text-align:center; cursor:pointer;">Period ↓</th>
+                        <th id="dateHeader" style="padding:12px; text-align:center; cursor:pointer;">Period ↓↑</th>
                         <th style="padding:12px; text-align:center;">Motif/Reason</th>
                         <th style="padding:12px; text-align:center;">Status</th>
                         <th style="padding:12px; text-align:center;">Action</th>
@@ -458,20 +482,15 @@
                                     data-startdate="<%= h.getStartDate()%>"
                                     data-enddate="<%= h.getEndDate()%>"
                                     data-motif="<%= h.getMotif()%>"
-                                    data-status="<%= h.getStatus()%>">
+                                    data-status="<%= h.getStatus()%>"
+                                    data-responsemessage="<%=h.getResponseMessage()%>">
 
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 20 20"
-                                     fill="#666"
-                                     width="18"
-                                     height="18">
-
-                                <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-
-                                <path fill-rule="evenodd"
-                                      d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
-                                      clip-rule="evenodd" />
-                                </svg>
+                                <span class="icon-home">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </span>
 
                             </button>
 
@@ -509,11 +528,38 @@
                                     }
         </script>
         <script>
+            let sortAsc = true;
+
+            document.getElementById('dateHeader').addEventListener('click', function () {
+                const table = document.getElementById('alltable');
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr:not([data-filtered="true"])'))
+                        .filter(r => !r.querySelector('td[colspan]'));
+
+                rows.sort((a, b) => {
+                    const dateA = parseInt(a.querySelector('td[data-date]').dataset.date);
+                    const dateB = parseInt(b.querySelector('td[data-date]').dataset.date);
+                    return sortAsc ? dateA - dateB : dateB - dateA;
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+
+                sortAsc = !sortAsc;
+                this.textContent = `Period ${sortAsc ? '↓' : '↑'}`;
+
+                currentPage = 1;
+                paginateTable();
+            });
+        </script>
+        <script>
             const ROWS_PER_PAGE = 4; // change this to whatever limit you want
             let currentPage = 1;
 
             function paginateTable() {
                 const table = document.getElementById('alltable');
+
+                document.getElementById('alltable').scrollTop = 0;
+
                 // Only count rows that passed the filter
                 const visibleRows = Array.from(table.querySelectorAll('tbody tr'))
                         .filter(r => r.dataset.filtered !== 'true' && !r.querySelector('td[colspan]'));
@@ -608,7 +654,7 @@
                         return;
 
                     // --- Status ---
-                    const rowStatus = statusSpan.textContent.trim().toLowerCase();
+                    const rowStatus = statusSpan.querySelector('span:last-of-type')?.textContent.trim().toLowerCase() || '';
                     const statusMatch = selectedStatus === 'all' || rowStatus === selectedStatus;
 
                     // --- Date ---
@@ -667,35 +713,6 @@
             document.getElementById('dateFilter').addEventListener('change', applyFilters);
         </script>
         <script>
-
-            const calendarEl = document.getElementById('calendar');
-            let calendar;
-            let selectedEventId = null;
-            let currentUserId = null;
-
-
-            const detailsAction = document.querySelector('.detailsAction');
-            const loader = document.getElementById("loader");
-
-            window.calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                eventSources: [],
-                firstDay: 1,
-                showNonCurrentDates: false,
-                hiddenDays: [0],
-                loading: function (isLoading) {
-                    if (isLoading) {
-                        loader.style.display = "block";
-                        calendarEl.style.visibility = 'hidden';
-                    } else {
-                        loader.style.display = "none";
-                        calendarEl.style.visibility = 'visible';
-                    }
-                }
-            });
-
-            window.calendar.render();
-
             // Open modal for each user button
             document.querySelectorAll('.icon-btn-td').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -703,9 +720,6 @@
                     // UserId
                     currentUserId = (btn.dataset.userid || "").trim();
                     selectedEventId = btn.dataset.holidayid;
-                    console.log("Selected user_id4Calendar:", window.currentUserId);
-                    console.log("Selected holiday_id4Calendar:", selectedEventId);
-
 
                     const status = btn.dataset.status;
                     document.querySelectorAll('#actionsDiv > div').forEach(d => d.style.display = 'none');
@@ -724,30 +738,20 @@
                     document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
                     document.getElementById('modalStartDate').textContent = btn.dataset.startdate || "";
                     document.getElementById('modalEndDate').textContent = btn.dataset.enddate || "";
+                    document.getElementById('modalLeaveType').textContent = btn.dataset.type || "";
+                    document.getElementById('modalResponseMessage').textContent = btn.dataset.responsemessage || "N/A";
+
+                    // Récupère la div.status de la même ligne
+                    const row = btn.closest('tr');
+                    const statusDiv = row.querySelector('.status');
+
+                    const modalStatusContainer = document.getElementById('modalStatusContainer');
+                    modalStatusContainer.innerHTML = '';
+                    modalStatusContainer.appendChild(statusDiv.cloneNode(true));
 
                     // Show modal
                     openModal();
 
-                    // Make sure calendar exists
-                    if (window.calendar) {
-                        // Remove old sources
-                        window.calendar.removeAllEventSources();
-                        // Add holidays source
-                        window.calendar.addEventSource({
-                            url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
-                            method: 'GET'
-                        });
-                        //PermissionCalendar
-                        window.calendar.addEventSource({
-                            url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
-                            method: 'GET',
-                            extraParams: {
-                                userId: currentUserId
-                            }
-                        });
-                        // Refresh events
-                        window.calendar.refetchEvents();
-                    }
                 });
             });
 
@@ -770,8 +774,8 @@
                 document.getElementById('leaveStatus').value = newStatus;
                 document.getElementById('leaveUserId').value = currentUserId;
                 document.getElementById('leaveAdminMessage').value = message;
-                
-                
+
+
                 document.getElementById('statusForm').submit();
 
                 updateStatusBadge(leaveId, newStatus);
