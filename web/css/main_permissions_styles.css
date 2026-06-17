@@ -1,7 +1,7 @@
 body{
     font-family: system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    margin:0 0 0 17%;
+    margin:0;
     height: 100vh;
     background: #cad1e0;
     background: linear-gradient(93deg, rgba(202, 209, 224, 1) 36%, rgba(191, 217, 197, 1) 100%);
@@ -20,6 +20,14 @@ body{
 #page-transition.active {
     opacity: 1;
     pointer-events: all;
+}
+
+body.fade-out {
+    animation: fadeOut 0.4s ease forwards;
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; }
 }
 
 .modal {
@@ -265,14 +273,14 @@ body{
 #stepProgress {
     position: fixed;
     margin-top:0;
+    left: 50%;
+    transform: translateX(-50%);
     background: transparent;
     padding: 15px 0;
     z-index: 999;
-    max-width: 450px;
+    max-width: 410px;
     width: 100%;
     display: flex;
-    
-    justify-items: center;
     justify-content: space-between;
     align-items: center;
     position: relative;
@@ -370,7 +378,6 @@ Main SECTION
 }
 #user_banner {
     grid-column: 1 / -1; /* spans all columns */
-    width: 90%;
     margin-left: 0px;
     margin-right: 15px;
     border-radius: 14px;
@@ -601,11 +608,12 @@ textarea {
     font-family: inherit;
     font-size: inherit;
 }
-#submitBtn{
+#submitBtn {
     position: relative;
     padding: 10px;
     width: 175px;
     border-radius: 6px;
+    overflow: hidden;        /* needed for ripple */
 }
 .btn-disabled {
     background-color: #ccc;
@@ -613,7 +621,6 @@ textarea {
     cursor: not-allowed;
     border: 1px solid #999;
 }
-/* Active style */
 .btn-enabled {
     background-color: #0078d7;
     color: white;
@@ -621,6 +628,54 @@ textarea {
     border: none;
     transition: transform 0.3s ease;
 }
+/* label/spinner swap */
+.btn-label { transition: opacity 0.2s; }
+#submitBtn.loading .btn-label { opacity: 0; }
+
+.btn-spinner {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    font-size: 13px;
+    top: 50%;
+    margin-top: -10px;
+}
+#submitBtn.loading .btn-spinner { opacity: 1; }
+
+/* dot pulse */
+.dot-pulse { display: flex; gap: 4px; align-items: center; }
+.dot-pulse span {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    animation: dotPulse 1.2s infinite ease-in-out;
+}
+.dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+.dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40%           { transform: scale(1);   opacity: 1;   }
+}
+
+/* ripple */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transform: scale(0);
+    animation: rippleOut 0.55s linear;
+    pointer-events: none;
+}
+@keyframes rippleOut { to { transform: scale(4); opacity: 0; } }
+
+/* done state */
+#submitBtn.done { background-color: #107c10; border: none; pointer-events: none; }
 
 .btn-enabled:hover {
     transform: scale(1.1);

@@ -513,10 +513,10 @@
                                             </span>
                                         </button>
                                         <div style="display:flex; flex-direction:column;">
-                                            <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
+                                            <span style="font-weight: 600; color: #444; white-space:nowrap;">
                                                 <%= h.getFullName()%>
                                             </span>
-                                            <span style="font-size: 11px; color:lightslategray; white-space: nowrap;">
+                                            <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
                                                 Holiday &bull; <%= dayLabel%>
                                             </span>
                                         </div>
@@ -542,7 +542,6 @@
                             <td style="padding:10px; text-align:center; width:350px;">
 
                                 <span style="
-                                      font-size:12px;
                                       font-weight: 600;
                                       color: #444;
                                       display:block;
@@ -647,7 +646,7 @@
                                             </span>
                                         </button>
                                         <div style="display:flex; flex-direction:column;">
-                                            <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
+                                            <span style="font-weight: 600; color: #444; white-space:nowrap;">
                                                 <%= p.getFullName()%>
                                             </span>
                                             <span style="font-size:11px; color:lightslategray; white-space: nowrap;">
@@ -661,7 +660,7 @@
 
                             <td data-date="<%= p.getStartDate().getTime()%>" style="padding:10px; text-align:center; width:150px;">
                                 <div style="display:flex; flex-direction:column;">
-                                    <span style="font-size: 12px; font-weight: 600; color: #444; white-space:nowrap;">
+                                    <span style="font-weight: 600; color: #444; white-space:nowrap;">
                                         <%= outFmt.format(p.getStartDate())%>
                                     </span>
                                     <span style="font-family: Consolas, sans-serif; font-size:0.8rem; font-weight:lighter; color:lightslategray;">
@@ -674,7 +673,6 @@
                             <td style="padding:10px; text-align:center; width:350px;">
 
                                 <span style="
-                                      font-size:12px;
                                       font-weight: 600;
                                       color: #444;
                                       display:block;

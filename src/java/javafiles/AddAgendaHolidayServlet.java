@@ -23,7 +23,7 @@ import org.json.JSONObject;
 @WebServlet("/addHoliday")
 public class AddAgendaHolidayServlet extends HttpServlet {
 
-    private static final Logger logger = LogManager.getLogger(AddTaskServlet.class.getName());
+    private static final Logger logger = LogManager.getLogger(AddAgendaHolidayServlet.class.getName());
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -58,7 +58,7 @@ public class AddAgendaHolidayServlet extends HttpServlet {
             response.getWriter().write("{\"status\":\"success\"}");
 
         } catch (SQLException e) {
-            logger.error("ERROR ADD TASK: " + e.getMessage());
+            logger.error("ERROR ADD AGENDA HOLIDAY: " + e.getMessage());
             response.setStatus(500);
             response.getWriter().write("{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}");
         } catch (Exception ex) {

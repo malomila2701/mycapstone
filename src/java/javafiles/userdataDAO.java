@@ -12,7 +12,9 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -331,6 +333,7 @@ public class userdataDAO {
         return userList;
     }
 
+    //To retrieve last Leave
     public List<EmployeeInfo> getEmployeeInfo() throws Exception {
         List<EmployeeInfo> employeesList = new ArrayList<>();
 
@@ -429,6 +432,30 @@ public class userdataDAO {
             logger.error("ERROR RETRIEVING INDIVIDUAL USER LEAVES: " + e.getMessage());
         }
         return eventList;
+    }
+
+    public Map<String, Integer> countPermissionsByStatus() throws SQLException, Exception {
+        Map<String, Integer> counts = new LinkedHashMap<>();
+        String sql = "SELECT status, COUNT(*) AS total FROM permissions GROUP BY status";
+
+        try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                counts.put(rs.getString("status"), rs.getInt("total"));
+            }
+        }
+        return counts;
+    }
+    
+    public Map<String, Integer> countRequestsByStatus() throws SQLException, Exception {
+        Map<String, Integer> counts = new LinkedHashMap<>();
+        String sql = "SELECT status, COUNT(*) AS total FROM holidays GROUP BY status";
+
+        try (Connection conn = DBConnection.connect(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                counts.put(rs.getString("status"), rs.getInt("total"));
+            }
+        }
+        return counts;
     }
 
     public List<Agenda> getAgenda(int userId) {

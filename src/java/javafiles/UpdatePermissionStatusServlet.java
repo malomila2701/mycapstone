@@ -52,10 +52,8 @@ public class UpdatePermissionStatusServlet extends HttpServlet {
             psNotif.setString(4, "Permission #" + id + " has been : " + status + "!");
             psNotif.executeUpdate();
 
-            conn.commit(); // tout valider
-
         } catch (Exception e) {
-            logger.error("Error UPDATING status:" + e.getMessage());
+            logger.error("Error UPDATING PERMISSION status:" + e.getMessage());
         }
 
         // redirect back (important)

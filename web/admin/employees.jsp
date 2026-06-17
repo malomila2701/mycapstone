@@ -227,9 +227,19 @@
                                     <span>Leave balance</span>
                                     <span id="balance-<%= userId%>">...</span>
                                 </div>
+                                <script>
+                                    fetch('<%=request.getContextPath()%>/LeaveBalanceServlet')
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                document.getElementById('leave-balance').textContent = data.leaveBalance;
+                                                document.getElementById('days-used').textContent = data.daysUsed;
+                                            });
+                                </script>
                                 <div class="leave-bar">
                                     <%-- TODO: replace 24 with e.getLeaveBalance() --%>
-                                    <div class="leave-bar-fill" style="width:<%= Math.round((24.0 / 30) * 100)%>%"></div>
+                                    <div class="leave-bar">
+                                        <div class="leave-bar-fill" id="bar-<%= e.getUserId()%>" style="width: 0%"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-cb">
@@ -252,13 +262,17 @@
         </div>
 
         <script>
-            document.querySelectorAll('input[name="selectedUsers"]').forEach(input => {
-                const userId = input.value;
+            document.querySelectorAll('[id^="bar-"]').forEach(barEl => {
+                const userId = barEl.id.replace('bar-', '');
                 fetch('<%= request.getContextPath()%>/LeaveBalanceServlet?user_id=' + userId)
                         .then(res => res.json())
                         .then(data => {
-                            document.getElementById('balance-' + userId).textContent
-                                    = data.leaveBalance.toFixed(1) + ' / 24 days';
+                            document.getElementById('balance-' + userId).textContent =
+                                    data.leaveBalance > 24
+                                    ? data.leaveBalance.toFixed(1) + ' days'
+                                    : data.leaveBalance.toFixed(1) + ' / 24 days';
+                            barEl.style.width
+                                    = Math.min((data.leaveBalance / 24) * 100, 100) + '%';
                         });
             });
         </script>

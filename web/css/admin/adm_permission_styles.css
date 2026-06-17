@@ -67,8 +67,9 @@
     align-content: start;
     position: relative;
     width: 350px;
+    height: 500px;
     background: white;
-    padding: 25px;
+    padding: 15px;
     border-radius: 8px;
     
     transform: scale(0.85);
@@ -78,10 +79,15 @@
 #modalreqID {
     font-family: consolas, sans-serif;
     margin-left: 5px;
+    margin-bottom: 5px;
 }
 .details-section {
-    max-width: 310px;
+    width:100%;
+    justify-content: center;
     align-content:center;
+    padding-right: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .avatar {
     align-content: center;
@@ -103,25 +109,28 @@
 #modalMotif, #modalResponseMessage {
     position: relative;
     width:98%;
-    padding: 10px;
     background: transparent;
     border: 1px solid transparent;
     resize: none;
     cursor:default;
 }
 .modal-actions{
-    position: relative;
+    position: sticky;
+    display:flex;
+    
     justify-content: end;
-    margin-top: 15px;
 }
 .modal-btn{
-    padding: 8px 12px;
+    padding: 8px 15px;
     margin-left: 15px;
     border-radius: 10px;
     border: 1px solid #ccc;
     cursor: pointer;
     transition: transform 0.3s;
 
+    position: relative;
+    overflow: hidden;        /* needed for ripple */
+    
     display:flex;
     flex-direction:row;
     align-items:center;
@@ -154,6 +163,59 @@
     background: whitesmoke;
     border: 1px solid #ccc;
 }
+/**Modal bouton de confirmation submit --> submitting ... **/
+#submitBtnModal {
+    min-width: 160px;
+    justify-content: center;
+    overflow: hidden;
+}
+.btn-label { transition: opacity 0.2s; }
+#submitBtnModal.loading .btn-label { opacity: 0; }
+
+.btn-spinner {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    font-size: 13px;
+    top: 50%;
+    margin-top: -10px;
+}
+#submitBtnModal.loading .btn-spinner { opacity: 1; }
+
+/* dot pulse */
+.dot-pulse { display: flex; gap: 4px; align-items: center; }
+.dot-pulse span {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    animation: dotPulse 1.2s infinite ease-in-out;
+}
+.dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+.dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40%           { transform: scale(1);   opacity: 1;   }
+}
+
+/* ripple */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transform: scale(0);
+    animation: rippleOut 0.55s linear;
+    pointer-events: none;
+}
+@keyframes rippleOut { to { transform: scale(4); opacity: 0; } }
+
+/* done state */
+#submitBtnModal.done { background-color: #107c10; color: white; border: none; pointer-events: none; }
 
 
 
@@ -220,6 +282,13 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
 }
+body.fade-out {
+    animation: fadeOut 0.4s ease forwards;
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
 
 .cards-section {
     display: grid;
@@ -241,6 +310,13 @@ body {
     text-align:left;
     align-items: center;
     color: #333;
+}
+.card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 16px rgba(0,0,0,0.12),
+        0 2px 4px rgba(0,0,0,0.08);
 }
 #total_card {
     background: white;

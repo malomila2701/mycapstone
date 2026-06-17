@@ -44,6 +44,8 @@
                 const confirmLeaveBtn = document.getElementById('confirmLeave');
                 const cancelLeaveBtn = document.getElementById('cancelLeave');
 
+                const resetBtn = document.getElementById('clearForm');
+
                 let selectedInfo = null; // store calendar selection
 
                 function updateProgress(stepIndex) {
@@ -71,6 +73,7 @@
                     if (selectedInfo && leaveType) {
                         // Add event to calendar
                         calendar.addEvent({
+                            id: 'pendingLeave',
                             title: leaveType,
                             start: selectedInfo.startStr,
                             end: selectedInfo.endStr,
@@ -89,7 +92,10 @@
 
                         // Show next step section
                         nextStep.style.display = 'block';
-                        nextStep.scrollIntoView({behavior: 'smooth', block: 'start'});
+                        setTimeout(() => {
+                            const aside = document.querySelector('.side-section');
+                            aside.scrollTo({top: aside.scrollHeight, behavior: 'smooth'});
+                        }, 50);
 
                         // Fill next step form
                         eventStartInput.value = selectedInfo.startStr;
@@ -101,6 +107,22 @@
 
                 cancelLeaveBtn.addEventListener('click', function () {
                     leaveModal.style.display = 'none';
+                    calendar.unselect();
+                });
+
+                document.getElementById("clearForm").addEventListener("click", function () {
+                    // remove the event added to the calendar
+                    const addedEvent = calendar.getEventById("pendingLeave");
+                    if (addedEvent)
+                        addedEvent.remove();
+
+                    // hide next step section and reset progress
+                    nextStep.style.display = 'none';
+                    steps[1].classList.remove('active');
+                    updateProgress(0);
+                    label.textContent = `Step 1: Select leave dates`;
+
+                    selectedInfo = null;
                     calendar.unselect();
                 });
 
@@ -362,13 +384,12 @@
                         }
                     });
 
-// add this: attach animation on the form submit
-                    document.querySelector("form").addEventListener("submit", function (e) {
+                    document.querySelector("#nextStep_form").addEventListener("submit", function (e) {
                         e.preventDefault();
-
                         const btn = document.getElementById("submitBtn");
+                        const form = this;
 
-                        // ripple from center
+                        // ripple
                         const ripple = document.createElement("span");
                         ripple.className = "ripple";
                         const rect = btn.getBoundingClientRect();
@@ -378,33 +399,23 @@
                         ripple.addEventListener("animationend", () => ripple.remove());
 
                         btn.classList.add("loading");
+
+
                         btn.disabled = true;
 
-                        // replace with your actual fetch/submit logic
-                        NewLeaveServlet().then(() => {
+                        // let the animation show, then submit for real
+                        setTimeout(() => {
                             btn.classList.remove("loading");
                             btn.classList.add("done");
                             btn.querySelector(".btn-label").innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16" style="vertical-align:-3px;margin-right:6px;">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-11.25" />
-            </svg>
-            Event created!`;
-
+        Event created! <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="16" height="16" style="vertical-align:-3px;margin-right:6px;">
+            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
+        </svg>`;
                             setTimeout(() => {
-                                btn.classList.remove("done", "btn-enabled");
-                                btn.classList.add("btn-disabled");
-                                btn.querySelector(".btn-label").innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="vertical-align:-3px;margin-right:6px;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-                </svg>
-                Create Event`;
-                                btn.disabled = true;
-                            }, 2500);
-                        }).catch(() => {
-                            btn.classList.remove("loading");
-                            btn.classList.add("btn-enabled");
-                            btn.disabled = false;
-                        });
+                                document.body.classList.add("fade-out");
+                                setTimeout(() => form.submit(), 400); // wait for fade to finish
+                            }, 600); // show green state for 600ms before fading
+                        }, 800);
                     });
         </script>
     </body>

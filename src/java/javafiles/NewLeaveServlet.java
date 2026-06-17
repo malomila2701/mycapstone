@@ -31,6 +31,9 @@ public class NewLeaveServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         int userId = (Integer) session.getAttribute("user_id");
+        String username = (String) session.getAttribute("username");
+        
+       
         String start_date = request.getParameter("eventStart");
         String end_date = request.getParameter("eventEnd");
         String type = request.getParameter("eventType");
@@ -38,6 +41,16 @@ public class NewLeaveServlet extends HttpServlet {
 
         java.sql.Connection conn = null;
         PreparedStatement stmt = null;
+        
+        
+        String subject  = "New Leave Request – " + username;
+        
+        
+        
+        
+        
+        
+        
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

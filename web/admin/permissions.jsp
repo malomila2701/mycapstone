@@ -47,10 +47,13 @@
         <div id="leaveModal" class="modal">
             <div class="modal-content">
                 <div style="
+                     position: sticky;
                      display:flex;
                      justify-content:space-between;
                      align-items:center;
                      border-bottom:1px solid #ccc;
+
+                     overflow: hidden;
                      ">
                     <div>
                         <h2 style="
@@ -148,6 +151,37 @@
                         </form>
                     </div>
 
+                    <div style="display: flex; flex-direction: row; gap: 12px; margin-top: 10px;">
+
+                        <!-- Type de congé -->
+                        <div style="
+                             flex: 1;
+                             background: transparent;
+                             padding: 10px 15px;
+                             border: 1px solid #E2E8F0;
+                             border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Leave Type
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+                                <span class="icon-btn-modal icon-home-modal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0078d7" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" />
+                                    </svg>
+                                </span>
+                                <span id="modalLeaveType" style=" padding: 4px 12px; border: 1px solid #E2E8F0; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; color: #333;"></span>
+                            </div>
+                        </div>
+
+                        <!-- Statut -->
+                        <div style="flex: 1; background: #f3f6fa; padding: 10px 15px; border: 1px solid #E2E8F0; border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Status
+                            </label>
+                            <div id="modalStatusContainer" style="margin-top: 4px;"></div>
+                        </div>
+                    </div>
+
                     <label style="
                            margin-top: 10px;
                            margin-left: 10px;
@@ -175,7 +209,7 @@
                            text-transform: uppercase;
                            color: lightslategray;
                            white-space: nowrap;" 
-                           for="modalMotif"> 
+                           for="modalResponseMessage"> 
                         HR Note: </label> 
                     <div style="
                          background: #f3f6fa;
@@ -185,58 +219,58 @@
                          margin-top: 5px;">
                         <textarea id="modalResponseMessage" readonly></textarea>
                     </div>
-
-                    <span style="border-bottom: 1px solid #ccc; width: 100%;"></span>
-                    <!-- Modal Actions & form with hidden data -->
-                    <div class="modal-actions" id="actionsDiv">
-                        <!--Modal Action when status is pending-->
-                        <div id="actions-pending" style="display:none">
-                            <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
-                                Cancel
-                            </button>
-                            <button class="modal-btn" id="rejectLeaveBtn" onclick="openConfirmPopup('Rejected')">
-                                <span class="icon-btn-modal icon-home">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#c70036" class="size-5">
-                                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                                    </svg>
-                                </span>
-                                Reject
-                            </button>
-                            <button class="modal-btn" id="approveLeaveBtn" onclick="openConfirmPopup('Approved')">
-                                <span class="icon-btn-modal icon-home">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" class="size-5">
-                                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                Approve
-                            </button>
-                        </div>
-                        <!--Modal Actions when status is approved/rejected-->
-                        <div id="actions-reviewed" style="display:none">
-                            <button class="modal-btn" id="resetPendingBtn" onclick="openConfirmPopup('Pending')">
-                                <span class="icon-btn-modal icon-home">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                    <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                Put as pending
-                            </button>
-                            <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
-                                Cancel
-                            </button>
-                        </div>
-                        <div id="actions-none" style="display:none">
-                            <button disabled>No actions available</button>
-                        </div>
-                    </div>
-                    <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdatePermissionStatusServlet">
-                        <input type="hidden" name="permission_id" id="leaveId">
-                        <input type="hidden" name="user_id" id="leaveUserId">
-                        <input type="hidden" name="status" id="leaveStatus">
-                        <input type="hidden" name="admin_message" id="leaveAdminMessage">
-                    </form>
-
                 </main>
+
+                <span style="border-bottom: 1px solid #ccc; width: 100%;"></span>
+                <!-- Modal Actions & form with hidden data -->
+                <div class="modal-actions" id="actionsDiv">
+                    <!--Modal Action when status is pending-->
+                    <div id="actions-pending" style="display:none">
+                        <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
+                            Cancel
+                        </button>
+                        <button class="modal-btn" id="rejectLeaveBtn" onclick="openConfirmPopup('Rejected')">
+                            <span class="icon-btn-modal icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#c70036" class="size-5">
+                                <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                                </svg>
+                            </span>
+                            Reject
+                        </button>
+                        <button class="modal-btn" id="approveLeaveBtn" onclick="openConfirmPopup('Approved')">
+                            <span class="icon-btn-modal icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" class="size-5">
+                                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            Approve
+                        </button>
+                    </div>
+                    <!--Modal Actions when status is approved/rejected-->
+                    <div id="actions-reviewed" style="display:none">
+                        <button class="modal-btn" id="resetPendingBtn" onclick="openConfirmPopup('Pending')">
+                            <span class="icon-btn-modal icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            Put as pending
+                        </button>
+                        <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
+                            Cancel
+                        </button>
+                    </div>
+                    <div id="actions-none" style="display:none">
+                        <button disabled>No actions available</button>
+                    </div>
+                </div>
+                <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdatePermissionStatusServlet">
+                    <input type="hidden" name="permission_id" id="leaveId">
+                    <input type="hidden" name="user_id" id="leaveUserId">
+                    <input type="hidden" name="status" id="leaveStatus">
+                    <input type="hidden" name="admin_message" id="leaveAdminMessage">
+                </form>
+
             </div>
         </div>
         <!--Still in modal-->
@@ -247,7 +281,15 @@
                 <input type="hidden" id="pendingStatus">
                 <div style="display:flex; gap:8px; justify-content:flex-end;">
                     <button class="modal-btn" onclick="closeConfirmPopup()">Cancel</button>
-                    <button class="modal-btn" onclick="submitWithMessage()">Submit</button>
+                    <button class="submit modal-btn" id="submitBtnModal" onclick="submitWithMessage()">
+                        <span class="btn-label">
+                            Submit
+                        </span>
+                        <span class="btn-spinner">
+                            Submitting
+                            <span class="dot-pulse"><span></span><span></span><span></span></span>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -401,6 +443,7 @@
 
                             long diffMillis = p.getEndTime().getTime() - p.getStartTime().getTime();
                             long hours = diffMillis / (1000 * 60 * 60);
+                            String hourLabel = hours > 1 ? hours + " hrs" : hours + " hr";
 
                             String status = p.getStatus();
                             String cssClass = "";
@@ -431,7 +474,7 @@
                                             <%= p.getFullName()%>
                                         </span>
                                         <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
-                                            Permission &bull; <%= hours%> hrs
+                                            Permission &bull; <%= hourLabel%>
                                         </span>
                                     </div>
                                 </div>
@@ -669,6 +712,12 @@
                 const selectedDate = document.getElementById('dateFilter').value.toLowerCase();
                 const rows = document.querySelectorAll('#permissiontable tbody tr');
 
+                const statusCounts = {
+                    pending: 0,
+                    approved: 0,
+                    rejected: 0
+                };
+
                 // --- Date range boundaries --- */
                 const now = new Date();
                 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -691,6 +740,11 @@
                     // --- Status ---
                     const rowStatus = statusSpan.textContent.trim().toLowerCase();
                     const statusMatch = selectedStatus === 'all' || rowStatus === selectedStatus;
+
+                    // count matching status
+                    if (statusCounts.hasOwnProperty(rowStatus)) {
+                        statusCounts[rowStatus]++;
+                    }
 
                     // --- Date ---
                     const rawDate =
@@ -756,9 +810,23 @@
                 applyFilters();
             });
             document.getElementById('rejected_card').addEventListener('click', () => {
-                document.getElementById('statusFilter').value = 'approved';
+                document.getElementById('statusFilter').value = 'rejected';
                 applyFilters();
             });
+        </script>
+        <script>
+            fetch('${pageContext.request.contextPath}/CountPermByStatus')
+                    .then(res => res.json())
+                    .then(data => {
+                        const pending = data['Pending']  ?? 0;
+                        const approved = data['Approved'] ?? 0;
+                        const rejected = data['Rejected'] ?? 0;
+
+                        document.querySelector('#pending_card h2').textContent = pending;
+                        document.querySelector('#approved_card h2').textContent = approved;
+                        document.querySelector('#rejected_card h2').textContent = rejected;
+                        document.querySelector('#total_card h2').textContent = pending + approved + rejected;
+                    });
         </script>
         <script>
             let selectedEventId = null;
@@ -775,9 +843,6 @@
                     // UserId
                     currentUserId = (btn.dataset.userid || "").trim();
                     selectedEventId = btn.dataset.holidayid;
-                    console.log("Selected user_id4Calendar:", window.currentUserId);
-                    console.log("Selected holiday_id4Calendar:", selectedEventId);
-
 
                     const status = btn.dataset.status;
                     document.querySelectorAll('#actionsDiv > div').forEach(d => d.style.display = 'none');
@@ -795,10 +860,18 @@
                     document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
                     document.getElementById('modalUserEmail').textContent = btn.dataset.useremail || "Unknown";
                     document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
-                    document.getElementById('modalResponseMessage').textContent = btn.dataset.responsemessage || "N/A";
+                    document.getElementById('modalResponseMessage').textContent = btn.dataset.responsemessage || "WIP";
                     document.getElementById('modalStartDate').textContent = btn.dataset.startdate || "";
                     document.getElementById('modalStartTime').textContent = btn.dataset.starttime || '—';
                     document.getElementById('modalEndTime').textContent = btn.dataset.endtime || '—';
+
+                    // Récupère la div.status de la même ligne 
+                    const row = btn.closest('tr');
+                    const statusDiv = row.querySelector('.status');
+
+                    const modalStatusContainer = document.getElementById('modalStatusContainer');
+                    modalStatusContainer.innerHTML = '';
+                    modalStatusContainer.appendChild(statusDiv.cloneNode(true));
 
                     //Récupère l'avatar du selected user
                     const contextPath = '${pageContext.request.contextPath}';
@@ -824,42 +897,62 @@
             }
 
             function submitWithMessage() {
+
                 const message = document.getElementById('adminMessageInput').value.trim();
                 const newStatus = document.getElementById('pendingStatus').value;
+
+                const btn = document.getElementById("submitBtnModal");
+                const form = document.getElementById("statusForm");
 
                 document.getElementById('leaveId').value = selectedEventId;
                 document.getElementById('leaveStatus').value = newStatus;
                 document.getElementById('leaveUserId').value = currentUserId;
                 document.getElementById('leaveAdminMessage').value = message;
-                document.getElementById('statusForm').submit();
 
-                updateStatusBadge(leaveId, newStatus);
-            }
+                // ripple
+                const ripple = document.createElement("span");
+                ripple.className = "ripple";
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
 
-            function updateStatusBadge(leaveId, newStatus) {
-                const badge = document.querySelector(`[data-leave-id="${leaveId}"] .status-badge`);
-                const icon = document.querySelector(`[data-leave-id="${leaveId}"] .status-icon`);
+                ripple.style.cssText = `
+        width:${size}px;
+        height:${size}px;
+        left:${rect.width / 2 - size / 2}px;
+        top:${rect.height / 2 - size / 2}px;
+    `;
 
-                const statusMap = {
-                    Rejected: {cls: 'status-rejected', iconCls: 'status-home-rejected', label: 'Rejected'},
-                    Approved: {cls: 'status-approved', iconCls: 'status-home-approved', label: 'Approved'},
-                    Pending: {cls: 'status-pending', iconCls: 'status-home-pending', label: 'Pending'},
-                };
+                btn.classList.add("loading");
+                btn.appendChild(ripple);
+                ripple.addEventListener("animationend", () => ripple.remove());
 
-                const entry = statusMap[newStatus];
-                if (!entry)
-                    return;
+                setTimeout(() => {
+                    btn.classList.remove("loading");
+                    btn.classList.add("done");
 
-                if (badge) {
-                    badge.classList.remove('status-rejected', 'status-approved', 'status-pending');
-                    badge.classList.add(entry.cls);
-                    badge.textContent = entry.label;
-                }
+                    btn.querySelector(".btn-label").innerHTML = `
+            Submitted!
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 20 20"
+                 fill="currentColor"
+                 width="16"
+                 height="16"
+                 style="vertical-align:-3px;margin-right:6px;">
+                <path fill-rule="evenodd"
+                      d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
+                      clip-rule="evenodd" />
+            </svg>`;
 
-                if (icon) {
-                    icon.classList.remove('status-home-rejected', 'status-home-approved', 'status-home-pending');
-                    icon.classList.add(entry.iconCls);
-                }
+                    setTimeout(() => {
+                        document.body.classList.add("fade-out");
+
+                        setTimeout(() => {
+                            form.submit(); // <- submit your actual form
+                        }, 400);
+
+                    }, 600);
+
+                }, 800);
             }
         </script>
         <script>
