@@ -44,7 +44,7 @@ public class NewLeaveServlet extends HttpServlet {
 
             conn = DBConnection.connect();
 
-            String sql = "INSERT INTO holidays(user_id, start_date, end_date, type, motif, status) values (?,?,?,?,?, 'pending')";
+            String sql = "INSERT INTO holidays(user_id, start_date, end_date, type, motif, status) values (?,?,?,?,?, 'Pending')";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userId);
             stmt.setString(2, start_date);

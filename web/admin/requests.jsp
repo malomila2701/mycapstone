@@ -48,12 +48,35 @@
         <!-- Pop-up détails de chaque requête -->
         <div id="leaveModal" class="modal">
             <div class="modal-content">
-                <!--Bouton close-->
-                <button class="modal-close-btn" onclick="closeModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                    </svg>
-                </button>
+                <div style="
+                     display:flex;
+                     justify-content:space-between;
+                     align-items:center;
+                     border-bottom:1px solid #ccc;
+                     ">
+                    <div>
+                        <h2 style="
+                            margin:0;
+                            font-size:18px;
+                            font-weight:600;
+                            color:#1E293B;
+                            ">
+                            Request Details
+                        </h2>
+                        <span style="
+                              font-size:13px;
+                              color:#64748B;
+                              " id="modalreqID">
+                            REQ-2026-00
+                        </span>
+                    </div>
+                    <!--Boutton close-->
+                    <button class="modal-close-btn" onclick="closeModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                        </svg>
+                    </button>
+                </div>
                 <!--Section de details (Nom, email) (Période de congés) (Boutons)-->
                 <main class="details-section">
                     <div style="
@@ -411,7 +434,7 @@
                                             <%= h.getFullName()%>
                                         </span>
                                         <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
-                                            <%=h.getType()%> &bull; <%= dayLabel %>
+                                            <%=h.getType()%> &bull; <%= dayLabel%>
                                         </span>
                                     </div>
                                 </div>
@@ -712,6 +735,22 @@
 
             document.getElementById('statusFilter').addEventListener('change', applyFilters);
             document.getElementById('dateFilter').addEventListener('change', applyFilters);
+
+
+            /**Filter by cliking cards*/
+            document.getElementById('pending_card').addEventListener('click', () => {
+                document.getElementById('statusFilter').value = 'pending';
+                applyFilters();
+            });
+            document.getElementById('approved_card').addEventListener('click', () => {
+                document.getElementById('statusFilter').value = 'approved';
+                applyFilters();
+            });
+            document.getElementById('rejected_card').addEventListener('click', () => {
+                document.getElementById('statusFilter').value = 'approved';
+                applyFilters();
+            });
+
         </script>
         <script>
             // Open modal for each user button
@@ -734,6 +773,7 @@
                     }
 
                     // Fill modal
+                    document.getElementById('modalreqID').textContent = "REQ-2026-00" + btn.dataset.holidayid || "Unknown";
                     document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
                     document.getElementById('modalUserEmail').textContent = btn.dataset.useremail || "Unknown";
                     document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
@@ -754,7 +794,7 @@
                     const contextPath = '${pageContext.request.contextPath}';
                     const modalAvatar = document.getElementById('modalAvatar');
                     modalAvatar.src = '';  // ← refresh
-                    modalAvatar.src = contextPath + '/AvatarServlet?userId=' + userId;
+                    modalAvatar.src = contextPath + '/AvatarServlet?userId=' + currentUserId;
 
                     // Show modal
                     openModal();

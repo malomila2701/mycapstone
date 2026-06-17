@@ -60,7 +60,8 @@
 }
 /**actual modal*/
 .modal-content {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     grid-template-columns: 300px 1fr 400px;
     align-content: start;
@@ -74,7 +75,10 @@
     opacity: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
-
+#modalreqID {
+    font-family: consolas, sans-serif;
+    margin-left: 5px;
+}
 .details-section {
     max-width: 350px;
     align-content:center;
@@ -202,7 +206,7 @@ html, body {
 }
 
 body {
-    width: calc(100% - 35px);
+    width: calc(100% - 45px);
     background: #F1F5F9;
     padding: 25px;
 
@@ -251,14 +255,20 @@ body {
     box-shadow:
         0 0 0 1px #eef,
         0 0 0 4px #fcd34d;
+    
+    cursor: pointer;
 }
 #approved_card {
     background: #e6f7ee;
     border: 1px solid #d0fae5;
+    
+    cursor: pointer;
 }
 #rejected_card {
     background: #fdecea;
     border: 1px solid #ffe4e6;
+    
+    cursor: pointer;
 }
 .card_change {
     position: absolute;

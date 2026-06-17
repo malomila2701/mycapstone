@@ -316,7 +316,18 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" id="submitBtn" disabled class="btn-disabled">Create Event</button>
+                                    <button type="submit" id="submitBtn" disabled class="btn-disabled">
+                                        <span class="btn-label">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="vertical-align:-3px; margin-right:6px;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                                            </svg>
+                                            Create Event
+                                        </span>
+                                        <span class="btn-spinner">
+                                            <span class="dot-pulse"><span></span><span></span><span></span></span>
+                                            Creating…
+                                        </span>
+                                    </button>
                                     <button type="reset" id="clearForm" class="icon-btn-form">
                                         <span class="icon-home">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0078d7" class="size-6">
@@ -338,6 +349,7 @@
                     const textarea = document.getElementById("eventDescription");
                     const submitBtn = document.getElementById("submitBtn");
 
+                    // your existing textarea listener stays untouched
                     textarea.addEventListener("input", () => {
                         if (textarea.value.trim().length > 0) {
                             submitBtn.disabled = false;
@@ -348,6 +360,51 @@
                             submitBtn.classList.remove("btn-enabled");
                             submitBtn.classList.add("btn-disabled");
                         }
+                    });
+
+// add this: attach animation on the form submit
+                    document.querySelector("form").addEventListener("submit", function (e) {
+                        e.preventDefault();
+
+                        const btn = document.getElementById("submitBtn");
+
+                        // ripple from center
+                        const ripple = document.createElement("span");
+                        ripple.className = "ripple";
+                        const rect = btn.getBoundingClientRect();
+                        const size = Math.max(rect.width, rect.height);
+                        ripple.style.cssText = `width:${size}px;height:${size}px;left:${rect.width/2 - size/2}px;top:${rect.height/2 - size/2}px`;
+                        btn.appendChild(ripple);
+                        ripple.addEventListener("animationend", () => ripple.remove());
+
+                        btn.classList.add("loading");
+                        btn.disabled = true;
+
+                        // replace with your actual fetch/submit logic
+                        NewLeaveServlet().then(() => {
+                            btn.classList.remove("loading");
+                            btn.classList.add("done");
+                            btn.querySelector(".btn-label").innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16" style="vertical-align:-3px;margin-right:6px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-11.25" />
+            </svg>
+            Event created!`;
+
+                            setTimeout(() => {
+                                btn.classList.remove("done", "btn-enabled");
+                                btn.classList.add("btn-disabled");
+                                btn.querySelector(".btn-label").innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16" style="vertical-align:-3px;margin-right:6px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                </svg>
+                Create Event`;
+                                btn.disabled = true;
+                            }, 2500);
+                        }).catch(() => {
+                            btn.classList.remove("loading");
+                            btn.classList.add("btn-enabled");
+                            btn.disabled = false;
+                        });
                     });
         </script>
     </body>

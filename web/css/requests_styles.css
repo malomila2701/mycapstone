@@ -610,11 +610,12 @@ textarea:focus {
     -webkit-appearance: none;
     border:none;
 }
-#submitBtn{
+#submitBtn {
     position: relative;
     padding: 10px;
     width: 175px;
     border-radius: 6px;
+    overflow: hidden;        /* needed for ripple */
 }
 .btn-disabled {
     background-color: #ccc;
@@ -622,7 +623,6 @@ textarea:focus {
     cursor: not-allowed;
     border: 1px solid #999;
 }
-/* Active style */
 .btn-enabled {
     background-color: #0078d7;
     color: white;
@@ -630,6 +630,55 @@ textarea:focus {
     border: none;
     transition: transform 0.3s ease;
 }
+
+/* label/spinner swap */
+.btn-label { transition: opacity 0.2s; }
+#submitBtn.loading .btn-label { opacity: 0; }
+
+.btn-spinner {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    font-size: 13px;
+    top: 50%;
+    margin-top: -10px;
+}
+#submitBtn.loading .btn-spinner { opacity: 1; }
+
+/* dot pulse */
+.dot-pulse { display: flex; gap: 4px; align-items: center; }
+.dot-pulse span {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    animation: dotPulse 1.2s infinite ease-in-out;
+}
+.dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+.dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40%           { transform: scale(1);   opacity: 1;   }
+}
+
+/* ripple */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transform: scale(0);
+    animation: rippleOut 0.55s linear;
+    pointer-events: none;
+}
+@keyframes rippleOut { to { transform: scale(4); opacity: 0; } }
+
+/* done state */
+#submitBtn.done { background-color: #107c10; border: none; pointer-events: none; }
 
 .btn-enabled:hover {
     transform: scale(1.1);

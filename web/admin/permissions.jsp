@@ -46,12 +46,35 @@
         <!-- Leave type modal -->
         <div id="leaveModal" class="modal">
             <div class="modal-content">
-                <!--Bouton close-->
-                <button class="modal-close-btn" onclick="closeModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                    </svg>
-                </button>
+                <div style="
+                     display:flex;
+                     justify-content:space-between;
+                     align-items:center;
+                     border-bottom:1px solid #ccc;
+                     ">
+                    <div>
+                        <h2 style="
+                            margin:0;
+                            font-size:18px;
+                            font-weight:600;
+                            color:#1E293B;
+                            ">
+                            Request Details
+                        </h2>
+                        <span style="
+                              font-size:13px;
+                              color:#64748B;
+                              " id="modalreqID">
+                            REQ-2026-00
+                        </span>
+                    </div>
+                    <!--Boutton close-->
+                    <button class="modal-close-btn" onclick="closeModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                        </svg>
+                    </button>
+                </div>
                 <!--Section de details (Nom, email) (Période de congés) (Boutons)-->
                 <main class="details-section">
                     <div style="
@@ -61,7 +84,7 @@
                          border-radius: 20px;
                          ">
                         <span style="display:flex; flex-direction:row;">
-                            <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%=userId%>"
+                            <img id="modalAvatar" src=""
                                  style="width:40px; height:40px; border-radius:50%; background: #eef; margin-left: 15px;" title="" alt="" />
 
                             <span style="display: flex; flex-direction: column;">
@@ -85,7 +108,7 @@
                          margin-top: 10px;
                          ">
                         <form action="FirstServlet" method="post">
-                            <label style="margin-left: 10px; padding-bottom: 5px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;">
+                            <label style="margin-left: 10px; padding-bottom: 15px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;">
                                 Permission Period
                             </label>
 
@@ -98,15 +121,6 @@
                                         </svg>
                                     </span>
                                     <label id="modalStartDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
-                                </div>
-                                &rarr;
-                                <div style="display:flex; align-items:center; gap:4px;">
-                                    <span class="icon-btn-modal icon-home-modal">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
-                                        <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                                        </svg>
-                                    </span>
-                                    <label id="modalEndDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
                                 </div>
                             </div>
 
@@ -731,6 +745,20 @@
 
             document.getElementById('statusFilter').addEventListener('change', applyFilters);
             document.getElementById('dateFilter').addEventListener('change', applyFilters);
+
+            /**Filter by cliking cards*/
+            document.getElementById('pending_card').addEventListener('click', () => {
+                document.getElementById('statusFilter').value = 'pending';
+                applyFilters();
+            });
+            document.getElementById('approved_card').addEventListener('click', () => {
+                document.getElementById('statusFilter').value = 'approved';
+                applyFilters();
+            });
+            document.getElementById('rejected_card').addEventListener('click', () => {
+                document.getElementById('statusFilter').value = 'approved';
+                applyFilters();
+            });
         </script>
         <script>
             let selectedEventId = null;
@@ -763,14 +791,20 @@
                     }
 
                     // Fill modal
+                    document.getElementById('modalreqID').textContent = "REQ-2026-00" + btn.dataset.holidayid || "Unknown";
                     document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
                     document.getElementById('modalUserEmail').textContent = btn.dataset.useremail || "Unknown";
                     document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
                     document.getElementById('modalResponseMessage').textContent = btn.dataset.responsemessage || "N/A";
                     document.getElementById('modalStartDate').textContent = btn.dataset.startdate || "";
-                    document.getElementById('modalEndDate').textContent = btn.dataset.enddate || "";
-                    document.getElementById('modalStartTime').textContent =  '—';
-                    document.getElementById('modalEndTime').textContent =  '—';
+                    document.getElementById('modalStartTime').textContent = btn.dataset.starttime || '—';
+                    document.getElementById('modalEndTime').textContent = btn.dataset.endtime || '—';
+
+                    //Récupère l'avatar du selected user
+                    const contextPath = '${pageContext.request.contextPath}';
+                    const modalAvatar = document.getElementById('modalAvatar');
+                    modalAvatar.src = '';  // ← refresh
+                    modalAvatar.src = contextPath + '/AvatarServlet?userId=' + currentUserId;
 
                     // Show modal
                     openModal();

@@ -37,7 +37,7 @@
     opacity: 1;
 }
 .modal.visible .modal-content {
-    transform: translateX(-75%) scale(1);
+    transform: scale(1);
     opacity: 1;
 }
 .modal-close-btn {
@@ -60,21 +60,25 @@
 }
 /**actual modal*/
 .modal-content {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     grid-template-columns: 300px 1fr 400px;
     align-content: start;
     position: relative;
-    left: 50%;
-    transform: translateX(-50%) scale(0.85);
-    width: 400px;
+    width: 350px;
     background: white;
     padding: 25px;
     border-radius: 8px;
+    
+    transform: scale(0.85);
     opacity: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
-
+#modalreqID {
+    font-family: consolas, sans-serif;
+    margin-left: 5px;
+}
 .details-section {
     max-width: 310px;
     align-content:center;
@@ -239,36 +243,32 @@ body {
     color: #333;
 }
 #total_card {
-    background: linear-gradient(
-        145deg,
-        #ffffff 0%,
-        #f8f9fa 45%,
-        #eef2f5 100%
-        );
+    background: white;
     border: 1px solid #dbeafe;
 }
 #total_card .card_change {
     border: 1px solid #ccc
 }
 #pending_card {
-    background: linear-gradient(
-        145deg,
-        #fffdf2 0%,
-        #fffbeb 45%,
-        #fef8dd 100%
-        );
+    background: #fffbeb;
     border: 1px solid #eef;
     box-shadow:
         0 0 0 1px #eef,
         0 0 0 4px #fcd34d;
+    
+    cursor: pointer;
 }
 #approved_card {
     background: #e6f7ee;
     border: 1px solid #d0fae5;
+    
+    cursor: pointer;
 }
 #rejected_card {
     background: #fdecea;
     border: 1px solid #ffe4e6;
+    
+    cursor: pointer;
 }
 .card_change {
     position: absolute;
@@ -448,6 +448,9 @@ body {
     color: #444;
     white-space:nowrap;
 }
+#dateHeader:hover {
+    color: #766DF4;
+}
 .reqtable thead th:hover {
     color: #444;
 }
@@ -551,18 +554,6 @@ body {
     align-items: center;
     width: 18px;
     height: 18px;
-}
-.status-home-rejected {
-    background: #721c24;
-    width: 18px;
-    height: 18px;
-    border-radius: 24px;
-}
-.status-home-approved{
-    background:#155724;
-    width: 18px;
-    height: 18px;
-    border-radius: 24px;
 }
 
 
