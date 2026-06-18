@@ -88,13 +88,14 @@ public class NewLeaveServlet extends HttpServlet {
                         // Leave Period
                         + "<div style='background:#fff;padding:10px 15px;border:1px solid #ccc;border-radius:20px;margin-bottom:12px;'>"
                         + "<div style='font-size:11px;font-weight:600;text-transform:uppercase;color:lightslategray;margin-bottom:8px;'>Leave Period</div>"
-                        + "<div style='display:flex;align-items:center;justify-content:space-between;'>"
+                        + "<div style='display:flex;flex-direction:row;align-items:center;justify-content:space-between;'>"
                         + "<span style='font-size:13px;color:#333;'>&#128197; " + start_date + "</span>"
                         + "<span style='color:#888;'>&rarr;</span>"
                         + "<span style='font-size:13px;color:#333;'>&#128197; " + end_date + "</span>"
-                        + "</div></div>"
+                        + "</div>"
+                        + "</div>"
                         // Leave Type & Status
-                        + "<div style='display:flex;gap:12px;margin-bottom:12px;'>"
+                        + "<div style='display:flex; flex-direction:row;width:100%;gap:12px;margin-bottom:12px;'>"
                         + "<div style='flex:1;padding:10px 15px;border:1px solid #E2E8F0;border-radius:16px;'>"
                         + "<div style='font-size:11px;font-weight:600;text-transform:uppercase;color:lightslategray;margin-bottom:6px;'>Leave Type</div>"
                         + "<span style='padding:4px 12px;border:1px solid #E2E8F0;border-radius:9999px;font-size:13px;font-weight:600;color:#333;'>" + type + "</span>"
@@ -118,6 +119,7 @@ public class NewLeaveServlet extends HttpServlet {
 
                 EmailService.sendEmail(hrEmail, subject, htmlBody);
                 EmailService.sendEmail(managerEmail, subject, htmlBody);
+                
             } else {
                 request.setAttribute("responseMessage", "Registration failed.");
                 request.setAttribute("responseStatus", "error");

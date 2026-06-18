@@ -19,7 +19,7 @@ public class EmailService {
     private static final String HOST = "smtp.gmail.com";
     private static final String PORT = "587";
     private static final String FROM = "jeansamu001@gmail.com"; // your system mailbox
-    private static final String PASSWORD = " ";
+    private static final String PASSWORD = "yvlf nkui xheo qjvk";
 
     private static final Logger logger = LogManager.getLogger(EmailService.class.getName());
 
