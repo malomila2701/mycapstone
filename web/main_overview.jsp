@@ -304,14 +304,10 @@
                                                             </div>
                                                         </div>
                                                         <!--BUTTON FOR PENDING TABLE / CANCEL -->
-                                                        <button class="icon-btn-td"
+                                                        <button class="icon-btn-td deleteRequestBtn"
                                                                 data-userid="<%= h.getUserId()%>" 
                                                                 data-holiday-id="<%= h.getHolidayId()%>" 
-                                                                data-username="<%= h.getName()%>"
-                                                                data-startdate="<%= h.getStartDate()%>"
-                                                                data-enddate="<%= h.getEndDate()%>"
-                                                                data-motif="<%= h.getMotif()%>"
-                                                                data-status="<%= h.getStatus()%>"
+                                                                data-type="holiday"
 
                                                                 style="background:none; border:none; cursor:pointer;">
                                                             <span class="icon-home">
@@ -412,18 +408,11 @@
                                                             </div>
                                                         </div>
                                                         <!--BUTTON FOR PENDING TABLE /PERMISSION CANCEL-->
-                                                        <button class="icon-btn-td"
+                                                        <button class="icon-btn-td deleteRequestBtn" 
 
                                                                 data-userid="<%= p.getUserId()%>" 
-                                                                data-title="Permission"
-                                                                data-holiday-id="<%= p.getPermissionId()%>" 
-                                                                data-username="<%= p.getFullName()%>"
-                                                                data-startdate="<%= p.getStartDate()%>"
-                                                                data-enddate="<%= p.getEndDate()%>"
-                                                                data-starttime="<%= p.getStartTime()%>"
-                                                                data-endtime="<%= p.getEndTime()%>"
-                                                                data-motif="<%= p.getMotif()%>"
-                                                                data-status="<%= p.getStatus()%>"
+                                                                data-id="<%= p.getPermissionId()%>"
+                                                                data-type="permission"
 
                                                                 style="background:none; border:none; cursor:pointer;">
                                                             <span class="icon-home">
@@ -503,6 +492,12 @@
                                 // --- Sort by startDate descending (newest first) ---
                                 combined.sort(( a,
                                           
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
                                       
                                       
                                       
@@ -798,7 +793,6 @@
             let end;
             const currentUserId = <%= session.getAttribute("user_id")%>;
             const loader = document.getElementById("loader");
-
             document.addEventListener('DOMContentLoaded', function () {
                 var calendarEl = document.getElementById('calendar');
                 calendar = new FullCalendar.Calendar(calendarEl, {
@@ -962,7 +956,6 @@
                 dropdown.querySelector(".title").textContent = data.title;
                 dropdown.querySelector(".dd-label").textContent = 'Reason: ' + data.motif;
             });
-
             document.addEventListener("click", function (e) {
                 if (!e.target.closest(".icon-btn-td") && !e.target.closest(".dd")) {
                     document.querySelectorAll(".dd").forEach(d => {
@@ -972,16 +965,33 @@
             });
         </script>
         <script>
+            document.addEventListener("click", function (e) {
+                const btn = e.target.closest(".deleteRequestBtn");
+                if (!btn)
+                    return;
+                const id = btn.dataset.holidayId;
+                const type = btn.dataset.type;
+                if (confirm("Delete this record?")) {
+                    document.body.classList.add("fade-out");
+
+                    setTimeout(() => {
+                        window.location.href =
+                                "DeletePendingRequest?id=" + encodeURIComponent(id) +
+                                "&type=" + encodeURIComponent(type);
+                    }, 500); // 500ms
+                }
+            });
+
+        </script>
+        <script>
             function toggleHRTooltip(btn, message) {
                 const tooltip = btn.querySelector('.hr-tooltip');
                 const msgDiv = btn.querySelector('.hr-message');
-
                 // Close any other open tooltips
-                document.querySelectorAll('.hr-tooltip').forEach(t => {
+                document.querySelectorAll('.hr-toolt ip').forEach(t => {
                     if (t !== tooltip)
                         t.style.display = 'none';
                 });
-
                 if (tooltip.style.display === 'none') {
                     msgDiv.textContent = message && message.trim() !== '' ? message : 'No message provided.';
                     tooltip.style.display = 'block';

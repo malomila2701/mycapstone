@@ -89,7 +89,7 @@ public class userdataDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con2 = DBConnection.connect();
-            PreparedStatement ps2 = con2.prepareStatement("SELECT *, users.fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? AND status='pending' ORDER BY end_date DESC LIMIT 3");
+            PreparedStatement ps2 = con2.prepareStatement("SELECT *, users.fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? AND status='pending' ORDER BY end_date");
 
             ps2.setInt(1, userId);
             ResultSet rs2 = ps2.executeQuery();
@@ -118,7 +118,7 @@ public class userdataDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con2 = DBConnection.connect();
-            PreparedStatement ps2 = con2.prepareStatement("SELECT *, users.fullname AS fullname, users.email AS email FROM permissions INNER JOIN users ON permissions.user_id = users.user_id WHERE users.user_id= ? AND status='pending' ORDER BY end_date DESC LIMIT 3");
+            PreparedStatement ps2 = con2.prepareStatement("SELECT *, users.fullname AS fullname, users.email AS email FROM permissions INNER JOIN users ON permissions.user_id = users.user_id WHERE users.user_id= ? AND status='pending' ORDER BY end_date");
 
             ps2.setInt(1, userId);
             ResultSet rs2 = ps2.executeQuery();
