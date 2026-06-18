@@ -43,12 +43,12 @@ public class UpdateLeaveStatusServlet extends HttpServlet {
             ps.executeUpdate();
 
             // 2. Insertion dans notifications
-            String sqlNotif = "INSERT INTO notifications (user_id, holiday_id, message, created_at) VALUES (?,?,?, ?, NOW())";
+            String sqlNotif = "INSERT INTO notifications (user_id, holiday_id, message, created_at) VALUES (?,?,?, NOW())";
             java.sql.PreparedStatement psNotif = conn.prepareStatement(sqlNotif);
             psNotif.setInt(1, userId);
             psNotif.setInt(2, id);
-            psNotif.setNull(3, java.sql.Types.INTEGER);
-            psNotif.setString(4, "Permission #" + id + " has been : " + status + "!");
+            //psNotif.setNull(3, java.sql.Types.INTEGER);
+            psNotif.setString(3, "Permission #" + id + " has been : " + status + "!");
             psNotif.executeUpdate();
 
             // 3. Fetch employee info for email
@@ -73,7 +73,6 @@ public class UpdateLeaveStatusServlet extends HttpServlet {
 
                 String subject;
                 String htmlBody;
-                
 
                 if (status.equalsIgnoreCase("Approved")) {
                     subject = "Your leave request has been approved – " + reqId;
@@ -111,6 +110,7 @@ public class UpdateLeaveStatusServlet extends HttpServlet {
                 + "<div style='font-size:12px;color:#64748B;'>" + reqId + "</div></div>"
                 + "<div style='background:#dcfce7;border-radius:50%;width:30px;height:30px;text-align:center;line-height:30px;font-size:16px;'>&#10003;</div>"
                 + "</div>"
+                //Employee
                 + "<div style='background:#f0fdf4;padding:10px;border:1px solid #bbf7d0;border-radius:14px;margin-bottom:10px;display:flex;align-items:center;'>"
                 + "<div style='width:36px;height:36px;border-radius:50%;background:#16a34a;color:#fff;font-weight:bold;font-size:13px;text-align:center;line-height:36px;margin-right:10px;'>" + initials + "</div>"
                 + "<div><div style='font-size:13px;font-weight:600;color:#1E293B;'>" + employeeName + "</div>"
@@ -145,15 +145,22 @@ public class UpdateLeaveStatusServlet extends HttpServlet {
             String leaveType, String reason, String adminMessage) {
         return "<!DOCTYPE html><html><body style='margin:0;padding:20px;background:#fff5f5;font-family:Arial,sans-serif;'>"
                 + "<div style='max-width:420px;margin:auto;background:#fff;border-radius:16px;padding:24px;border:1px solid #fecaca;'>"
-                + "<div style='border-bottom:0.5px solid #fecaca;padding-bottom:10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;'>"
-                + "<div><div style='font-size:15px;font-weight:600;color:#1E293B;'>Request Details</div>"
-                + "<div style='font-size:12px;color:#64748B;'>" + reqId + "</div></div>"
-                + "<div style='background:#fee2e2;border-radius:50%;width:30px;height:30px;text-align:center;line-height:30px;font-size:16px;color:#dc2626;'>&#10005;</div>"
+                + "<div style='border-bottom:0.5px solid #fecaca;padding-bottom:10px;margin-bottom:14px;'>"
+                + "<div style='font-size:15px;font-weight:600;color:#7f1d1d;'>Request Details</div>"
+                + "<div style='font-size:12px;color:#991b1b;'>" + reqId + "</div>"
                 + "</div>"
-                + "<div style='background:#fff5f5;padding:10px;border:1px solid #fecaca;border-radius:14px;margin-bottom:10px;display:flex;align-items:center;'>"
-                + "<div style='width:36px;height:36px;border-radius:50%;background:#dc2626;color:#fff;font-weight:bold;font-size:13px;text-align:center;line-height:36px;margin-right:10px;'>" + initials + "</div>"
-                + "<div><div style='font-size:13px;font-weight:600;color:#1E293B;'>" + employeeName + "</div>"
-                + "<div style='font-size:11px;color:#64748B;'>&#9993; " + employeeEmail + "</div></div></div>"
+                //Employee section
+                + "<div style='background:#fef2f2;padding:10px;border:1px solid #fecaca;border-radius:20px;margin-bottom:12px;'>"
+                + "<div style='display:flex;align-items:center;'>"
+                + "<div style='width:40px;height:40px;border-radius:50%;background:#dc2626;color:#fff;font-weight:bold;font-size:15px;text-align:center;line-height:40px;margin-right:10px;'>"
+                + initials
+                + "</div>"
+                + "<div>"
+                + "<div style='font-weight:600;font-size:14px;color:#7f1d1d;'>" + employeeName + "</div>"
+                + "<div style='font-size:12px;color:#991b1b;margin-top:2px;'>&#9993; " + employeeEmail + "</div>"
+                + "</div>"
+                + "</div>"
+                + "</div>"
                 + "<div style='padding:10px 14px;border:1px solid #fecaca;border-radius:14px;margin-bottom:10px;'>"
                 + "<div style='font-size:10px;font-weight:600;text-transform:uppercase;color:lightslategray;margin-bottom:6px;'>Leave period</div>"
                 + "<div style='display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#333;'>"
