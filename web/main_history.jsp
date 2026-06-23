@@ -86,88 +86,340 @@
         <!-- Leave type modal -->
         <div id="leaveModal" class="modal">
             <div class="modal-content">
-                <button class="modal-close-btn" onclick="document.getElementById('leaveModal').style.display = 'none'">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                    </svg>
-                </button>
-                <div class="details-section">
-                    <span style="display:flex; flex-direction:row;">
-                        <img src="<%= selectedAvatar%>" alt="User Avatar" class="avatar" style="margin-left: 15px;"/>
-                        <span style="display: flex; flex-direction: column;">
-                            <label class="modallabel-name" id="modalUsername">Unknown</label>
-                            <label class="modallabel-id" id="modalId"> ID: #</label>
+                <div style="
+                     position: sticky;
+                     display:flex;
+                     justify-content:space-between;
+                     align-items:center;
+                     border-bottom:1px solid #ccc;
+                     ">
+                    <div>
+                        <h2 style="
+                            margin:0;
+                            font-size:18px;
+                            font-weight:600;
+                            color:#1E293B;
+                            ">
+                            Request Details
+                        </h2>
+                        <span style="
+                              font-size:13px;
+                              color:#64748B;
+                              " id="modalreqID">
+                            REQ-2026-00
                         </span>
-                    </span>
-
-                    <form action="FirstServlet" method="post">
-                        <div class="form-group-holiday" style="display:none;">
-                            <div class="form-group">
-                                <label for="modalStartDate"> Start Date:</label> 
-                                <div class="input-wrapper">
-                                    <span class="icon-form"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                        <path d="M10 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H10ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V12ZM11.25 10.005c0-.417.338-.755.755-.755h2a.755.755 0 1 1 0 1.51h-2a.755.755 0 0 1-.755-.755ZM6.005 11.25a.755.755 0 1 0 0 1.51h4a.755.755 0 1 0 0-1.51h-4Z" />
-                                        <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" id="modalStartDate" readonly />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modalEndDate"> End Date:</label> 
-                                <div class="input-wrapper">
-                                    <span class="icon-form"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                        <path d="M10 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H10ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V12ZM11.25 10.005c0-.417.338-.755.755-.755h2a.755.755 0 1 1 0 1.51h-2a.755.755 0 0 1-.755-.755ZM6.005 11.25a.755.755 0 1 0 0 1.51h4a.755.755 0 1 0 0-1.51h-4Z" />
-                                        <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" id="modalEndDate" readonly />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modalMotif"> Reason</label> 
-                                <textarea id="modalMotif" readonly></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-group-permission" style="display:none;">
-                            <div class="form-group">
-                                <label for="modalStartTime"> Start Time:</label> 
-                                <div class="input-wrapper">
-                                    <span class="icon-form"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                        <path d="M10 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H10ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V12ZM11.25 10.005c0-.417.338-.755.755-.755h2a.755.755 0 1 1 0 1.51h-2a.755.755 0 0 1-.755-.755ZM6.005 11.25a.755.755 0 1 0 0 1.51h4a.755.755 0 1 0 0-1.51h-4Z" />
-                                        <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" id="modalStartTime" readonly />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modalEndTime"> End Time:</label> 
-                                <div class="input-wrapper">
-                                    <span class="icon-form"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                        <path d="M10 9.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V10a.75.75 0 0 0-.75-.75H10ZM6 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H6ZM8 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H8ZM9.25 14a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H10a.75.75 0 0 1-.75-.75V14ZM12 11.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V12a.75.75 0 0 0-.75-.75H12ZM12 13.25a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 0 0 .75-.75V14a.75.75 0 0 0-.75-.75H12ZM13.25 12a.75.75 0 0 1 .75-.75h.01a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75H14a.75.75 0 0 1-.75-.75V12ZM11.25 10.005c0-.417.338-.755.755-.755h2a.755.755 0 1 1 0 1.51h-2a.755.755 0 0 1-.755-.755ZM6.005 11.25a.755.755 0 1 0 0 1.51h4a.755.755 0 1 0 0-1.51h-4Z" />
-                                        <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" id="modalEndTime" readonly />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modalMotif"> Reason</label> 
-                                <textarea id="modalMotifPermission" readonly></textarea>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div class="modal-actions" id="actionsDiv"></div>
-                </div>
-
-                <aside class="modal-side-section">
-                    <div id="calendar">
                     </div>
-                </aside>
+                    <!--Boutton close-->
+                    <button class="modal-close-btn" onclick="closeModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                        </svg>
+                    </button>
+                </div>
+                <!--Section de details (Nom, email) (Période de congés) (Boutons)-->
+                <main class="details-section">
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 10px;
+                         border: 1px solid #E2E8F0;
+                         border-radius: 20px;
+                         ">
+                        <span style="display:flex; flex-direction:row;">
+                            <img id="modalAvatar" src=""
+                                 style="width:40px; height:40px; border-radius:50%; background: #eef; margin-left: 15px;" title="" alt="" />
 
+                            <span style="display: flex; flex-direction: column;">
+                                <label class="modallabel-name" id="modalUsername">Unknown</label>
+                                <span style="display: flex; flex-direction: row; text-align: center; align-items:center;">
+                                    <span class="icon-btn-modal icon-home-modal" style="margin-left: 15px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                        </svg>
+                                    </span>
+                                    <label class="modallabel-email" id="modalUserEmail"></label>
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                    <div style="
+                         background: white;
+                         padding: 10px;
+                         border: 1px solid #ccc;
+                         border-radius: 20px;
+                         margin-top: 10px;
+                         ">
+                        <form action="FirstServlet" method="post">
+                            <label style="margin-left: 10px; padding-bottom: 5px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;">
+                                Leave Period
+                            </label>
+
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
+
+                                <div style="display:flex; align-items:center; margin-left: 5px; gap:4px; padding-bottom: 5px;">
+                                    <span class="icon-btn-modal icon-home-modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                        <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
+                                        </svg></span>
+                                    <label id="modalStartDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                </div>
+
+                                &rarr;
+
+                                <div style="display:flex; align-items:center; gap:4px;">
+                                    <span class="icon-btn-modal icon-home-modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                        <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
+                                        </svg></span>
+                                    <label id="modalEndDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label> 
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div style="display: flex; flex-direction: row; gap: 12px; margin-top: 10px;">
+
+                        <!-- Type de congé -->
+                        <div style="
+                             flex: 1;
+                             background: transparent;
+                             padding: 10px 15px;
+                             border: 1px solid #E2E8F0;
+                             border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Leave Type
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+                                <span class="icon-btn-modal icon-home-modal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0078d7" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" />
+                                    </svg>
+                                </span>
+                                <span id="modalLeaveType" style=" padding: 4px 12px; border: 1px solid #E2E8F0; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; color: #333;"></span>
+                            </div>
+                        </div>
+
+                        <!-- Statut -->
+                        <div style="flex: 1; background: #f3f6fa; padding: 10px 15px; border: 1px solid #E2E8F0; border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Status
+                            </label>
+                            <div id="modalStatusContainer" style="margin-top: 4px;"></div>
+                        </div>
+                    </div>
+
+                    <label style="margin-top: 20px; margin-left: 10px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;" for="modalMotif"> Reason/Motif </label> 
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 10px;
+                         border: 1px solid #ccc;
+                         border-radius: 20px;
+                         margin-top: 5px;">
+                        <textarea id="modalMotif" readonly></textarea>
+                    </div>
+
+                    <label style="
+                           margin-top: 20px;
+                           margin-left: 10px;
+                           font-size: 0.7rem;
+                           font-weight: 600;
+                           text-transform: uppercase;
+                           color: lightslategray;
+                           white-space: nowrap;" 
+                           for="modalMotif"> 
+                        HR Note: </label> 
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 5px;
+                         border: 1px solid #ddd;
+                         border-radius: 20px;
+                         margin-top: 5px;">
+                        <textarea id="modalResponseMessage" readonly></textarea>
+                    </div>
+                </main>
+                <aside class="modal-side-section">
+                    <div style="position: relative; min-height: 150px;">
+                        <div class="calendar-loader-wrapper">
+                            <div class="calendar-loader" id="calendar-loader-leave"></div>
+                        </div>
+                        <div id="calendarLeave"></div>
+                    </div>
+                </aside> 
+            </div>
+        </div>
+
+        <div id="permissionModal" class="modal">
+            <div class="modal-content">
+                <div style="
+                     position: sticky;
+                     display:flex;
+                     justify-content:space-between;
+                     align-items:center;
+                     border-bottom:1px solid #ccc;
+
+                     overflow: hidden;
+                     ">
+                    <div>
+                        <h2 style="
+                            margin:0;
+                            font-size:18px;
+                            font-weight:600;
+                            color:#1E293B;
+                            ">
+                            Request Details
+                        </h2>
+                        <span style="
+                              font-size:13px;
+                              color:#64748B;
+                              " id="modalreqID">
+                            REQ-2026-00
+                        </span>
+                    </div>
+                    <!--Boutton close-->
+                    <button class="modal-close-btn" onclick="closeModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                        </svg>
+                    </button>
+                </div>
+                <!--Section de details (Nom, email) (Période de congés) (Boutons)-->
+                <main class="details-section">
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 10px;
+                         border: 1px solid #E2E8F0;
+                         border-radius: 20px;
+                         ">
+                        <span style="display:flex; flex-direction:row;">
+                            <img id="modalAvatar" src=""
+                                 style="width:40px; height:40px; border-radius:50%; background: #eef; margin-left: 15px;" title="" alt="" />
+
+                            <span style="display: flex; flex-direction: column;">
+                                <label class="modallabel-name" id="modalUsername">Unknown</label>
+                                <span style="display: flex; flex-direction: row; text-align: center; align-items:center;">
+                                    <span class="icon-btn-modal icon-home-modal" style="margin-left: 15px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                        </svg>
+                                    </span>
+                                    <label class="modallabel-email" id="modalUserEmail"></label>
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                    <div style="
+                         background: white;
+                         padding: 10px;
+                         border: 1px solid #ccc;
+                         border-radius: 20px;
+                         margin-top: 10px;
+                         ">
+                        <form action="FirstServlet" method="post">
+                            <label style="margin-left: 10px; padding-bottom: 15px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;">
+                                Permission Period
+                            </label>
+
+                            <%-- Date row --%>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
+                                <div style="display:flex; align-items:center; margin-left: 5px; gap:4px; padding-bottom: 5px;">
+                                    <span class="icon-btn-modal icon-home-modal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                        <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                    <label id="modalStartDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                </div>
+                            </div>
+
+                            <%-- Time row --%>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center; margin-top: 4px;">
+                                <div style="display:flex; align-items:center; margin-left: 5px; gap:4px;">
+                                    <span class="icon-btn-modal icon-home-modal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                    <label id="modalStartTime" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                </div>
+                                &rarr;
+                                <div style="display:flex; align-items:center; gap:4px;">
+                                    <span class="icon-btn-modal icon-home-modal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                    <label id="modalEndTime" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div style="display: flex; flex-direction: row; gap: 12px; margin-top: 10px;">
+
+                        <!-- Type de congé -->
+                        <div style="
+                             flex: 1;
+                             background: transparent;
+                             padding: 10px 15px;
+                             border: 1px solid #E2E8F0;
+                             border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Leave Type
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+                                <span class="icon-btn-modal icon-home-modal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0078d7" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" />
+                                    </svg>
+                                </span>
+                                <span id="modalLeaveType" style=" padding: 4px 12px; border: 1px solid #E2E8F0; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; color: #333;"></span>
+                            </div>
+                        </div>
+
+                        <!-- Statut -->
+                        <div style="flex: 1; background: #f3f6fa; padding: 10px 15px; border: 1px solid #E2E8F0; border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Status
+                            </label>
+                            <div id="modalStatusContainer" style="margin-top: 4px;"></div>
+                        </div>
+                    </div>
+
+                    <label style="margin-top: 20px; margin-left: 10px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;" for="modalMotif"> Reason/Motif </label> 
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 10px;
+                         border: 1px solid #ccc;
+                         border-radius: 20px;
+                         margin-top: 5px;">
+                        <textarea id="modalMotif" readonly></textarea>
+                    </div>
+
+                    <label style="
+                           margin-top: 10px;
+                           margin-left: 10px;
+                           font-size: 0.7rem;
+                           font-weight: 600;
+                           text-transform: uppercase;
+                           color: lightslategray;
+                           white-space: nowrap;" 
+                           for="modalResponseMessage"> 
+                        HR Note: </label> 
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 10px;
+                         border: 1px solid #ddd;
+                         border-radius: 20px;
+                         margin-top: 5px;">
+                        <textarea id="modalResponseMessage" readonly></textarea>
+                    </div>
+                </main>
+                <aside class="modal-side-section">
+                    <div style="position: relative; min-height: 150px;">
+                        <div class="calendar-loader-wrapper">
+                            <div class="calendar-loader" id="calendar-loader-permission"></div>
+                        </div>
+                        <div id="calendarPermission"></div>
+                    </div>
+                </aside> 
             </div>
         </div>
 
@@ -333,7 +585,7 @@
                                         },
                                         y: {
                                             min: 0,
-                                            max: 5,
+                                            max: 4,
                                             ticks: {
                                                 stepSize: 1,
                                                 color: '#a0a8c0',
@@ -360,10 +612,12 @@
                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 256 256"><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0v94.37L90.73,98a8,8,0,0,1,10.07-.38l58.81,44.11L218.73,90a8,8,0,1,1,10.54,12l-64,56a8,8,0,0,1-10.07.38L96.39,114.29,40,163.63V200H224A8,8,0,0,1,232,208Z"></path></svg>
  
                          </span> -->
-                        <span class="card_change down icon-home">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#d93025" class="size-5">
-                            <path fill-rule="evenodd" d="M13.5 4.938a7 7 0 1 1-9.006 1.737c.202-.257.59-.218.793.039.278.352.594.672.943.954.332.269.786-.049.773-.476a5.977 5.977 0 0 1 .572-2.759 6.026 6.026 0 0 1 2.486-2.665c.247-.14.55-.016.677.238A6.967 6.967 0 0 0 13.5 4.938ZM14 12a4 4 0 0 1-4 4c-1.913 0-3.52-1.398-3.91-3.182-.093-.429.44-.643.814-.413a4.043 4.043 0 0 0 1.601.564c.303.038.531-.24.51-.544a5.975 5.975 0 0 1 1.315-4.192.447.447 0 0 1 .431-.16A4.001 4.001 0 0 1 14 12Z" clip-rule="evenodd" />
-                            </svg>
+                        <span class="card_change down">
+                            <span class="icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#d93025" class="size-5">
+                                <path fill-rule="evenodd" d="M13.5 4.938a7 7 0 1 1-9.006 1.737c.202-.257.59-.218.793.039.278.352.594.672.943.954.332.269.786-.049.773-.476a5.977 5.977 0 0 1 .572-2.759 6.026 6.026 0 0 1 2.486-2.665c.247-.14.55-.016.677.238A6.967 6.967 0 0 0 13.5 4.938ZM14 12a4 4 0 0 1-4 4c-1.913 0-3.52-1.398-3.91-3.182-.093-.429.44-.643.814-.413a4.043 4.043 0 0 0 1.601.564c.303.038.531-.24.51-.544a5.975 5.975 0 0 1 1.315-4.192.447.447 0 0 1 .431-.16A4.001 4.001 0 0 1 14 12Z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
                         </span>
                         <h2>April</h2>
                         <p>Hottest Month</p>
@@ -396,8 +650,8 @@
                         Latest Requests
                     </div>
                     <div class="header-right">
-                        <div class="search-box">
-                            <input type="text" placeholder="Search by Name or ID">
+                        <div class="search-box" id="search-box-banner">
+                            <input type="text" placeholder="Search by Reason/Motif" oninput="filterCards()">
                         </div>
                         <span style="display:flex; align-items: center; font-size: 0.8rem; margin-left: 10px; margin-right: 10px; white-space: nowrap;">Filter by: </span>
                         <select id="dateFilter" style="margin-right: 10px;">
@@ -443,7 +697,7 @@
 
                             // --- Sort by startDate descending (newest first) ---
                             combined.sort(( a,
-                                  
+                                      
                                 b) -> {
                                 Date dateA = (a instanceof UserLeave)
                                         ? ((UserLeave) a).getStartDate()
@@ -512,11 +766,8 @@
                                                 </svg>
                                             </span>
                                         </button>
-                                        <div style="display:flex; flex-direction:column;">
-                                            <span style="font-weight: 600; color: #444; white-space:nowrap;">
-                                                <%= h.getFullName()%>
-                                            </span>
-                                            <span style="font-size:0.8rem; color:lightslategray; white-space: nowrap;">
+                                        <div style="display:flex; justify-content: center; align-items:center;">
+                                            <span style="font-size:0.9rem; font-weight: normal; white-space: nowrap;">
                                                 Holiday &bull; <%= dayLabel%>
                                             </span>
                                         </div>
@@ -542,8 +793,7 @@
                             <td style="padding:10px; text-align:center; width:350px;">
 
                                 <span style="
-                                      font-weight: 600;
-                                      color: #444;
+                                      font-size:0.9rem;
                                       display:block;
                                       white-space: wrap;
                                       overflow:hidden;
@@ -581,7 +831,7 @@
                             <!-- ACTION -->
                             <td style="padding:10px; text-align:center; width:100px;">
 
-                                <button class="icon-btn-td"
+                                <button class="icon-btn-td holiday"
 
                                         data-userid="<%= h.getUserId()%>" 
                                         data-type="holidays"
@@ -591,7 +841,8 @@
                                         data-startdate="<%= h.getStartDate()%>"
                                         data-enddate="<%= h.getEndDate()%>"
                                         data-motif="<%= h.getMotif()%>"
-                                        data-status="<%= h.getStatus()%>">
+                                        data-status="<%= h.getStatus()%>"
+                                        data-responsemessage="<%=h.getResponseMessage()%>">
 
                                     <span class="icon-home">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -612,7 +863,7 @@
 
                             long diffMillis = p.getEndTime().getTime() - p.getStartTime().getTime();
                             long hours = diffMillis / (1000 * 60 * 60);
-                            String hourLabel = hours > 1 ? hours + " hrs" : hours + " hr";
+                            String hourLabel = hours > 1 ? hours + " hours" : hours + " hour";
 
                             String status = p.getStatus();
                             String cssClass = "";
@@ -645,11 +896,8 @@
                                                 </svg>
                                             </span>
                                         </button>
-                                        <div style="display:flex; flex-direction:column;">
-                                            <span style="font-weight: 600; color: #444; white-space:nowrap;">
-                                                <%= p.getFullName()%>
-                                            </span>
-                                            <span style="font-size:11px; color:lightslategray; white-space: nowrap;">
+                                        <div style="display:flex; justify-content: center; align-items:center;">
+                                            <span style="font-size:0.9rem; font-weight: normal; white-space: nowrap;">
                                                 Permission &bull; <%= hourLabel%>
                                             </span>
                                         </div>
@@ -673,8 +921,7 @@
                             <td style="padding:10px; text-align:center; width:350px;">
 
                                 <span style="
-                                      font-weight: 600;
-                                      color: #444;
+                                      font-size:0.9rem;
                                       display:block;
                                       white-space: wrap;
                                       overflow:hidden;
@@ -712,7 +959,7 @@
                             <!-- ACTION -->
                             <td style="padding:10px; text-align:center; width:100px;">
 
-                                <button class="icon-btn-td"
+                                <button class="icon-btn-td permission"
 
                                         data-userid="<%= p.getUserId()%>" 
                                         data-useremail="<%= p.getEmail()%>"
@@ -725,7 +972,8 @@
                                         data-starttime="<%= p.getStartTime()%>"
                                         data-endtime="<%= p.getEndTime()%>"
                                         data-motif="<%= p.getMotif()%>"
-                                        data-status="<%= p.getStatus()%>">
+                                        data-status="<%= p.getStatus()%>"
+                                        data-responsemessage="<%=p.getResponseMessage()%>">
 
                                     <span class="icon-home">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -741,7 +989,7 @@
                                     } // end for UserPermission
                                 }
                             } // end else
-%>
+                        %>
                     </tbody>
                 </table>
             </div>
@@ -768,10 +1016,180 @@
             });
         </script>
         <script>
-            window.addEventListener('click', (e) => {
-                const modal = document.getElementById('leaveModal');
-                if (e.target === modal)
-                    modal.style.display = 'none';
+            function filterCards() {
+                const q = document.querySelector('#search-box-banner input').value.toLowerCase().trim();
+                document.querySelectorAll('#latest_b tbody tr').forEach(row => {
+                    const btn = row.querySelector('.icon-btn-td');
+                    if (!btn)
+                        return;
+
+                    const id = (row.dataset.id || '').toLowerCase();
+                    const type = (row.dataset.type || '').toLowerCase();
+                    const name = (btn.dataset.username || '').toLowerCase();
+                    const motif = (btn.dataset.motif || '').toLowerCase();
+                    const status = (btn.dataset.status || '').toLowerCase();
+                    const title = (btn.dataset.title || '').toLowerCase();
+
+                    const match = !q
+                            || id.includes(q)
+                            || type.includes(q)
+                            || name.includes(q)
+                            || motif.includes(q)
+                            || status.includes(q)
+                            || title.includes(q);
+
+                    row.style.display = match ? '' : 'none';
+                });
+            }
+        </script>
+        <script>
+            const calendarUserId = <%= session.getAttribute("user_id")%>;
+            const loader = document.getElementById("calendar-loader");
+            let leaveCalendarInit = false;
+            let permissionCalendarInit = false;
+
+            function initCalendar(elId) {
+                const calendarEl = document.getElementById(elId);
+                const loaderId = elId === 'calendarLeave' ? 'calendar-loader-leave' : 'calendar-loader-permission';
+                const loader = document.getElementById(loaderId);
+
+                const cal = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    firstDay: 1,
+                    showNonCurrentDates: false,
+                    hiddenDays: [0],
+                    height: 400,
+                    loading: function (isLoading) {
+                        if (isLoading) {
+                            calendarEl.style.visibility = 'hidden';
+                            if (loader)
+                                loader.style.display = 'block';
+                        } else {
+                            calendarEl.style.visibility = 'visible';
+                            if (loader)
+                                loader.style.display = 'none';
+                        }
+                    }
+                });
+                cal.addEventSource({
+                    url: '<%= request.getContextPath()%>/CalendarLeaveServlet',
+                    method: 'GET'
+                });
+                cal.addEventSource({
+                    url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
+                    method: 'GET',
+                    display: 'list-item',
+                    extraParams: {
+                        userId: calendarUserId
+                    }
+                });
+                cal.render();
+                return cal;
+            }
+
+            function openModal(modalId) {
+                const modal = document.getElementById(modalId);
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                setTimeout(() => {
+                    modal.classList.add('visible');
+
+                    if (modalId === 'leaveModal') {
+                        if (!leaveCalendarInit) {
+                            window.calendarLeave = initCalendar('calendarLeave');
+                            leaveCalendarInit = true;
+                        } else {
+                            window.calendarLeave.updateSize();
+                        }
+                    } else if (modalId === 'permissionModal') {
+                        if (!permissionCalendarInit) {
+                            window.calendarPermission = initCalendar('calendarPermission');
+                            permissionCalendarInit = true;
+                        } else {
+                            window.calendarPermission.updateSize();
+                        }
+                    }
+                }, 150); // ← modal visible après 150ms, calendrier a le temps de se préparer
+            }
+
+
+            function closeModal() {
+                // Ferme n'importe quel modal ouvert
+                ['leaveModal', 'permissionModal'].forEach(id => {
+                    const modal = document.getElementById(id);
+                    if (modal.classList.contains('active')) {
+                        modal.classList.remove('visible');
+                        document.body.style.overflow = '';
+                        modal.addEventListener('transitionend', () => {
+                            modal.classList.remove('active');
+                        }, {once: true});
+                    }
+                });
+            }
+
+            // Listener unique pour les deux types de boutons
+            document.addEventListener('click', function (e) {
+                const btn = e.target.closest('.icon-btn-td');
+                if (!btn)
+                    return;
+
+                const d = btn.dataset;
+                currentUserId = (btn.dataset.userid || "").trim();
+
+                if (btn.classList.contains('holiday')) {
+                    // Remplir le modal Leave
+                    document.getElementById('modalreqID').textContent = 'REQ-' + d.holidayid;
+                    document.getElementById('modalUsername').textContent = d.username;
+                    document.getElementById('modalUserEmail').textContent = '';
+                    document.getElementById('modalStartDate').textContent = d.startdate;
+                    document.getElementById('modalEndDate').textContent = d.enddate;
+                    document.getElementById('modalLeaveType').textContent = d.title;
+                    document.getElementById('modalMotif').value = d.motif || '';
+                    document.getElementById('modalResponseMessage').value = d.responsemessage || '';
+
+                    // Récupère la div.status de la même ligne 
+                    const row = btn.closest('tr');
+                    const statusDiv = row.querySelector('.status');
+
+                    const modalStatusContainer = document.getElementById('modalStatusContainer');
+                    modalStatusContainer.innerHTML = '';
+                    modalStatusContainer.appendChild(statusDiv.cloneNode(true));
+
+                    //Récupère l'avatar du selected user
+                    const contextPath = '${pageContext.request.contextPath}';
+                    const modalAvatar = document.getElementById('modalAvatar');
+                    modalAvatar.src = '';  // ← refresh
+                    modalAvatar.src = contextPath + '/AvatarServlet?userId=' + currentUserId;
+
+                    openModal('leaveModal');
+
+                } else if (btn.classList.contains('permission')) {
+                    const modal = document.getElementById('permissionModal'); // ← référence au bon modal
+
+                    modal.querySelector('#modalreqID').textContent = 'REQ-' + d.holidayid;
+                    modal.querySelector('#modalUsername').textContent = d.username;
+                    modal.querySelector('#modalUserEmail').textContent = d.useremail || '';
+                    modal.querySelector('#modalStartDate').textContent = d.startdate;
+                    modal.querySelector('#modalStartTime').textContent = d.starttime || '';
+                    modal.querySelector('#modalEndTime').textContent = d.endtime || '';
+                    modal.querySelector('#modalLeaveType').textContent = 'Permission';
+                    modal.querySelector('#modalMotif').value = d.motif || '';
+                    modal.querySelector('#modalResponseMessage').value = d.responsemessage || '';
+
+                    const row = btn.closest('tr');
+                    const statusDiv = row.querySelector('.status');
+                    const modalStatusContainer = modal.querySelector('#modalStatusContainer');
+                    modalStatusContainer.innerHTML = '';
+                    modalStatusContainer.appendChild(statusDiv.cloneNode(true));
+
+                    const contextPath = '${pageContext.request.contextPath}';
+                    const modalAvatar = modal.querySelector('#modalAvatar');
+                    modalAvatar.src = '';
+                    modalAvatar.src = contextPath + '/AvatarServlet?userId=' + currentUserId;
+
+                    openModal('permissionModal');
+                }
             });
         </script>
         <script>
@@ -904,92 +1322,8 @@
 
                 currentPage = 1;
                 paginateTable();
-            });
-        </script>
-        <script>
-            const calendarEl = document.getElementById('calendar');
-            let selectedEventId = null;
-            let currentUserId = userId;
-            const detailsAction = document.querySelector('.detailsAction');
-
-            // 1. Create calendar first
-            window.calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                firstDay: 1,
-                showNonCurrentDates: false,
-                hiddenDays: [0]
-            });
-
-            // 2. Add sources (triggers background fetch immediately on render)
-            window.calendar.addEventSource({
-                url: '<%= request.getContextPath()%>/CalendarHolidaysServlet',
-                method: 'GET'
-            });
-            window.calendar.addEventSource({
-                url: '<%= request.getContextPath()%>/CalendarPermissionServlet',
-                method: 'GET',
-                display: 'list-item',
-                extraParams: {userId: currentUserId}
-            });
-
-            // 3. Render (fetches start here in background)
-            window.calendar.render();
-
-            // 4. Bind clicks
-            document.querySelectorAll('.icon-btn-td').forEach(btn => {
-                btn.addEventListener('click', () => {
-
-                    selectedEventId = btn.dataset.holidayid;
-                    console.log("Selected user_id4Calendar:", window.currentUserId);
-                    console.log("Selected holiday_id4Calendar:", selectedEventId);
-
-                    const status = btn.dataset.status;
-                    const type = btn.dataset.type;
-                    const actionsDiv = document.querySelector('.modal-actions');
-
-                    // Show/hide the right form section
-                    document.querySelector('.form-group-holiday').style.display = (type === 'holidays') ? 'block' : 'none';
-                    document.querySelector('.form-group-permission').style.display = (type === 'permission') ? 'block' : 'none';
-
-                    if (type === 'holidays') {
-                        document.getElementById('modalId').textContent = "ID : #" + (btn.dataset.userid || "N/A");
-                        document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
-                        document.getElementById('modalMotif').textContent = btn.dataset.motif || "N/A";
-                        document.getElementById('modalStartDate').value = btn.dataset.startdate || "";
-                        document.getElementById('modalEndDate').value = btn.dataset.enddate || "";
-                    } else if (type === 'permission') {
-                        document.getElementById('modalId').textContent = "ID : #" + (btn.dataset.userid || "N/A");
-                        document.getElementById('modalUsername').textContent = btn.dataset.username || "Unknown";
-                        document.getElementById('modalStartTime').value = btn.dataset.starttime || "";
-                        document.getElementById('modalEndTime').value = btn.dataset.endtime || "";
-                        document.getElementById('modalMotifPermission').value = btn.dataset.motif || "";
-                    }
-
-                    actionsDiv.innerHTML = "";
-
-                    if (status === "Pending") {
-                        actionsDiv.innerHTML = `
-                <button class="modal-btn" id="approveLeaveBtn" onclick="submitStatus('Approved')">Approve</button>
-                <button class="modal-btn" id="rejectLeaveBtn" onclick="submitStatus('Rejected')">Reject</button>
-                <button class="modal-btn" onclick="document.getElementById('leaveModal').style.display='none'">Cancel</button>
-            `;
-                    } else if (status === "Approved" || status === "Rejected") {
-                        actionsDiv.innerHTML = `
-                <button class="modal-btn" onclick="document.getElementById('leaveModal').style.display='none'">Cancel</button>
-            `;
-                    } else {
-                        actionsDiv.innerHTML = `<button disabled>No actions available</button>`;
-                    }
-
-
-
-                    document.getElementById('leaveModal').style.display = 'block';
-
-                    if (window.calendar) {
-                        window.calendar.updateSize();
-                    }
-                });
-            });
+            }
+            );
         </script>
     </body>
 </html>

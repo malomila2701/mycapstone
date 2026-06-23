@@ -502,6 +502,7 @@
                                       
                                       
                                       
+                                      
                                     b) -> {
                                     Date dateA = (a instanceof UserLeave)
                                             ? ((UserLeave) a).getStartDate()
@@ -700,7 +701,7 @@
                                         } // end if/else isLeave
                                     } // end for combined
                                 } // end else
-%>
+                            %>
                         </tbody>
                     </table>
                     <div class="bar" id="bar2"></div>
@@ -771,8 +772,10 @@
         <script src="scripts/utils.js"></script>
         <script>
                             function navigateWithLoader(page) {
-                                loader.style.display = 'block';
-                                window.location.href = page;
+                                document.body.classList.add('fade-out');
+                                setTimeout(() => {
+                                    window.location.href = page;
+                                }, 300);
                             }
         </script>
         <script>

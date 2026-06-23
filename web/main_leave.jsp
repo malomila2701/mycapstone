@@ -223,8 +223,7 @@
 
             <main class="cards-section">
 
-                <div id="user_banner">
-
+                <div class="user_banner">
                     <div class="header">
                         <div class="header-left"> 
                             <button class="icon-btn" id="icon-btn-header"> <span class="icon-home">
@@ -235,7 +234,6 @@
                                 User Details</span>
                         </div>
                     </div>
-
                     <div class="content">
                         <form>
                             <div class="form-group">
@@ -278,6 +276,18 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
+
+                <div class="user_banner" id="balance_rules">
+                    <div class="header"
+                         style="font-size: 1.3rem; line-height: 1;">
+                        Principles
+                    </div>
+                    <div class="content">
+                        <label style="font-size: 1.1rem; font-weight: bold;">2.2 working days of leave per month of active service</label>
+                        <label style="font-size: 1rem; font-weight: lighter;"> &rarr; 26.4 working days per year</label>
+                        
                     </div>
                 </div>
             </main>

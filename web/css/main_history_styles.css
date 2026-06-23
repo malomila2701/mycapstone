@@ -23,42 +23,34 @@
     pointer-events: all;
 }
 
+/**Overlay*/
 .modal {
-    display: none; /* hidden by default */
     position: fixed;
     z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
-    border: 1px solid #ccc;
-}
-.modal-btn{
-    padding: 8px 9px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-}
-.modal-content {
-    display: grid;
-    gap: 10px;
-    grid-template-columns: 300px 1fr 400px;
-    align-content: start;
-    position:relative;
-    top: 0%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 700px;
-    background: #f0f0f0;
-    padding: 25px;
-    border-radius: 8px;
-}
-.modal-header {
-    display: flex;
-    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex; /* toujours flex */
     align-items: center;
-    margin-bottom: 16px;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+.modal.active {
+    pointer-events: all;
+    opacity: 0;
+}
+.modal.visible {
+    opacity: 1;
+}
+.modal.visible .modal-content {
+    transform: scale(1);
+    opacity: 1;
 }
 .modal-close-btn {
     position: absolute;
@@ -78,9 +70,44 @@
     background: #e0e0e0;
     color: #333;
 }
+/**actual modal*/
+.modal-content {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 300px 380px;
+    grid-template-rows: auto 1fr;
+    align-content: start;
+    position: relative;
+    height: 500px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    
+    transform: scale(0.85);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+/* Header : span sur les 2 colonnes */
+.modal-content > div:first-child {
+    grid-column: 1 / -1;
+}
+#modalreqID {
+    font-family: consolas, sans-serif;
+    margin-left: 5px;
+}
 .details-section {
-    max-width: 310px;
-    align-content:center;
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+.avatar {
+    align-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
 .modallabel-name {
     margin-left: 15px;
@@ -88,96 +115,76 @@
     font-weight: 600;
     white-space: nowrap;
 }
-.modallabel-id {
-    margin-left: 18px;
-    font-size: 0.9rem;
-    font-weight: lighter;
+.modallabel-email {
+    margin-left: 5px;
+    font-size: 0.7rem;
+    color: lightslategray;
 }
-.form-group {
-    display: flex;
-    flex-direction: row;
-    align-items:center;
-    gap: 20px;
-    margin-bottom: 25px;
-    overflow: hidden;
-    &:first-child {
-        margin-top: 20px;
-    }
-}
-.form-group label {
-    width: 50px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #666;
-    white-space: nowrap;
-}
-.form-group input {
-    flex: 1;
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-family: Arial, sans-serif;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-input[readonly] {
-    background-color: whitesmoke; /* grey background when locked */
-    border: 1px solid #ccc;
-    color: black;
-    cursor: default;
-}
-.icon-form {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    background: transparent;
-    width: 17px;
-    height: 17px;
-}
-.input-wrapper {
+#modalMotif, #modalResponseMessage {
     position: relative;
-    width: 100%;
-}
-input[type='text'] {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    color: black
-}
-.input-wrapper input {
-    width: 100%;
-    padding: 8px 10px 8px 34px;
-}
-#modalMotif, #modalMotifPermission {
-    position: relative;
-    width: 90%;
+    width:98%;
     padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    background: transparent;
+    border: 1px solid transparent;
     resize: none;
     cursor:default;
 }
-.modal-actions{
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.modal-btn{
-    transition: transform 0.3s;
-}
-.modal-btn:hover{
-    transform: scale(1.1);
-}
-
 .modal-side-section {
-    width:100%;
-    margin: 0;
+    grid-column: 2;
+    grid-row: 2;
+    border-left: 1px solid #E2E8F0;
+    padding-left: 15px;
+    min-height: 0;    
+    
+    overflow: hidden;
+}
+.modal-side-section .fc-view-harness {
+    height: 400px !important;
+}
+.calendar-loader {
+    width: 35px;
+    height: 10px;
+    color: #766DF4;
+    background:
+        radial-gradient(farthest-side,currentColor 90%,#0000) left  /10px 10px,
+        radial-gradient(farthest-side,currentColor 90%,#0000) center/10px 10px,
+        radial-gradient(farthest-side,currentColor 90%,#0000) right /10px 10px,
+        linear-gradient(currentColor 0 0) center/100% 4px;
+    background-repeat: no-repeat;
+    position: relative;
+    animation: s6 2s infinite linear;
+}
+.calendar-loader:before,
+.calendar-loader:after {
+    content: "";
+    position: absolute;
+    inset:0;
+    background:inherit;
+    animation:inherit;
+    --s:calc(50% - 5px);
+    animation-direction: reverse;
+}
+.calendar-loader:after {
+    --s:calc(5px - 50%);
 }
 
+@keyframes s6 {
+    0%   {
+        transform: translate(var(--s,0)) rotate(0)
+    }
+    100% {
+        transform: translate(var(--s,0)) rotate(1turn)
+    }
+}
+.calendar-loader-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 #calendar{
     overflow:hidden;
-    width: 380px;
+    width: 100%;
     min-height: 425px;
     background:white;
 }
@@ -190,6 +197,7 @@ input[type='text'] {
     font-weight: bold;
     color: #555;
 }
+
 .fc-button {
     background-color: white !important;
     border: 1px solid #ccc !important;
@@ -236,11 +244,7 @@ input[type='text'] {
 .event-cell {
     background-color: #eef;
 }
-.modal-content select{
-    width: 60%;
-    padding: 6px 9px;
-    color: #333;
-}
+
 
 
 
@@ -308,6 +312,16 @@ ICONES
 .icon-home {
     width: 17px;
     height: 17px;
+}
+.icon-btn-modal {
+    display: flex;
+    border: none;
+    cursor: pointer;
+    cursor: default;
+}
+.icon-home-modal {
+    width: 13px;
+    height: 13px;
 }
 
 
@@ -663,7 +677,7 @@ Main SECTION
     display: grid;
     grid-template-columns: repeat(2, minmax(180px, 1fr));
     gap: 18px;
-
+    
     width: 42%;
     flex-shrink: 0;
     align-self: flex-start;
@@ -675,10 +689,9 @@ Main SECTION
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
     gap: 8px;
 
-    min-height: 85px;
+    min-height: 100px;
     padding: 22px;
 
     border-radius: 18px;
