@@ -283,6 +283,7 @@
                           font-size: 0.8rem;
                           font-weight: lighter;">Leave Management & Approval Section</span>
                 </div>
+                <a href="${pageContext.request.contextPath}/ExportExcelServlet">
                 <button class="exportBtn" style="display:flex; flex-direction: row;">
                     <span class="icon-home">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
@@ -291,6 +292,7 @@
                         </svg>
                     </span>
                     Export CSV</button>
+                </a>
             </div> 
 
             <div class="cards-section">

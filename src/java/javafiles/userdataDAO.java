@@ -158,7 +158,7 @@ public class userdataDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DBConnection.connect();
-            PreparedStatement ps = con.prepareStatement("SELECT *, users.user_id, users.fullname FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? "
+            PreparedStatement ps = con.prepareStatement("SELECT *, users.user_id, users.fullname, users.entrance_date FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? "
                     + "AND status IN ('approved','rejected') ORDER BY end_date DESC LIMIT 3");
 
             ps.setInt(1, userId);
@@ -171,6 +171,7 @@ public class userdataDAO {
                         rs.getString("fullname"),
                         rs.getDate("start_date"),
                         rs.getDate("end_date"),
+                        rs.getDate("entrance_date"),
                         rs.getString("type"),
                         rs.getString("status"),
                         rs.getString("motif"),
@@ -237,7 +238,7 @@ public class userdataDAO {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con2 = DBConnection.connect();
 
-            PreparedStatement ps2 = con2.prepareStatement("SELECT *,users.user_id, users.fullname "
+            PreparedStatement ps2 = con2.prepareStatement("SELECT *,users.user_id, users.fullname, users.entrance_date "
                     + "FROM holidays "
                     + "INNER JOIN users ON holidays.user_id = users.user_id "
                     + "ORDER BY holidays.end_date;");
@@ -250,6 +251,7 @@ public class userdataDAO {
                         rs2.getString("fullname"),
                         rs2.getDate("start_date"),
                         rs2.getDate("end_date"),
+                        rs2.getDate("entrance_date"),
                         rs2.getString("type"),
                         rs2.getString("status"),
                         rs2.getString("motif"),
@@ -259,7 +261,7 @@ public class userdataDAO {
             }
 
         } catch (ClassNotFoundException | SQLException e) {
-            logger.error("ERROR PENDING ADMIN RQ: " + e.getMessage());
+            logger.error("ERROR GET ADMIN ALL HOLIDAY EVENTS: " + e.getMessage());
         }
 
         return userList;
@@ -445,7 +447,7 @@ public class userdataDAO {
         }
         return counts;
     }
-    
+
     public Map<String, Integer> countRequestsByStatus() throws SQLException, Exception {
         Map<String, Integer> counts = new LinkedHashMap<>();
         String sql = "SELECT status, COUNT(*) AS total FROM holidays GROUP BY status";
@@ -548,6 +550,48 @@ public class userdataDAO {
             }
         }
         return list;
+    }
+
+    // Retourne toutes les demandes de congé du mois en cours, groupées par user_id dans une Map<Integer, List<UserLeave>>
+    public Map<Integer, List<UserLeave>> getMonthlyLeaveGroupedByUser() throws Exception {
+        Map<Integer, List<UserLeave>> map = new LinkedHashMap<>();
+        String sql
+                = "SELECT h.*, u.*"
+                + "FROM holidays h "
+                + "INNER JOIN users u ON h.user_id = u.user_id "
+                + "WHERE MONTH(h.start_date) = MONTH(CURDATE()) "
+                + "AND YEAR(h.start_date)  = YEAR(CURDATE())  "
+                + "ORDER BY u.fullname, h.start_date";
+
+        try (Connection con = DBConnection.connect(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int uid = rs.getInt("user_id");
+                UserLeave ul = new UserLeave(
+                        uid,
+                        rs.getInt("holidays_id"),
+                        rs.getString("fullname"),
+                        rs.getDate("start_date"),
+                        rs.getDate("end_date"),
+                        rs.getDate("entrance_date"),
+                        rs.getString("type"),
+                        rs.getString("status"),
+                        rs.getString("motif"),
+                        rs.getString("response_message")
+                );
+                // Champs supplémentaires si ton DTO les supporte,
+                // sinon stocke-les dans des variables locales pour la génération Excel.
+                // ul.setSection(rs.getString("section"));
+                // ul.setMatricule(rs.getString("matricule"));
+                // ul.setStartWork(rs.getDate("start_work"));
+
+                map.computeIfAbsent(uid, k -> new ArrayList<>()).add(ul);
+            }
+        } catch (SQLException e) {
+            logger.error("ERROR MONTHLY EXCEL LEAVE EXPORT: " + e.getMessage());
+            throw e;
+        }
+        return map;
     }
 
 }

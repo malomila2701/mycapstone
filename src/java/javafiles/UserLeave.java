@@ -16,18 +16,20 @@ public class UserLeave {
     private String fullname;
     private Date start_date;
     private Date end_date;
+    private Date entrance_date;
     private String type;
     private String status;
     private String motif;
     private String response_message;
 
 
-    public UserLeave(int id, int holidays_id, String fullName, Date startDate, Date endDate, String type, String status, String motif, String response_message ) {
+    public UserLeave(int id, int holidays_id, String fullName, Date startDate, Date endDate, Date entranceDate, String type, String status, String motif, String response_message ) {
         this.id = id;
         this.holidays_id = holidays_id;
         this.fullname = fullName;
         this.start_date = startDate;
         this.end_date = endDate;
+        this.entrance_date = entranceDate;
         this.type = type;
         this.status = status;
         this.motif = motif;
@@ -39,6 +41,7 @@ public class UserLeave {
     public String getFullName() { return fullname; }
     public Date getStartDate() { return start_date; }
     public Date getEndDate() { return end_date; }
+    public Date getEntranceDate() { return entrance_date; }
     public String getType() { return type; }
     public String getStatus() { return status; }
     public String getMotif() { return motif; }
