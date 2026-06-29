@@ -44,8 +44,8 @@
         </script>
         <script>
             <%
-                List<UserLeave> v2 = dao.getUserLeave(userId);
-                List<UserPermission> v3 = dao.getUserPermission(userId);
+                List<UserLeave> v2 = dao.getLatestUserLeave(userId);
+                List<UserPermission> v3 = dao.getLatestUserPermission(userId);
                 List<UserPending> daoPending = dao.getLeavePending(userId);
                 List<UserPermission> daoPermissionPending = dao.getPermissionPending(userId);
             %>

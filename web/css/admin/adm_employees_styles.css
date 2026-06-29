@@ -307,6 +307,13 @@ body {
     color: var(--text-1);
     min-height: 100vh;
 }
+body.fade-out {
+    animation: fadeOut 0.4s ease forwards;
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; }
+}
 
 .layout {
     display: flex;

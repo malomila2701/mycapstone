@@ -638,7 +638,8 @@ Main SECTION
   outline: 1.5px solid #2563eb;
   margin-left: -4px; margin-right: -4px;
 }
-.legend-label { font-size: 13px; color: #7480a0; }
+.legend-label-leaves { font-size: 13px; color: #7480a0; }
+.legend-label-perm { font-size: 13px; color: #1e2a4a; }
 .legend-meta { display: flex; align-items: center; gap: 16px; }
 .legend-stat { display: flex; flex-direction: column; align-items: flex-end; }
 .legend-stat-val { font-size: 15px; font-weight: 500; line-height: 1.2; }
@@ -807,6 +808,38 @@ Main SECTION
 }
 #dateHeader:hover {
     color: #766DF4;
+}
+#pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+}
+.page-btn {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #555;
+    transition: background 0.15s;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #f0f0f0;
+}
+
+.page-btn.active {
+    background: #766DF4;
+    color: white;
+    border-color: #766DF4;
+}
+
+.page-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
 }
 .reqtable thead th:first-child {
     border-top-left-radius: 8px;

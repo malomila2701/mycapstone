@@ -392,36 +392,42 @@
 
             function newEmSave() {
                 const name = document.getElementById('new-em-name').value.trim();
+
                 if (!name) {
                     document.getElementById('new-em-error-msg').textContent = 'Full name is required.';
                     document.getElementById('new-em-error').style.display = 'flex';
                     return;
                 }
 
-                const payload = {
-                    name: name,
-                    role: document.getElementById('new-em-role').value.trim(),
-                    email: document.getElementById('new-em-email').value.trim(),
-                    phone: document.getElementById('new-em-phone').value.trim(),
-                    entrance: document.getElementById('new-em-entrance').value
-                };
+                const params = new URLSearchParams();
+                params.append("name", name);
+                params.append("role", document.getElementById('new-em-role').value.trim());
+                params.append("email", document.getElementById('new-em-email').value.trim());
+                params.append("entrance", document.getElementById('new-em-entrance').value);
 
-                fetch('CreateEmployeeServlet', {
+                fetch('<%= request.getContextPath() %>/NewEmployeeServlet', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params.toString()
                 })
                         .then(res => {
                             if (!res.ok)
-                                throw new Error('Server error ' + res.status);
-                            return res.json();
+                                throw new Error("Server error " + res.status);
+                            return res.text();
                         })
                         .then(() => {
                             document.getElementById('new-em-toast').style.display = 'flex';
+
                             setTimeout(() => {
-                                closeNewEmployeeModal();
-                                location.reload();
-                            }, 1500);
+                                document.body.classList.add('fade-out');
+
+                                setTimeout(() => {
+                                    closeNewEmployeeModal();
+                                    location.reload();
+                                }, 350); // matches the CSS transition
+                            }, 1200); // time to display the success toast
                         })
                         .catch(err => {
                             document.getElementById('new-em-error-msg').textContent = err.message;

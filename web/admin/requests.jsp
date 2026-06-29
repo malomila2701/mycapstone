@@ -588,7 +588,7 @@
             });
         </script>
         <script>
-            const ROWS_PER_PAGE = 4; // change this to whatever limit you want
+            const ROWS_PER_PAGE = 10; // change this to whatever limit you want
             let currentPage = 1;
 
             function paginateTable() {

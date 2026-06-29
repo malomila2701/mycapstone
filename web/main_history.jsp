@@ -496,7 +496,8 @@
                                     <div class="legend-dot"></div>
                                     <div class="legend-line-track"></div>
                                 </div>
-                                <span class="legend-label">Approved leaves per month</span>
+                                <span class="legend-label-leaves">Approved leaves per month</span>
+                                <span class="legend-label">Approved permissions per month</span>
                             </div>
 
                             <div class="legend-meta" id="legend-meta" style="display:none">
@@ -527,39 +528,58 @@
                             const data = await response.json();
                             // data = [{ month: 1, count: 2 }, { month: 3, count: 5 }, ...]
 
-                            const filled = Array(12).fill(0);
-                            data.forEach(d => {
-                                filled[d.month - 1] = d.count;
+                            const leaves = Array(12).fill(0);
+                            const permissions = Array(12).fill(0);
+
+                            data.leaves.forEach(d => {
+                                leaves[d.month - 1] = d.count;
                             });
-                            return filled;
+
+                            data.permissions.forEach(d => {
+                                permissions[d.month - 1] = d.count;
+                            });
+                            return {leaves, permissions};
                         }
                         console.timeEnd('fetch');
                         console.time('renderChart');
                         async function renderChart() {
-                            const leavesPerMonth = await fetchLeavesData();
+                            const {leaves, permissions} = await fetchLeavesData();
                             const ctx = document.getElementById('leavesChart').getContext('2d');
                             const gradient = ctx.createLinearGradient(0, 0, 0, 300);
                             gradient.addColorStop(0, 'rgba(37, 99, 235, 0.3)');
                             gradient.addColorStop(1, 'rgba(37, 99, 235, 0.0)');
+                            const orangeGradient = ctx.createLinearGradient(0, 0, 0, 300);
+                            orangeGradient.addColorStop(0, 'rgba(242, 140, 40, 0.30)');
+                            orangeGradient.addColorStop(1, 'rgba(242, 140, 40, 0.00)');
                             new Chart(ctx, {
                                 type: 'line',
                                 data: {
                                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                                    datasets: [{
-                                            label: 'Leaves taken',
-                                            data: leavesPerMonth,
-                                            fill: true,
-                                            backgroundColor: gradient,
+                                    datasets: [
+                                        {
+                                            label: 'Leaves',
+                                            data: leaves,
                                             borderColor: '#2563eb',
+                                            backgroundColor: gradient,
+                                            fill: true,
+                                            tension: 0.45
+                                        },
+                                        {
+                                            label: 'Permissions',
+                                            data: permissions,
+                                            fill: true,
+                                            backgroundColor: orangeGradient,
+                                            borderColor: '#F28C28', // Jasper Orange
                                             borderWidth: 2,
                                             tension: 0.45,
                                             pointRadius: 4,
-                                            pointBackgroundColor: '#2563eb',
+                                            pointBackgroundColor: '#F28C28',
                                             pointHoverRadius: 6,
                                             pointHoverBackgroundColor: '#fff',
-                                            pointHoverBorderColor: '#2563eb',
+                                            pointHoverBorderColor: '#F28C28',
                                             pointHoverBorderWidth: 2
-                                        }]
+                                        }
+                                    ]
                                 },
                                 options: {
                                     responsive: true,
@@ -573,8 +593,12 @@
                                             borderColor: '#e5e7ef',
                                             borderWidth: 1,
                                             padding: 10,
-                                            callbacks: {
-                                                label: ctx => `${ctx.parsed.y} leave(s)`
+                                            label: function (ctx) {
+                                                if (ctx.dataset.label === "Leaves") {
+                                                    return `${ctx.parsed.y} leave(s)`;
+                                                } else if (ctx.dataset.label === "Permissions") {
+                                                    return `${ctx.parsed.y} permission(s)`;
+                                                }
                                             }
                                         }
                                     },
@@ -698,6 +722,11 @@
                             // --- Sort by startDate descending (newest first) ---
                             combined.sort(( a,
                                       
+                                  
+                                  
+                                  
+                                  
+                                  
                                 b) -> {
                                 Date dateA = (a instanceof UserLeave)
                                         ? ((UserLeave) a).getStartDate()
@@ -989,7 +1018,7 @@
                                     } // end for UserPermission
                                 }
                             } // end else
-                        %>
+%>
                     </tbody>
                 </table>
             </div>
@@ -1299,6 +1328,80 @@
             document.getElementById('statusFilter').addEventListener('change', applyFilters);
             document.getElementById('typeFilter').addEventListener('change', applyFilters);
             document.getElementById('dateFilter').addEventListener('change', applyFilters);
+        </script>
+        <script>
+            const ROWS_PER_PAGE = 6; // change this to whatever limit you want
+            let currentPage = 1;
+
+            function paginateTable() {
+                const table = document.getElementById('latest_b');
+
+                document.getElementById('latest_b').scrollTop = 0;
+
+                // Only count rows that passed the filter
+                const visibleRows = Array.from(table.querySelectorAll('tbody tr'))
+                        .filter(r => r.dataset.filtered !== 'true' && !r.querySelector('td[colspan]'));
+
+                const totalPages = Math.ceil(visibleRows.length / ROWS_PER_PAGE);
+
+                // First hide all rows, then show only the current page slice
+                table.querySelectorAll('tbody tr').forEach(r => r.style.display = 'none');
+                visibleRows.forEach((row, index) => {
+                    const inRange = index >= (currentPage - 1) * ROWS_PER_PAGE && index < currentPage * ROWS_PER_PAGE;
+                    row.style.display = inRange ? '' : 'none';
+                });
+
+                renderPagination(totalPages);
+            }
+
+            function renderPagination(totalPages) {
+                let container = document.getElementById('pagination-container');
+                if (!container) {
+                    container = document.createElement('div');
+                    container.id = 'pagination-container';
+                    document.getElementById('latest_b').insertAdjacentElement('afterend', container);
+                }
+
+                container.innerHTML = '';
+                if (totalPages <= 1)
+                    return; // hide if only one page
+
+                // Prev button
+                const prev = document.createElement('button');
+                prev.textContent = '←';
+                prev.className = 'page-btn';
+                prev.disabled = currentPage === 1;
+                prev.onclick = () => {
+                    currentPage--;
+                    paginateTable();
+                };
+                container.appendChild(prev);
+
+                // Page numbers
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.textContent = i;
+                    btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+                    btn.onclick = () => {
+                        currentPage = i;
+                        paginateTable();
+                    };
+                    container.appendChild(btn);
+                }
+
+                // Next button
+                const next = document.createElement('button');
+                next.textContent = '→';
+                next.className = 'page-btn';
+                next.disabled = currentPage === totalPages;
+                next.onclick = () => {
+                    currentPage++;
+                    paginateTable();
+                };
+                container.appendChild(next);
+            }
+            // Init on load
+            document.addEventListener('DOMContentLoaded', paginateTable);
         </script>
         <script>
             let sortAsc = true;

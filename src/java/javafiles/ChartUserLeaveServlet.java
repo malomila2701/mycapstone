@@ -48,27 +48,34 @@ public class ChartUserLeaveServlet extends HttpServlet {
         resp.setHeader("Access-Control-Allow-Origin", "*");
 
         String sql = """
-                         SELECT 
-                             MONTH(start_date) AS month,
-                             COUNT(*) AS count
-                         FROM (
-                             SELECT start_date FROM holidays
-                             WHERE user_id = ?
-                             AND YEAR(start_date) = YEAR(CURDATE())
-                             AND STATUS IN ('Approved','Rejected')
-                             
-                             UNION ALL
-                             
-                             SELECT start_date FROM permissions
-                             WHERE user_id = ?
-                             AND YEAR(start_date) = YEAR(CURDATE())
-                             AND STATUS IN ('Approved','Rejected')
-                         ) AS combined
-                         GROUP BY MONTH(start_date)
-                         ORDER BY month;
-                     """;
+    SELECT
+        'leave' AS type,
+        MONTH(start_date) AS month,
+        COUNT(*) AS count
+    FROM holidays
+    WHERE user_id = ?
+      AND YEAR(start_date) = YEAR(CURDATE())
+      AND status IN ('Approved','Rejected')
+    GROUP BY MONTH(start_date)
 
-        org.json.JSONArray result = new JSONArray();
+    UNION ALL
+
+    SELECT
+        'permission' AS type,
+        MONTH(start_date) AS month,
+        COUNT(*) AS count
+    FROM permissions
+    WHERE user_id = ?
+      AND YEAR(start_date) = YEAR(CURDATE())
+      AND status IN ('Approved','Rejected')
+    GROUP BY MONTH(start_date)
+
+    ORDER BY month;
+""";
+
+        JSONObject result = new JSONObject();
+        JSONArray leaves = new JSONArray();
+        JSONArray permissions = new JSONArray();
 
         try (
                 Connection conn = DBConnection.connect(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -85,7 +92,16 @@ public class ChartUserLeaveServlet extends HttpServlet {
                 JSONObject obj = new JSONObject();
                 obj.put("month", rs.getInt("month"));
                 obj.put("count", rs.getInt("count"));
-                result.put(obj);
+
+                if ("leave".equals(rs.getString("type"))) {
+                    leaves.put(obj);
+                } else {
+                    permissions.put(obj);
+                }
+
+                result.put("leaves", leaves);
+                result.put("permissions", permissions);
+
             }
 
             long t4 = System.currentTimeMillis();

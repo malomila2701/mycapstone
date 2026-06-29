@@ -145,6 +145,7 @@ public class userdataDAO {
         return pendingList;
     }
 
+    
     /**
      * Retrieve all latest leave taken by an user, limit 3
      *
@@ -152,7 +153,7 @@ public class userdataDAO {
      * @return
      * @throws java.lang.Exception
      */
-    public List<UserLeave> getUserLeave(int userId) throws Exception {
+    public List<UserLeave> getLatestUserLeave(int userId) throws Exception {
         List<UserLeave> leaveList = new ArrayList<>();
 
         try {
@@ -188,7 +189,90 @@ public class userdataDAO {
         }
         return leaveList;
     }
+    
+    
+    /**
+     * Retrieve all latest leave taken by an user, limit 3
+     *
+     * @param userId
+     * @return
+     * @throws java.lang.Exception
+     */
+    public List<UserLeave> getUserLeave(int userId) throws Exception {
+        List<UserLeave> leaveList = new ArrayList<>();
 
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DBConnection.connect();
+            PreparedStatement ps = con.prepareStatement("SELECT *, users.user_id, users.fullname, users.entrance_date FROM holidays INNER JOIN users ON holidays.user_id = users.user_id WHERE users.user_id= ? "
+                    + "AND status IN ('approved','rejected') ORDER BY end_date");
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                UserLeave h = new UserLeave(
+                        rs.getInt("user_id"),
+                        rs.getInt("holidays_id"),
+                        rs.getString("fullname"),
+                        rs.getDate("start_date"),
+                        rs.getDate("end_date"),
+                        rs.getDate("entrance_date"),
+                        rs.getString("type"),
+                        rs.getString("status"),
+                        rs.getString("motif"),
+                        rs.getString("response_message")
+                );
+                leaveList.add(h);
+            }
+
+            rs.close();
+            ps.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error("ERROR RETRIEVING INDIVIDUAL USER LEAVES: " + e.getMessage());
+        }
+        return leaveList;
+    }
+
+    public List<UserPermission> getLatestUserPermission(int userId) throws Exception {
+        List<UserPermission> permList = new ArrayList<>();
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DBConnection.connect();
+            PreparedStatement ps = con.prepareStatement("SELECT *, users.fullname FROM permissions INNER JOIN users ON permissions.user_id = users.user_id WHERE users.user_id= ? "
+                    + "AND status IN ('approved', 'rejected') ORDER BY end_date DESC LIMIT 3");
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                UserPermission h = new UserPermission(
+                        rs.getInt("user_id"),
+                        rs.getInt("permission_id"),
+                        rs.getString("fullname"),
+                        rs.getString("email"),
+                        rs.getDate("start_date"),
+                        rs.getDate("end_date"),
+                        rs.getTime("start_time"),
+                        rs.getTime("end_time"),
+                        rs.getString("status"),
+                        rs.getString("motif"),
+                        rs.getString("response_message")
+                );
+                permList.add(h);
+            }
+
+            rs.close();
+            ps.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error("ERROR RETRIEVING INDIVIDUAL USER PERMISSION: " + e.getMessage());
+        }
+        return permList;
+    }
+    
     public List<UserPermission> getUserPermission(int userId) throws Exception {
         List<UserPermission> permList = new ArrayList<>();
 
