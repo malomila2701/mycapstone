@@ -70,14 +70,38 @@
 
         <div id="leaveModal" class="modal">
             <div class="modal-content">
-                <!--Bouton close-->
-                <button class="modal-close-btn" onclick="closeModal()">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                    </svg>
-                </button>
+                <div style="
+                     position: sticky;
+                     display:flex;
+                     justify-content:space-between;
+                     align-items:center;
+                     border-bottom:1px solid #ccc;
+                     ">
+                    <div>
+                        <h2 style="
+                            margin:0;
+                            font-size:18px;
+                            font-weight:600;
+                            color:#1E293B;
+                            ">
+                            Request Details
+                        </h2>
+                        <span style="
+                              font-size:13px;
+                              color:#64748B;
+                              " id="modalreqID">
+                            REQ-2026-00
+                        </span>
+                    </div>
+                    <!--Boutton close-->
+                    <button class="modal-close-btn" onclick="closeModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                        </svg>
+                    </button>
+                </div>
                 <!--Section de details (Nom, email) (Période de congés) (Boutons)-->
-                <div class="details-section">
+                <main class="details-section">
                     <div style="
                          background: #f3f6fa;
                          padding: 10px;
@@ -110,10 +134,10 @@
                          ">
                         <form action="FirstServlet" method="post">
                             <label style="margin-left: 10px; padding-bottom: 5px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;">
-                                Permission Period
+                                Leave Period
                             </label>
 
-                            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
+                            <div id="LeaveDetails" style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
 
                                 <div style="display:flex; align-items:center; margin-left: 5px; gap:4px; padding-bottom: 5px;">
                                     <span class="icon-btn-modal icon-home-modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
@@ -131,91 +155,156 @@
                                     <label id="modalEndDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label> 
                                 </div>
                             </div>
+
+                            <div id="PermissionDetails" style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
+                                <%-- Date row --%>
+                                <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
+                                    <div style="display:flex; align-items:center; margin-left: 5px; gap:4px; padding-bottom: 5px;">
+                                        <span class="icon-btn-modal icon-home-modal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                            <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <label id="modalStartDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                    </div>
+                                </div>
+
+                                <%-- Time row --%>
+                                <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center; margin-top: 4px;">
+                                    <div style="display:flex; align-items:center; margin-left: 5px; gap:4px;">
+                                        <span class="icon-btn-modal icon-home-modal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <label id="modalStartTime" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                    </div>
+                                    &rarr;
+                                    <div style="display:flex; align-items:center; gap:4px;">
+                                        <span class="icon-btn-modal icon-home-modal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 0 0 0-1.5h-3.25V5Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <label id="modalEndTime" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
 
-                    <label style="margin-top: 10px; margin-left: 10px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;" for="modalMotif"> Reason/Motif </label> 
+                    <div style="display: flex; flex-direction: row; gap: 12px; margin-top: 10px;">
+
+                        <!-- Type de congé -->
+                        <div style="
+                             flex: 1;
+                             background: transparent;
+                             padding: 10px 15px;
+                             border: 1px solid #E2E8F0;
+                             border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Leave Type
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+                                <span class="icon-btn-modal icon-home-modal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0078d7" class="size-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" />
+                                    </svg>
+                                </span>
+                                <span id="modalLeaveType" style=" padding: 4px 12px; border: 1px solid #E2E8F0; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; color: #333;"></span>
+                            </div>
+                        </div>
+
+                        <!-- Statut -->
+                        <div style="flex: 1; background: #f3f6fa; padding: 10px 15px; border: 1px solid #E2E8F0; border-radius: 16px;">
+                            <label style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray;">
+                                Status
+                            </label>
+                            <div id="modalStatusContainer" style="margin-top: 4px;"></div>
+                        </div>
+                    </div>
+
+                    <label style="margin-top: 20px; margin-left: 10px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: lightslategray; white-space: nowrap;" for="modalMotif"> Reason/Motif </label> 
                     <div style="
                          background: #f3f6fa;
-                         padding: 10px;
-                         border: 1px solid #ccc;
+                         padding: 5px;
+                         border: 1px solid #444;
                          border-radius: 20px;
                          margin-top: 5px;
                          ">
                         <textarea id="modalMotif" readonly></textarea>
                     </div>
 
-                    <div id="hr_note" style="display:block;">
-                        <label style="
-                               margin-top: 10px;
-                               margin-left: 10px;
-                               font-size: 0.7rem;
-                               font-weight: 600;
-                               text-transform: uppercase;
-                               color: lightslategray;
-                               white-space: nowrap;" 
-                               for="modalMotif"> 
-                            HR Note: </label> 
-                        <div style="
-                             background: #f3f6fa;
-                             padding: 10px;
-                             border: 1px solid #ccc;
-                             border-radius: 20px;
-                             margin-top: 5px;">
-                            <textarea id="modalResponseMessage" readonly></textarea>
-                        </div>
+                    <label style="
+                           margin-top: 20px;
+                           margin-left: 10px;
+                           font-size: 0.7rem;
+                           font-weight: 600;
+                           text-transform: uppercase;
+                           color: lightslategray;
+                           white-space: nowrap;" 
+                           for="modalMotif"> 
+                        HR Note: </label> 
+                    <div style="
+                         background: #f3f6fa;
+                         padding: 5px;
+                         border: 1px solid #444;
+                         border-radius: 20px;
+                         margin-top: 5px;">
+                        <textarea id="modalResponseMessage" readonly></textarea>
                     </div>
-                    <span style="border-bottom: 1px solid #ccc; width: 100%;"></span>
-                    <!-- Modal Actions & form with hidden data -->
-                    <div class="modal-actions" id="actionsDiv">
-                        <!--Modal Action when status is pending-->
-                        <div id="actions-pending" style="display:none">
-                            <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
-                                Cancel
-                            </button>
-                            <button class="modal-btn" id="rejectLeaveBtn" onclick="openConfirmPopup('Rejected')">
-                                <span class="icon-btn-modal icon-home">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#c70036" class="size-5">
-                                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                                    </svg>
-                                </span>
-                                Reject
-                            </button>
-                            <button class="modal-btn" id="approveLeaveBtn" onclick="openConfirmPopup('Approved')">
-                                <span class="icon-btn-modal icon-home">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" class="size-5">
-                                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                Approve
-                            </button>
-                        </div>
-                        <!--Modal Actions when status is approved/rejected-->
-                        <div id="actions-reviewed" style="display:none">
-                            <button class="modal-btn" id="resetPendingBtn" onclick="openConfirmPopup('Pending')">
-                                <span class="icon-btn-modal icon-home">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                                    <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                Put as pending
-                            </button>
-                            <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
-                                Cancel
-                            </button>
-                        </div>
-                        <div id="actions-none" style="display:none">
-                            <button disabled>No actions available</button>
-                        </div>
+                </main>
+
+                <span style="border-bottom: 1px solid #ccc; width: 100%;"></span>
+                <!-- Modal Actions & form with hidden data -->
+                <div class="modal-actions" id="actionsDiv">
+                    <!--Modal Action when status is pending-->
+                    <div id="actions-pending" style="display:none">
+                        <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
+                            Cancel
+                        </button>
+                        <button class="modal-btn" id="rejectLeaveBtn" onclick="openConfirmPopup('Rejected')">
+                            <span class="icon-btn-modal icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#c70036" class="size-5">
+                                <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                                </svg>
+                            </span>
+                            Reject
+                        </button>
+                        <button class="modal-btn" id="approveLeaveBtn" onclick="openConfirmPopup('Approved')">
+                            <span class="icon-btn-modal icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" class="size-5">
+                                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            Approve
+                        </button>
                     </div>
-                    <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdatePermissionStatusServlet">
-                        <input type="hidden" name="permission_id" id="leaveId">
-                        <input type="hidden" name="user_id" id="leaveUserId">
-                        <input type="hidden" name="status" id="leaveStatus">
-                        <input type="hidden" name="admin_message" id="leaveAdminMessage">
-                    </form>
-                    <!--End of leave Modal block-->
+                    <!--Modal Actions when status is approved/rejected-->
+                    <div id="actions-reviewed" style="display:none">
+                        <button class="modal-btn" id="resetPendingBtn" onclick="openConfirmPopup('Pending')">
+                            <span class="icon-btn-modal icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            Put as pending
+                        </button>
+                        <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
+                            Cancel
+                        </button>
+                    </div>
+                    <div id="actions-none" style="display:none">
+                        <button disabled>No actions available</button>
+                    </div>
                 </div>
+                <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdateLeaveStatusServlet">
+                    <input type="hidden" name="holidays_id" id="leaveId">
+                    <input type="hidden" name="user_id" id="leaveUserId">
+                    <input type="hidden" name="status" id="leaveStatus">
+                    <input type="hidden" name="admin_message" id="leaveAdminMessage">
+                </form>
+
             </div>
         </div>
         <!--Second modal-->
@@ -333,16 +422,7 @@
                                         remaining.add(a);
                                     }
                                 }
-                                remaining.sort(( x,   
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
+                                remaining.sort(( x,
                                       
                                     y) -> {
                                     if (x.getStartDate() == null) {
@@ -446,49 +526,56 @@
                     eventClick: function (info) {
                         const event = info.event;
                         const props = event.extendedProps;
-
                         if (event.classNames.includes('event-block'))
                             return;
-
-                        console.log('eventClick fired');
-                        console.log('props:', props);
 
                         selectedEventId = props.leaveId;
                         currentUserId = props.userId;
 
+                        // IDs & identity
+                        document.getElementById('modalreqID').textContent = "REQ-2026-00" + props.leaveId || "Unknown";
                         document.getElementById('modalUsername').textContent = props.fullName || 'Unknown';
                         document.getElementById('modalUserEmail').textContent = props.email || '';
+                        document.getElementById('modalMotif').textContent = props.motif || 'N/A';
+                        document.getElementById('modalResponseMessage').textContent = props.responseMessage || 'N/A';
+                        document.getElementById('modalLeaveType').textContent = props.leaveType || '';
 
-                        document.getElementById('modalAvatar').src =
-                                '<%= request.getContextPath()%>/AvatarServlet?userId=' + props.userId;
-
+                        // Dates
                         const endDisplay = event.end
                                 ? new Date(event.end.getTime() - 86400000)
                                 : event.start;
                         document.getElementById('modalStartDate').textContent = formatDate(event.start);
                         document.getElementById('modalEndDate').textContent = formatDate(endDisplay);
 
-                        document.getElementById('modalMotif').value = props.motif || '';
-                        document.getElementById('modalResponseMessage').value = props.responseMessage || '';
+                        // Avatar — use JS contextPath like the table button does
+                        const contextPath = '${pageContext.request.contextPath}';
+                        const modalAvatar = document.getElementById('modalAvatar');
+                        modalAvatar.src = '';
+                        modalAvatar.src = contextPath + '/AvatarServlet?userId=' + currentUserId;
 
+                        // Status badge — build it since there's no table row to clone from
+                        const status = (props.status || '').trim();
+                        const modalStatusContainer = document.getElementById('modalStatusContainer');
+                        modalStatusContainer.innerHTML = '';
+                        const badge = document.createElement('div');
+                        badge.className = 'status ' + status.toLowerCase(); // e.g. "status pending"
+                        badge.textContent = status;
+                        modalStatusContainer.appendChild(badge);
+
+                        // Hidden form fields
                         document.getElementById('leaveId').value = props.leaveId;
                         document.getElementById('leaveUserId').value = props.userId;
-                        document.getElementById('leaveStatus').value = props.status;
+                        document.getElementById('leaveStatus').value = status;
 
-                        document.getElementById('actions-pending').style.display = 'none';
-                        document.getElementById('actions-reviewed').style.display = 'none';
-                        document.getElementById('actions-none').style.display = 'none';
-
-                        const status = (props.status || '');
-                        console.log('status value hitting switch:', props.status);
+                        // Action buttons
+                        document.querySelectorAll('#actionsDiv > div').forEach(d => d.style.display = 'none');
                         if (status === 'Pending') {
-                            document.getElementById('actions-pending').style.display = 'block';
+                            document.getElementById('actions-pending').style.display = 'flex';
                             document.getElementById('hr_note').style.display = 'none';
                         } else if (status === 'Approved' || status === 'Rejected') {
-                            document.getElementById('actions-reviewed').style.display = 'block';
+                            document.getElementById('actions-reviewed').style.display = 'flex';
                         } else {
-                            console.warn('status did not match any condition:', status);
-                            document.getElementById('actions-none').style.display = 'block';
+                            document.getElementById('actions-none').style.display = 'flex';
                         }
 
                         openModal();
