@@ -5,6 +5,7 @@
 package javafiles;
 
 import java.io.IOException;
+import java.sql.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,46 +21,41 @@ import org.apache.logging.log4j.Logger;
 @WebServlet("/NewEmployeeServlet")
 public class NewEmployeeServlet extends HttpServlet {
     
-    private static final Logger logger = LogManager.getLogger(NewPermissionServlet.class.getName());
+    private static final Logger logger = LogManager.getLogger(NewEmployeeServlet.class.getName());
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
 
-        String fullname = request.getParameter("name");
-        String role = request.getParameter("role");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String entrance = request.getParameter("entrance");
+        String name     = req.getParameter("name");
+        String username = req.getParameter("username");
+        String role     = req.getParameter("role");
+        String email    = req.getParameter("email");
+        String entrance = req.getParameter("entrance"); // "YYYY-MM-DD"
 
         String sql = """
-        INSERT INTO users
-        (fullname, entrance_date, email, role, created_at)
-        VALUES (?, ?, ?, ?, NOW())
+            INSERT INTO users (fullname, username, email, entrance_date, role, created_at)
+            VALUES (?, ?, ?, ?, ?, NOW())
         """;
 
-        try (
-                java.sql.Connection conn = DBConnection.connect(); 
-                java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (java.sql.Connection conn = DBConnection.connect();
+             java.sql.PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, fullname);
-
-            if (entrance == null || entrance.isEmpty()) {
-                ps.setNull(2, java.sql.Types.DATE);
-            } else {
-                ps.setDate(2, java.sql.Date.valueOf(entrance));
-            }
-
+            ps.setString(1, name);
+            ps.setString(2, name);
             ps.setString(3, email);
-            ps.setString(4, role);
+            ps.setDate  (4, entrance != null && !entrance.isEmpty()
+                            ? Date.valueOf(entrance)
+                            : null);
+            ps.setString(5, role);
 
             ps.executeUpdate();
 
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().print("success");
+            resp.setStatus(HttpServletResponse.SC_OK);
 
         } catch (Exception e) {
             logger.error("ERROR NEW EMPLOYEE SERVLET: " + e.getMessage());
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 }

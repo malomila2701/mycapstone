@@ -10,20 +10,24 @@ public class EmployeeInfo {
     private byte[] avatar;
     private String avatar_type;
     private String fullname;
+    private String gender;
     private String email;
     private String role;
+    private String mobile_phone;
     private String start_date;
     private String end_date;
     private String type;
     private String status;
 
-    public EmployeeInfo(int user_id, byte[] avatar, String avatar_type, String fullname, String email, String role, String startDate, String endDate, String type, String status) {
+    public EmployeeInfo(int user_id, byte[] avatar, String avatar_type, String fullname, String gender, String email, String role, String mobile_phone, String startDate, String endDate, String type, String status) {
         this.user_id = user_id;
         this.avatar = avatar;
         this.avatar_type = avatar_type;
         this.fullname = fullname;
+        this.gender = gender;
         this.email = email;
         this.role = role;
+        this.mobile_phone = mobile_phone;
         this.start_date = startDate;
         this.end_date = endDate;
         this.type = type;
@@ -37,6 +41,10 @@ public class EmployeeInfo {
     
     public String getFullName() {
         return fullname;
+    }
+    
+    public String getGender() {
+        return gender;
     }
     
     public byte[] getAvatar() {
@@ -53,6 +61,10 @@ public class EmployeeInfo {
     
     public String getRole() {
         return role;
+    }
+    
+    public String getMobilePhone() {
+        return mobile_phone;
     }
 
     public String getStartDate() {

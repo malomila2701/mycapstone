@@ -116,7 +116,7 @@
 
                     <div class="card" id="rejected_card">
                         <p>MAX LEAVE</p>
-                        <h2>24 days<span style="font-weight: 300">/year</span></h2>
+                        <h2>26,4 days<span style="font-weight: 300">/year</span></h2>
                     </div>
                 </div>
 
@@ -163,7 +163,8 @@
                         <div class="card-top">
                             <!-- Avatar -->
                             <img src="<%= request.getContextPath()%>/AvatarServlet?userId=<%= userId%>"
-                                 style="width:25%; height:25%; border-radius:50%; background:#eef; margin-left:15px;"
+                                 style="width:25%; height:25%; border-radius:50%; margin-left:15px;
+                                 background:<%= "female".equalsIgnoreCase(e.getGender()) ? "#f8bbd0" : "#e8f0fe"%>;"
                                  title="" alt="" />
 
                             <div class="card-meta">
@@ -173,6 +174,7 @@
                             </div>
 
                             <div class="card-actions">
+                                <% String gender = e.getGender() != null ? e.getGender().toLowerCase() : "male";%>
                                 <!-- Edit -->
                                 <a href="#"
                                    class="act-btn"
@@ -180,6 +182,8 @@
                                    data-name="<%= e.getFullName()%>"
                                    data-email="<%= e.getEmail() != null ? e.getEmail() : ""%>"
                                    data-role="<%= e.getRole() != null ? e.getRole() : ""%>"
+                                   data-phone="<%= e.getMobilePhone() != null ? e.getMobilePhone() : ""%>"
+                                   data-gender="<%= gender%>"
                                    data-latestleave="<%= value%>"
                                    onclick="openEmployeeModal(this); return false;"
                                    title="Edit employee">
@@ -215,7 +219,7 @@
                             </div>
                             <div class="detail-item">
                                 <span class="detail-label">Phone</span>
-                                <span class="detail-val">(+225) 000-000-00</span><%-- TODO: e.getPhone() --%>
+                                <span class="detail-val">(+225) 000-000-00</span>
                             </div>
                         </div>
 
@@ -248,13 +252,17 @@
                                        aria-label="Select <%= e.getFullName()%>">
                             </div>
                         </div>
-
                     </div>
+                    <form id="deleteForm-<%= userId%>" 
+                          action="<%= request.getContextPath()%>/DeleteEmployeeServlet" 
+                          method="post" style="display:none;">
+                        <input type="hidden" name="userId" value="<%= userId%>">
+                    </form>
 
                     <%
                             } // end for
                         }   // end else
-%>
+                    %>
 
                 </div><!-- /emp-grid -->
 
@@ -270,9 +278,9 @@
                             document.getElementById('balance-' + userId).textContent =
                                     data.leaveBalance > 24
                                     ? data.leaveBalance.toFixed(1) + ' days'
-                                    : data.leaveBalance.toFixed(1) + ' / 24 days';
+                                    : data.leaveBalance.toFixed(1) + ' / 26,4 days';
                             barEl.style.width
-                                    = Math.min((data.leaveBalance / 24) * 100, 100) + '%';
+                                    = Math.min((data.leaveBalance / 26, 4) * 100, 100) + '%';
                         });
             });
         </script>
@@ -286,10 +294,9 @@
                 document.getElementById('em-name').value = d.name || '';
                 document.getElementById('em-role').value = d.role || '';
                 document.getElementById('em-email').value = d.email || '';
-                document.getElementById('em-phone').value = d.phone || '';
+                document.getElementById('em-phone').value = '(225)' + (d.phone || '');
                 document.getElementById('em-entrance').value = d.entrance || '';
                 document.getElementById('em-latest-leave').value = d.latestleave || '';
-
                 document.getElementById('em-avatar-img').src = d.userid
                         ? contextPath + '/AvatarServlet?userId=' + d.userid
                         : '';
@@ -302,16 +309,16 @@
                 document.getElementById('em-title').innerHTML =
                         d.userid ? '<i class="ti ti-edit"></i> Edit employee'
                         : '<i class="ti ti-user-plus"></i> New employee';
-
                 /* Reset feedback */
                 document.getElementById('em-toast').style.display = 'none';
                 document.getElementById('em-error').style.display = 'none';
-
+                const isFemale = d.gender === 'female';
+                // Background avatar
+                document.getElementById('em-avatar-img').style.background = isFemale ? '#f8bbd0' : '#e8f0fe';
                 /* Show overlay */
                 const overlay = document.getElementById('employeeModal');
                 overlay.style.display = 'flex';
                 setTimeout(() => document.getElementById('em-name').focus(), 50);
-
                 overlay.onclick = function (e) {
                     if (e.target === overlay)
                         closeEmployeeModal();
@@ -361,7 +368,10 @@
             /* ── Delete confirmation ───────────────────── */
             function confirmDelete(userId, name) {
                 if (confirm('Delete employee "' + name + '"?\nThis action cannot be undone.')) {
-                    document.getElementById('deleteForm-' + userId).submit();
+                    document.body.classList.add('fade-out');
+                    setTimeout(() => {
+                        document.getElementById('deleteForm-' + userId).submit();
+                    }, 350);
                 }
             }
 
@@ -371,12 +381,10 @@
         <script>
             function openNewEmployeeModal() {
                 // vide les champs
-                ['new-em-name', 'new-em-role', 'new-em-email', 'new-em-phone', 'new-em-entrance']
+                ['new-em-name', 'new-em-role', 'new-em-email', 'new-em-username', 'new-em-phone', 'new-em-entrance']
                         .forEach(id => document.getElementById(id).value = '');
-
                 document.getElementById('new-em-toast').style.display = 'none';
                 document.getElementById('new-em-error').style.display = 'none';
-
                 const overlay = document.getElementById('newEmployeeModal');
                 overlay.style.display = 'flex';
                 overlay.onclick = e => {
@@ -392,7 +400,6 @@
 
             function newEmSave() {
                 const name = document.getElementById('new-em-name').value.trim();
-
                 if (!name) {
                     document.getElementById('new-em-error-msg').textContent = 'Full name is required.';
                     document.getElementById('new-em-error').style.display = 'flex';
@@ -403,9 +410,10 @@
                 params.append("name", name);
                 params.append("role", document.getElementById('new-em-role').value.trim());
                 params.append("email", document.getElementById('new-em-email').value.trim());
+                params.append("username", document.getElementById('new-em-username').value.trim());
                 params.append("entrance", document.getElementById('new-em-entrance').value);
 
-                fetch('<%= request.getContextPath() %>/NewEmployeeServlet', {
+                fetch('<%= request.getContextPath()%>/NewEmployeeServlet', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -419,15 +427,13 @@
                         })
                         .then(() => {
                             document.getElementById('new-em-toast').style.display = 'flex';
-
                             setTimeout(() => {
                                 document.body.classList.add('fade-out');
-
                                 setTimeout(() => {
                                     closeNewEmployeeModal();
                                     location.reload();
                                 }, 350); // matches the CSS transition
-                            }, 1200); // time to display the success toast
+                            }, 200); // time to display the success toast
                         })
                         .catch(err => {
                             document.getElementById('new-em-error-msg').textContent = err.message;
@@ -435,7 +441,22 @@
                         });
             }
         </script>
+        <script>
+            const genderSelect = document.getElementById("new-em-gender");
+            const avatar = document.getElementById("new-em-avatar");
 
+            genderSelect.addEventListener("change", function () {
+                if (this.value === "male") {
+                    avatar.innerHTML = "♂";
+                    avatar.style.backgroundColor = "#f8bbd0";
+                    avatar.style.color = "#1976d2";
+                } else if (this.value === "female") {
+                    avatar.innerHTML = "♀";
+                    avatar.style.backgroundColor = "#e8f0fe";
+                    avatar.style.color = "#7b1fa2";
+                }
+            });
+        </script>
         <script src="../scripts/utils.js"></script>
 
         <%@ include file="/newEmployeeModal.jspf" %>

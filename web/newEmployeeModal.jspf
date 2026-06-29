@@ -116,7 +116,7 @@
 
     /* Inputs */
     .em-input {
-        width: 100%;
+        width: 100;
         box-sizing: border-box;
         border: 1px solid #e4e4e4;
         border-radius: 8px;
@@ -144,6 +144,14 @@
         margin-bottom: 6px;
     }
     .em-input-role {
+        width: 50%;
+        font-size: 12px;
+        border-radius: 99px;
+        text-align: center;
+        padding: 3px 10px;
+    }
+    .em-input-username {
+        width: 50%;
         font-size: 12px;
         border-radius: 99px;
         text-align: center;
@@ -247,6 +255,16 @@
         cursor: not-allowed;
     }
 
+    .gender-select {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .em-input-gender {
+        min-width: 110px;
+    }
+
     /* Toast / Error */
     .em-toast, .em-error {
         font-size: 12px;
@@ -277,9 +295,23 @@
         <div class="em-card-top">
             <div class="em-avatar">?</div>
             <div class="em-card-meta">
-                <div class="em-emp-id"># New</div>
+                <div class="em-emp-id"># New </div>
+
                 <input id="new-em-name" class="em-input em-input-name" type="text" placeholder="Full name" />
-                <input id="new-em-role" class="em-input em-input-role" type="text" placeholder="Role" />
+                <div style="display:flex; flex-direction: row; gap: 10px; margin-bottom: 5px;">
+                    <input id="new-em-username" class="em-input em-input-username" type="text" placeholder="Username" />
+                    <select id="new-em-role" class="em-input em-input-role">
+                        <option value="" selected disabled>Select Role</option>
+                        <option value="employee">Employee</option>
+                        <option value="HR">HR</option>
+                        <option value="manager">Manager</option>
+                    </select>
+                </div>
+                <select id="new-em-gender" class="em-input em-input-gender">
+                    <option value="" selected disabled>Gender</option>
+                    <option value="male">♂ Male</option>
+                    <option value="female">♀ Female</option>
+                </select>
             </div>
         </div>
 
@@ -303,7 +335,7 @@
         <div class="em-divider"></div>
 
         <div class="em-footer">
-            <span class="em-toast" id="new-em-toast"><i class="ti ti-check"></i> Created successfully</span>
+            <span class="em-toast" id="new-em-toast"><i class="ti ti-check"></i> Created successfully </span>
             <span class="em-error" id="new-em-error"><i class="ti ti-alert-circle"></i> <span id="new-em-error-msg"></span></span>
             <button class="em-btn em-btn-cancel" onclick="closeNewEmployeeModal()">Cancel</button>
             <button class="em-btn em-btn-save" onclick="newEmSave()">Create</button>
@@ -311,3 +343,5 @@
 
     </div>
 </div>
+
+

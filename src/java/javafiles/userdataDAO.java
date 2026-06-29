@@ -426,7 +426,7 @@ public class userdataDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con3 = DBConnection.connect();
-            PreparedStatement pst = con3.prepareStatement("SELECT users.user_id, users.avatar, users.avatar_type, users.fullname, users.email, users.role, holidays.start_date, holidays.end_date, holidays.type,"
+            PreparedStatement pst = con3.prepareStatement("SELECT *, holidays.start_date, holidays.end_date, holidays.type,"
                     + "holidays.status FROM users LEFT JOIN holidays ON holidays.user_id = users.user_id AND "
                     + "holidays.holidays_id = (SELECT MAX(holidays_id) FROM holidays WHERE user_id = users.user_id)");
 
@@ -438,8 +438,10 @@ public class userdataDAO {
                         rs3.getBytes("avatar"),
                         rs3.getString("avatar_type"),
                         rs3.getString("fullname"),
+                        rs3.getString("gender"),
                         rs3.getString("email"),
                         rs3.getString("role"),
+                        rs3.getString("mobile_phone"),
                         rs3.getString("start_date"),
                         rs3.getString("end_date"),
                         rs3.getString("type"),

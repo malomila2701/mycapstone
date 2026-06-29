@@ -246,6 +246,15 @@
         opacity: .55;
         cursor: not-allowed;
     }
+    .em-btn-delete {
+        background: none;
+        border: 1px solid #e57373;
+        color: #c62828;
+        margin-right: auto;
+    }
+    .em-btn-delete:hover {
+        background: #ffebee;
+    }
 
     /* Toast / Error */
     .em-toast, .em-error {
@@ -283,7 +292,7 @@
             <!-- Avatar -->
             <img id="em-avatar-img"
                  src=""
-                 style="width:58px; height:58px; border-radius:50%; background:#eef;"
+                 style="width:58px; height:58px; border-radius:50%;"
                  alt="Avatar" />
 
             <div class="em-card-meta">
@@ -332,10 +341,16 @@
                 <label class="em-label" for="em-leave-balance">
                     Leave used <span id="em-leave-counter" class="em-leave-counter">24 / 30</span>
                 </label>
-                <input id="em-leave-balance" class="em-input" type="range"
-                       min="0" max="30" step="1" value="24"
-                       oninput="emUpdateLeaveBar(this.value)"
-                       aria-label="Leave balance" />
+                <input 
+                    id="em-leave-balance" 
+                    class="em-input" 
+                    type="range"
+                    min="0"
+                    max="26.4"
+                    step="0.1"
+                    value="0"
+                    oninput="emUpdateLeaveBar(this.value)"
+                    />
             </div>
 
         </div>
@@ -361,6 +376,10 @@
             <span class="em-error" id="em-error">
                 <i class="ti ti-alert-circle" aria-hidden="true"></i> <span id="em-error-msg"></span>
             </span>
+            <button class="em-btn em-btn-delete" 
+                    onclick="confirmDelete(document.getElementById('em-user-id').value, document.getElementById('em-name').value)">
+                Delete
+            </button>
             <button class="em-btn em-btn-cancel" onclick="closeEmployeeModal()">Cancel</button>
             <button class="em-btn em-btn-save"   onclick="emSaveEmployee()">
                 Save changes
@@ -388,11 +407,12 @@
      }*/
 
     function emUpdateLeaveBar(val) {
-        const v = Math.min(Math.max(parseInt(val) || 0, 0), 30);
-        const pct = Math.round((v / 30) * 100);
+        const v = Math.min(Math.max(parseFloat(val) || 0, 0), 26.4);
+        const pct = Math.min((v / 26.4) * 100, 100);
+
         document.getElementById('em-leave-fill').style.width = pct + '%';
-        document.getElementById('em-leave-text').textContent = v + ' / 30 days';
-        document.getElementById('em-leave-counter').textContent = v + ' / 30';
+        document.getElementById('em-leave-text').textContent = v.toFixed(1) + ' / 26.4 days';
+        document.getElementById('em-leave-counter').textContent = v.toFixed(1) + ' / 26.4';
     }
 
     /* ── Open modal ───────────────────────────────────────────── */
@@ -408,6 +428,11 @@
         document.getElementById('em-phone').value = d.phone || '';
         document.getElementById('em-entrance').value = d.entrance || '';
         document.getElementById('em-latest-leave').value = d.latestleave || '';
+
+
+        const isFemale = d.gender === 'female';
+        const avatarImg = document.getElementById('em-avatar-img');
+        avatarImg.style.background = isFemale ? '#f8bbd0' : '#e8f0fe';
 
         document.getElementById('em-avatar-img').src =
                 contextPath + '/AvatarServlet?userId=' + d.userid;
