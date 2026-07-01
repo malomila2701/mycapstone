@@ -4,6 +4,7 @@
     Author     : HP
 --%>
 
+<%@page import="javafiles.Agenda"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.util.Date"%>
@@ -48,6 +49,10 @@
                 List<UserPermission> v3 = dao.getLatestUserPermission(userId);
                 List<UserPending> daoPending = dao.getLeavePending(userId);
                 List<UserPermission> daoPermissionPending = dao.getPermissionPending(userId);
+
+                List<Agenda> agendaList = dao.getAgenda(userId);
+                SimpleDateFormat timeFmt = new SimpleDateFormat("hh:mm a");
+                SimpleDateFormat dateFmt = new SimpleDateFormat("MMM d", Locale.ENGLISH);
             %>
         </script>
 
@@ -490,20 +495,8 @@
                                 }
 
                                 // --- Sort by startDate descending (newest first) ---
-                                combined.sort(( a,
-                                          
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                      
-                                    b) -> {
+                                combined.sort((a,
+                                        b) -> {
                                     Date dateA = (a instanceof UserLeave)
                                             ? ((UserLeave) a).getStartDate()
                                             : ((UserPermission) a).getStartDate();
@@ -727,56 +720,100 @@
                     <div id="calendar"></div>
                 </div>
 
-                <div class="agenda-card">
-                    <span style="font-size: 13px;
-                          text-transform: uppercase;
-                          letter-spacing: .7px;
-                          color: #9E9D99;
 
-                          line-height: 6;">
-                        Agenda
-                    </span>
-                    <div class="agenda-item" id="agenda-item-holiday">
-                        <div style="display:flex; flex-direction: row; justify-content: space-between;">
-                            <div>
-                                <h4>Next National Holiday:</h4>
-                                <p>Easter Monday ( Apr 6 )</p>
-                            </div>
-                            <div class="icon-btn">
-                                <span class="icon-home">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#215f91" class="size-5">
-                                    <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 0 1-.134 1.051 2.494 2.494 0 0 0-.93 2.437 2.494 2.494 0 0 0 2.437-.93.75.75 0 1 1 1.186.918 3.995 3.995 0 0 1-4.482 1.332.75.75 0 0 1-.461-.461 3.994 3.994 0 0 1 1.332-4.482.75.75 0 0 1 1.052.134Z" clip-rule="evenodd" />
-                                    <path fill-rule="evenodd" d="M5.752 12A13.07 13.07 0 0 0 8 14.248v4.002c0 .414.336.75.75.75a5 5 0 0 0 4.797-6.414 12.984 12.984 0 0 0 5.45-10.848.75.75 0 0 0-.735-.735 12.984 12.984 0 0 0-10.849 5.45A5 5 0 0 0 1 11.25c.001.414.337.75.751.75h4.002ZM13 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
+                <%
+                    Agenda nextHoliday = null;
+                    java.util.Date today = new java.util.Date();
+                    if (agendaList != null) {
+                        for (Agenda a : agendaList) {
+                            if ("holiday".equalsIgnoreCase(a.getType())
+                                    && "National Holiday".equalsIgnoreCase(a.getEvent())
+                                    && a.getStartDate() != null
+                                    && !a.getStartDate().before(today)) {
+                                nextHoliday = a;
+                                break;
+                            }
+                        }
+                    }
+                %>
+
+                <div class="agenda-card">
+                    <div class="agenda-header">
+                        <h3>Agenda</h3>
+                    </div>
+
+                    <div id="agendaContainer">
+
+                        <%-- Position 1: next national holiday --%>
+                        <div class="agenda-item agenda-item-holiday" id="agenda-item-holiday">
+                            <div style="display:flex; flex-direction:row; justify-content:space-between;">
+                                <div>
+                                    <h4>Next National Holiday:</h4>
+                                    <% if (nextHoliday != null) {%>
+                                    <p><%= nextHoliday.getTitle()%> ( <%= dateFmt.format(nextHoliday.getStartDate())%> )</p>
+                                    <% } else { %>
+                                    <p>No upcoming holidays</p>
+                                    <% } %>
+                                </div>
+                                <div class="icon-btn">
+                                    <span class="icon-home">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#215f91" class="size-5">
+                                        <path fill-rule="evenodd" d="M4.606 12.97a.75.75 0 0 1-.134 1.051 2.494 2.494 0 0 0-.93 2.437 2.494 2.494 0 0 0 2.437-.93.75.75 0 1 1 1.186.918 3.995 3.995 0 0 1-4.482 1.332.75.75 0 0 1-.461-.461 3.994 3.994 0 0 1 1.332-4.482.75.75 0 0 1 1.052.134Z" clip-rule="evenodd" />
+                                        <path fill-rule="evenodd" d="M5.752 12A13.07 13.07 0 0 0 8 14.248v4.002c0 .414.336.75.75.75a5 5 0 0 0 4.797-6.414 12.984 12.984 0 0 0 5.45-10.848.75.75 0 0 0-.735-.735 12.984 12.984 0 0 0-10.849 5.45A5 5 0 0 0 1 11.25c.001.414.337.75.751.75h4.002ZM13 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
-                    </div>
-                    <div class="agenda-item">
-                        <h4>History 12</h4>
-                        <p>Lecture on Cold War (10:00 AM - 11:30 AM)</p>
-                    </div>
-                    <div class="agenda-item">
-                        <h4>History 11</h4>
-                        <p>Lecture on Cold War (10:00 AM - 11:30 AM)</p>
-                    </div>
-                    <div class="agenda-item">
-                        <h4>History 10A</h4>
-                        <p>Debate Prep (4:30 PM - 5:30 PM)</p>
-                    </div>
-                </div>
+                        <%-- Remaining items (tasks + non-national holidays) --%>
+                        <%
+                            if (agendaList != null) {
+                                java.util.List<Agenda> remaining = new java.util.ArrayList<>();
+                                for (Agenda a : agendaList) {
+                                    boolean isNationalHoliday = "National Holiday".equalsIgnoreCase(a.getEvent());
+                                    if (!isNationalHoliday) {
+                                        remaining.add(a);
+                                    }
+                                }
+                                remaining.sort((x,
+                                        y) -> {
+                                    if (x.getStartDate() == null) {
+                                        return 1;
+                                    }
+                                    if (y.getStartDate() == null) {
+                                        return -1;
+                                    }
+                                    return x.getStartDate().compareTo(y.getStartDate());
+                                });
+                                for (Agenda a : remaining) {
+                        %>
+                        <div class="agenda-item">
+                            <h4><%= a.getTitle()%></h4>
+                            <p>
+                                <%= a.getEvent() != null ? a.getEvent() + " · " : ""%><%= dateFmt.format(a.getStartDate())%>
+                                <% if (a.getStartTime() != null && a.getEndTime() != null) {%>
+                                (<%= timeFmt.format(a.getStartTime())%> - <%= timeFmt.format(a.getEndTime())%>)
+                                <% } %>
+                            </p>
+                        </div>
+                        <%  }
+                            }
+                        %>
+
+                    </div><%-- end agendaContainer --%>
+                </div><%-- end agenda-card --%>
             </aside>
         </div>
 
         <script src="scripts/utils.js"></script>
         <script>
-                            function navigateWithLoader(page) {
-                                document.body.classList.add('fade-out');
-                                setTimeout(() => {
-                                    window.location.href = page;
-                                }, 300);
-                            }
+                                    function navigateWithLoader(page) {
+                                        document.body.classList.add('fade-out');
+                                        setTimeout(() => {
+                                            window.location.href = page;
+                                        }, 300);
+                                    }
         </script>
         <script>
             function handleLogout() {

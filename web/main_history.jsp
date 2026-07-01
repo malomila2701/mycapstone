@@ -56,6 +56,17 @@
                 List<UserPermission> daoPermissionPending = dao.getPermissionPending(userId);
                 long t4 = System.currentTimeMillis();
 
+                // --- Merge both lists into one ---
+                List<Object> combined = new ArrayList<>();
+                if (v2 != null) {
+                    combined.addAll(v2);
+                }
+                if (v3 != null) {
+                    combined.addAll(v3);
+                }
+
+                int combinedSize = combined.size();
+
                 response.setHeader("Server-Timing",
                         "getUserLeave;dur=" + (t1 - t0) + ";desc=\"getUserLeave\","
                         + "getUserPermission;dur=" + (t2 - t1) + ";desc=\"getUserPermission\","
@@ -496,21 +507,17 @@
                                     <div class="legend-dot"></div>
                                     <div class="legend-line-track"></div>
                                 </div>
-                                <span class="legend-label-leaves">Approved leaves per month</span>
-                                <span class="legend-label">Approved permissions per month</span>
+                                <span class="legend-label">Approved leaves per month</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-line">
+                                    <div class="legend-line-track" style="background: #F28C28;"></div>
+                                    <div class="legend-dot" style="background: #F28C28;"></div>
+                                    <div class="legend-line-track" style="background: #F28C28;"></div>
+                                </div>
+                                <span class="legend-label" style="color: #F28C28;">Approved permissions per month</span>
                             </div>
 
-                            <div class="legend-meta" id="legend-meta" style="display:none">
-                                <div class="legend-stat">
-                                    <span class="legend-stat-val" id="legend-total">—</span>
-                                    <span class="legend-stat-sub">total this year</span>
-                                </div>
-                                <div class="legend-divider"></div>
-                                <div class="legend-stat">
-                                    <span class="legend-stat-val" id="legend-peak">—</span>
-                                    <span class="legend-stat-sub">peak month</span>
-                                </div>
-                            </div>
                         </div>
                         <!-- Canvas -->
                         <div class="chart-wrap">
@@ -631,6 +638,14 @@
                 </main>
 
                 <aside class="side-section">
+                    <script>
+                        fetch('<%=request.getContextPath()%>/LeaveBalanceServlet')
+                                .then(res => res.json())
+                                .then(data => {
+                                    document.getElementById('leave-balance').textContent = data.leaveBalance;
+                                    document.getElementById('days-used').textContent = data.daysUsed;
+                                });
+                    </script>
                     <div class="card">
                         <!-- <span class="card_stats icon-home">
                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 256 256"><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0v94.37L90.73,98a8,8,0,0,1,10.07-.38l58.81,44.11L218.73,90a8,8,0,1,1,10.54,12l-64,56a8,8,0,0,1-10.07.38L96.39,114.29,40,163.63V200H224A8,8,0,0,1,232,208Z"></path></svg>
@@ -649,20 +664,20 @@
 
                     <div class="card">
                         <span class="card_change up">↑ 12%</span>
-                        <h2>24</h2>
+                        <h2 id="leave-balance"></h2>
                         <p>Leave Balance</p>
                     </div>
 
                     <div class="card">
                         <span class="card_change up">+12%</span>
-                        <h2>2</h2>
-                        <p>Requests this month</p>
+                        <h2 id="combined-size"></h2>
+                        <p>Requests this year</p>
                     </div>
 
                     <div class="card">
                         <span class="card_change down">↓ 4%</span>
-                        <h2>4</h2>
-                        <p>Requests this year</p>
+                        <h2 id="days-used"></h2>
+                        <p>Days used</p>
                     </div>
 
                 </aside> 
@@ -710,18 +725,8 @@
                     </thead>
                     <tbody>
                         <%
-                            // --- Merge both lists into one ---
-                            List<Object> combined = new ArrayList<>();
-                            if (v2 != null) {
-                                combined.addAll(v2);
-                            }
-                            if (v3 != null) {
-                                combined.addAll(v3);
-                            }
-
                             // --- Sort by startDate descending (newest first) ---
                             combined.sort(( a,
-                                      
                                   
                                   
                                   
@@ -747,7 +752,9 @@
                         </tr>
                         <%
                         } else {
+                            int count = 0;
                             for (Object item : combined) {
+                                count++;
                                 if (item instanceof UserLeave) {
                                     UserLeave h = (UserLeave) item;
 
@@ -1018,13 +1025,16 @@
                                     } // end for UserPermission
                                 }
                             } // end else
-%>
+                        %>
                     </tbody>
                 </table>
             </div>
         </div>
 
-
+        <script>
+            const size = <%= combinedSize %>;
+            document.getElementById('combined-size').textContent = size;
+        </script>
         <script>
             function handleLogout() {
                 fetch('<%= request.getContextPath()%>/LogoutServlet', {

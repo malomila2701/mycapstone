@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/LeaveBalanceServlet")
 public class LeaveBalanceServlet extends HttpServlet {
+    
+    private static final Logger logger = LogManager.getLogger(LeaveBalanceServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -45,8 +49,7 @@ public class LeaveBalanceServlet extends HttpServlet {
                     + ",\"leaveBalance\":" + lb.getLeaveBalance() + "}"
             );
         } catch (Exception e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+           logger.error("ERROR COMPUTING LEAVE BALANCE " + e.getMessage());
         }
     }
 }

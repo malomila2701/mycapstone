@@ -281,12 +281,12 @@
 
                 <div class="user_banner" id="balance_rules">
                     <div class="header"
-                         style="font-size: 1.3rem; line-height: 1;">
+                         style="font-size: 1.2rem; font-weight: bold; line-height: 1;">
                         Principles
                     </div>
                     <div class="content">
-                        <label style="font-size: 1.1rem; font-weight: bold;">2.2 working days of leave per month of active service</label>
-                        <label style="font-size: 1rem; font-weight: lighter;"> &rarr; 26.4 working days per year</label>
+                        <label style="font-size: 1rem; font-weight: normal;"> 2.2 working days accrued per month fully worked</label><br>
+                        <label style="font-size: 0.8; font-weight: lighter;"> Seniority bonus: +1 day at 5 yrs · +2 days at 10 yrs</label>
                         
                     </div>
                 </div>
