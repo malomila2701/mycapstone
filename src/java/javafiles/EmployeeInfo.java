@@ -1,5 +1,7 @@
 package javafiles;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  *
  * @author JS
@@ -7,6 +9,7 @@ package javafiles;
 public class EmployeeInfo {
 
     private int user_id;
+    @JsonIgnore
     private byte[] avatar;
     private String avatar_type;
     private String fullname;

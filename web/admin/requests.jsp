@@ -830,7 +830,7 @@
 
             function openConfirmPopup(newStatus) {
                 document.getElementById('confirmPopupStatus').textContent = newStatus;
-                document.getElementById('adminMessageInput').value = '';
+                //document.getElementById('adminMessageInput').value = '';
                 document.getElementById('pendingStatus').value = newStatus;
                 document.getElementById('confirmPopup').style.display = 'flex';
             }
@@ -840,7 +840,7 @@
             }
 
             function submitWithMessage() {
-                const message = document.getElementById('adminMessageInput').value.trim();
+                const message = document.getElementById('adminMessageInput').value;
                 const newStatus = document.getElementById('pendingStatus').value;
 
                 document.getElementById('leaveId').value = selectedEventId;

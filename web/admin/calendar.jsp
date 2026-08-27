@@ -156,7 +156,7 @@
                                 </div>
                             </div>
 
-                            <div id="PermissionDetails" style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
+                            <div id="PermissionDetails" style="display: flex; flex-direction: row; justify-content: space-between; align-items:center; display:none;">
                                 <%-- Date row --%>
                                 <div style="display: flex; flex-direction: row; justify-content: space-between; align-items:center;">
                                     <div style="display:flex; align-items:center; margin-left: 5px; gap:4px; padding-bottom: 5px;">
@@ -189,6 +189,7 @@
                                         <label id="modalEndTime" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
                                     </div>
                                 </div>
+                                <!--End of permissionDetails -->
                             </div>
                         </form>
                     </div>
@@ -257,7 +258,7 @@
 
                 <span style="border-bottom: 1px solid #ccc; width: 100%;"></span>
                 <!-- Modal Actions & form with hidden data -->
-                <div class="modal-actions" id="actionsDiv">
+                <div class="modal-actions" id="actionsDivLeave">
                     <!--Modal Action when status is pending-->
                     <div id="actions-pending" style="display:none">
                         <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
@@ -298,11 +299,60 @@
                         <button disabled>No actions available</button>
                     </div>
                 </div>
-                <form id="statusForm" method="POST" action="<%= request.getContextPath()%>/UpdateLeaveStatusServlet">
+                <form id="statusFormLeave" method="POST" action="<%= request.getContextPath()%>/UpdateLeaveStatusServlet">
                     <input type="hidden" name="holidays_id" id="leaveId">
                     <input type="hidden" name="user_id" id="leaveUserId">
                     <input type="hidden" name="status" id="leaveStatus">
                     <input type="hidden" name="admin_message" id="leaveAdminMessage">
+                </form>
+
+
+                <div class="modal-actions" id="actionsDivPermission">
+                    <!--Modal Action when status is pending-->
+                    <div id="perm-actions-pending" style="display:none">
+                        <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
+                            Cancel
+                        </button>
+                        <button class="modal-btn" id="rejectLeaveBtnPerm" onclick="openConfirmPopup('Rejected')">
+                            <span class="icon-btn-modal icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#c70036" class="size-5">
+                                <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                                </svg>
+                            </span>
+                            Reject
+                        </button>
+                        <button class="modal-btn" id="approveLeaveBtnPerm" onclick="openConfirmPopup('Approved')">
+                            <span class="icon-btn-modal icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" class="size-5">
+                                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            Approve
+                        </button>
+                    </div>
+                    <!--Modal Actions when status is approved/rejected-->
+                    <div id="perm-actions-reviewed" style="display:none">
+                        <button class="modal-btn" id="resetPendingBtnPerm" onclick="openConfirmPopup('Pending')">
+                            <span class="icon-btn-modal icon-home">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 0 1-9.201 2.466l-.312-.311h2.433a.75.75 0 0 0 0-1.5H3.989a.75.75 0 0 0-.75.75v4.242a.75.75 0 0 0 1.5 0v-2.43l.31.31a7 7 0 0 0 11.712-3.138.75.75 0 0 0-1.449-.39Zm1.23-3.723a.75.75 0 0 0 .219-.53V2.929a.75.75 0 0 0-1.5 0V5.36l-.31-.31A7 7 0 0 0 3.239 8.188a.75.75 0 1 0 1.448.389A5.5 5.5 0 0 1 13.89 6.11l.311.31h-2.432a.75.75 0 0 0 0 1.5h4.243a.75.75 0 0 0 .53-.219Z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            Put as pending
+                        </button>
+                        <button class="modal-btn cancelLeaveBtn" onclick="closeModal()">
+                            Cancel
+                        </button>
+                    </div>
+                    <div id="perm-actions-none" style="display:none">
+                        <button disabled>No actions available</button>
+                    </div>
+                </div>
+                <form id="statusFormPermission" method="POST" action="<%= request.getContextPath()%>/UpdatePermissionStatusServlet">
+                    <input type="hidden" name="permission_id" id="permissionId">
+                    <input type="hidden" name="user_id" id="permissionUserId">
+                    <input type="hidden" name="status" id="permissionStatus">
+                    <input type="hidden" name="admin_message" id="permissionAdminMessage">
                 </form>
 
             </div>
@@ -424,6 +474,10 @@
                                 }
                                 remaining.sort(( x,
                                       
+                                      
+                                      
+                                      
+                                      
                                     y) -> {
                                     if (x.getStartDate() == null) {
                                         return 1;
@@ -526,59 +580,141 @@
                     eventClick: function (info) {
                         const event = info.event;
                         const props = event.extendedProps;
-                        if (event.classNames.includes('event-block'))
+
+                        const leaveActions = document.getElementById('actionsDivLeave');
+                        const leaveForm = document.getElementById('statusFormLeave');
+
+                        const permissionActions = document.getElementById('actionsDivPermission');
+                        const permissionForm = document.getElementById('statusFormPermission');
+
+                        // Hide modalActions first
+                        leaveActions.style.display = 'none';
+                        leaveForm.style.display = 'none';
+                        permissionActions.style.display = 'none';
+                        permissionForm.style.display = 'none';
+
+
+                        if (event.classNames.includes('event-block')) {
+                            leaveActions.style.display = 'block';
+                            leaveForm.style.display = 'block';
+
+                            selectedEventId = props.leaveId;
+                            currentUserId = props.userId;
+
+                            // IDs & identity
+                            document.getElementById('modalreqID').textContent = "REQ-2026-00" + selectedEventId || "Unknown";
+                            document.getElementById('modalUsername').textContent = props.fullName || 'Unknown';
+                            document.getElementById('modalUserEmail').textContent = props.email || '';
+                            document.getElementById('modalMotif').textContent = props.motif || 'N/A';
+                            document.getElementById('modalResponseMessage').textContent = props.responseMessage || 'N/A';
+                            document.getElementById('modalLeaveType').textContent = props.leaveType || '';
+
+                            // Dates
+                            const endDisplay = event.end
+                                    ? new Date(event.end.getTime() - 86400000)
+                                    : event.start;
+                            document.getElementById('modalStartDate').textContent = formatDate(event.start);
+                            document.getElementById('modalEndDate').textContent = formatDate(endDisplay);
+
+                            // Avatar — use JS contextPath like the table button does
+                            const contextPath = '${pageContext.request.contextPath}';
+                            const modalAvatar = document.getElementById('modalAvatar');
+                            modalAvatar.src = '';
+                            modalAvatar.src = contextPath + '/AvatarServlet?userId=' + currentUserId;
+
+                            // Status badge — build it since there's no table row to clone from
+                            const status = (props.status || '').trim();
+                            const modalStatusContainer = document.getElementById('modalStatusContainer');
+                            modalStatusContainer.innerHTML = '';
+                            const badge = document.createElement('div');
+                            badge.className = 'status ' + status.toLowerCase(); // e.g. "status pending"
+                            badge.textContent = status;
+                            modalStatusContainer.appendChild(badge);
+
+                            // Hidden form fields
+                            document.getElementById('leaveId').value = props.leaveId;
+                            document.getElementById('leaveUserId').value = props.userId;
+                            document.getElementById('leaveStatus').value = status;
+
+                            // Action buttons
+                            document.querySelectorAll('#actionsDiv > div').forEach(d => d.style.display = 'none');
+                            if (status === 'Pending') {
+                                document.getElementById('actions-pending').style.display = 'flex';
+                                document.getElementById('hr_note').style.display = 'none';
+                            } else if (status === 'Approved' || status === 'Rejected') {
+                                document.getElementById('actions-reviewed').style.display = 'flex';
+                            } else {
+                                document.getElementById('actions-none').style.display = 'flex';
+                            }
+
+                            openModal();
                             return;
-
-                        selectedEventId = props.leaveId;
-                        currentUserId = props.userId;
-
-                        // IDs & identity
-                        document.getElementById('modalreqID').textContent = "REQ-2026-00" + props.leaveId || "Unknown";
-                        document.getElementById('modalUsername').textContent = props.fullName || 'Unknown';
-                        document.getElementById('modalUserEmail').textContent = props.email || '';
-                        document.getElementById('modalMotif').textContent = props.motif || 'N/A';
-                        document.getElementById('modalResponseMessage').textContent = props.responseMessage || 'N/A';
-                        document.getElementById('modalLeaveType').textContent = props.leaveType || '';
-
-                        // Dates
-                        const endDisplay = event.end
-                                ? new Date(event.end.getTime() - 86400000)
-                                : event.start;
-                        document.getElementById('modalStartDate').textContent = formatDate(event.start);
-                        document.getElementById('modalEndDate').textContent = formatDate(endDisplay);
-
-                        // Avatar — use JS contextPath like the table button does
-                        const contextPath = '${pageContext.request.contextPath}';
-                        const modalAvatar = document.getElementById('modalAvatar');
-                        modalAvatar.src = '';
-                        modalAvatar.src = contextPath + '/AvatarServlet?userId=' + currentUserId;
-
-                        // Status badge — build it since there's no table row to clone from
-                        const status = (props.status || '').trim();
-                        const modalStatusContainer = document.getElementById('modalStatusContainer');
-                        modalStatusContainer.innerHTML = '';
-                        const badge = document.createElement('div');
-                        badge.className = 'status ' + status.toLowerCase(); // e.g. "status pending"
-                        badge.textContent = status;
-                        modalStatusContainer.appendChild(badge);
-
-                        // Hidden form fields
-                        document.getElementById('leaveId').value = props.leaveId;
-                        document.getElementById('leaveUserId').value = props.userId;
-                        document.getElementById('leaveStatus').value = status;
-
-                        // Action buttons
-                        document.querySelectorAll('#actionsDiv > div').forEach(d => d.style.display = 'none');
-                        if (status === 'Pending') {
-                            document.getElementById('actions-pending').style.display = 'flex';
-                            document.getElementById('hr_note').style.display = 'none';
-                        } else if (status === 'Approved' || status === 'Rejected') {
-                            document.getElementById('actions-reviewed').style.display = 'flex';
-                        } else {
-                            document.getElementById('actions-none').style.display = 'flex';
                         }
 
-                        openModal();
+                        //ELSE 
+                        //FOR 
+                        //PERMISSION 
+                        //MODAL
+                        if (event.classNames.includes('event-list')) {
+                            document.getElementById('permissionDetails').style.display = 'block';
+
+                            currentUserId = props.userId;
+
+                            // IDs & identity
+                            document.getElementById('modalreqID').textContent = "REQ-2026-00" + props.leaveId || "Unknown";
+                            document.getElementById('modalUsername').textContent = props.fullName || 'Unknown';
+                            document.getElementById('modalUserEmail').textContent = props.email || '';
+                            document.getElementById('modalMotif').textContent = props.motif || 'N/A';
+                            document.getElementById('modalResponseMessage').textContent = props.responseMessage || 'N/A';
+                            document.getElementById('modalLeaveType').textContent = props.leaveType || '';
+
+                            // Dates
+                            const endDisplay = event.end
+                                    ? new Date(event.end.getTime() - 86400000)
+                                    : event.start;
+                            document.getElementById('modalStartDate').textContent = formatDate(event.start);
+                            document.getElementById('modalEndDate').textContent = formatDate(endDisplay);
+
+                            //Time
+
+                            // Avatar — use JS contextPath like the table button does
+                            const contextPath = '${pageContext.request.contextPath}';
+                            const modalAvatar = document.getElementById('modalAvatar');
+                            modalAvatar.src = '';
+                            modalAvatar.src = contextPath + '/AvatarServlet?userId=' + currentUserId;
+
+                            // Status badge — build it since there's no table row to clone from
+                            const status = (props.status || '').trim();
+                            const modalStatusContainer = document.getElementById('modalStatusContainer');
+                            modalStatusContainer.innerHTML = '';
+                            const badge = document.createElement('div');
+                            badge.className = 'status ' + status.toLowerCase(); // e.g. "status pending"
+                            badge.textContent = status;
+                            modalStatusContainer.appendChild(badge);
+
+                            // Hidden form fields
+                            document.getElementById('leaveId').value = props.leaveId;
+                            document.getElementById('leaveUserId').value = props.userId;
+                            document.getElementById('leaveStatus').value = status;
+
+                            // Action buttons
+                            document.querySelectorAll('#actionsDiv > div').forEach(d => d.style.display = 'none');
+                            if (status === 'Pending') {
+                                document.getElementById('perm-actions-pending').style.display = 'flex';
+                                document.getElementById('hr_note').style.display = 'none';
+                            } else if (status === 'Approved' || status === 'Rejected') {
+                                document.getElementById('perm-actions-reviewed').style.display = 'flex';
+                            } else {
+                                document.getElementById('perm-actions-none').style.display = 'flex';
+                            }
+
+                            openModal();
+                            return;
+
+                        }
+
+
+
                     },
                     eventDidMount: function (info) {
                         info.el.setAttribute('data-event-id', info.holidayId);
