@@ -75,6 +75,7 @@ public class CalendarHolidaysServlet extends HttpServlet {
                     event.put("end", sdf.format(cal.getTime()));
                     event.put("allDay", true);
                     event.put("motif", rs.getString("motif"));
+                    event.put("leaveType", rs.getString("type"));
                     event.put("responseMessage", rs.getString("response_message"));
 
                     event.put("fullName", rs.getString("fullname")); // JOIN users table

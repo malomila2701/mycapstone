@@ -165,8 +165,18 @@
                                             <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
                                             </svg>
                                         </span>
-                                        <label id="modalStartDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
+                                        <label id="modalStartDatePerm" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label>
                                     </div>
+
+                                    &rarr;
+
+                                    <div style="display:flex; align-items:center; gap:4px;">
+                                        <span class="icon-btn-modal icon-home-modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
+                                            <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
+                                            </svg></span>
+                                        <label id="modalEndDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label> 
+                                    </div>
+
                                 </div>
 
                                 <%-- Time row --%>
@@ -401,9 +411,9 @@
                 </div> 
                 <div class="banner">
                     <div style="position: relative; min-height: 150px;">
-                        <div id="calendarLoader" class="chart-loader-wrapper">
+                        <!--<div id="calendarLoader" class="chart-loader-wrapper">
                             <div class="loader" id="loader"></div>
-                        </div>
+                        </div>-->
                         <div id="calendar"></div>
                     </div>
                 </div>
@@ -473,6 +483,7 @@
                                     }
                                 }
                                 remaining.sort(( x,
+                                      
                                       
                                       
                                       
@@ -637,28 +648,34 @@
                             document.getElementById('leaveStatus').value = status;
 
                             // Action buttons
-                            document.querySelectorAll('#actionsDiv > div').forEach(d => d.style.display = 'none');
+                            document.querySelectorAll('#actionsDivLeave > div').forEach(d => d.style.display = 'none');
                             if (status === 'Pending') {
                                 document.getElementById('actions-pending').style.display = 'flex';
-                                document.getElementById('hr_note').style.display = 'none';
+                                document.getElementById('modalResponseMessage').style.display = 'none';
                             } else if (status === 'Approved' || status === 'Rejected') {
                                 document.getElementById('actions-reviewed').style.display = 'flex';
                             } else {
                                 document.getElementById('actions-none').style.display = 'flex';
                             }
 
-                            openModal();
                             return;
                         }
+                        
+                        openModal();
 
                         //ELSE 
                         //FOR 
                         //PERMISSION 
                         //MODAL
                         if (event.classNames.includes('event-list')) {
-                            document.getElementById('permissionDetails').style.display = 'block';
+                            permissionActions.style.display = 'block';
+                            permissionForm.style.display = 'block';
 
                             currentUserId = props.userId;
+
+                            //Populate times
+                            /**document.getElementById('modalStartTime').textContent = props.startTime || ' N/A ';
+                            document.getElementById('modalEndTime').textContent = props.endTime || ' N/A ';*/
 
                             // IDs & identity
                             document.getElementById('modalreqID').textContent = "REQ-2026-00" + props.leaveId || "Unknown";
@@ -666,7 +683,6 @@
                             document.getElementById('modalUserEmail').textContent = props.email || '';
                             document.getElementById('modalMotif').textContent = props.motif || 'N/A';
                             document.getElementById('modalResponseMessage').textContent = props.responseMessage || 'N/A';
-                            document.getElementById('modalLeaveType').textContent = props.leaveType || '';
 
                             // Dates
                             const endDisplay = event.end
@@ -693,32 +709,28 @@
                             modalStatusContainer.appendChild(badge);
 
                             // Hidden form fields
-                            document.getElementById('leaveId').value = props.leaveId;
-                            document.getElementById('leaveUserId').value = props.userId;
+                            document.getElementById('permissionId').value = props.leaveId;
+                            document.getElementById('permissionUserId').value = props.userId;
                             document.getElementById('leaveStatus').value = status;
 
                             // Action buttons
-                            document.querySelectorAll('#actionsDiv > div').forEach(d => d.style.display = 'none');
+                            document.querySelectorAll('#actionsDivPermission > div').forEach(d => d.style.display = 'none');
                             if (status === 'Pending') {
                                 document.getElementById('perm-actions-pending').style.display = 'flex';
-                                document.getElementById('hr_note').style.display = 'none';
+                                document.getElementById('modalResponseMessage').style.display = 'none';
                             } else if (status === 'Approved' || status === 'Rejected') {
                                 document.getElementById('perm-actions-reviewed').style.display = 'flex';
                             } else {
                                 document.getElementById('perm-actions-none').style.display = 'flex';
                             }
-
-                            openModal();
+                            
                             return;
-
                         }
-
-
-
+                        openModal();
                     },
                     eventDidMount: function (info) {
-                        info.el.setAttribute('data-event-id', info.holidayId);
-                    },
+                        info.el.setAttribute('data-event-id', info.leaveId);
+                    }/**,
                     loading: function (isLoading) {
 
                         if (isLoading) {
@@ -728,7 +740,7 @@
                             loader.style.display = "none";
                             document.getElementById('calendar').style.visibility = 'visible';
                         }
-                    }
+                    }*/
                 });
                 calendar.render();
             });

@@ -60,6 +60,7 @@ public class CalendarAdminUserLeaveServlet extends HttpServlet {
                     event.put("id", rs.getInt("holidays_id"));
                     event.put("start", sdf.format(rs.getDate("start_date")));
                     event.put("end", sdf.format(cal.getTime()));
+                    event.put("motif", rs.getString("motif"));
                     event.put("allDay", true);
 
                     // color by status

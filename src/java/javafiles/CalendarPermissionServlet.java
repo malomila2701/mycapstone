@@ -68,7 +68,7 @@ public class CalendarPermissionServlet extends HttpServlet {
                     event.put("start", sdf.format(rs.getDate("start_date")));
                     event.put("end", sdf.format(cal.getTime()));
                     /**event.put("startTime", rs.getString("start_time"));
-                    event.put("endTime", rs.getString("end_time"));**/
+                    event.put("endTime", rs.getString("end_time"));*/
                     event.put("allDay", true);
                     event.put("motif", rs.getString("motif"));
                     event.put("responseMessage", rs.getString("response_message"));
