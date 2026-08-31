@@ -42,7 +42,6 @@ public class CalendarPermissionServlet extends HttpServlet {
                         + "FROM permissions p "
                         + "JOIN users u ON p.user_id = u.user_id "
                         + "WHERE p.user_id = ? AND p.status IN ('Approved', 'Pending', 'Rejected')");
-                logger.info("Individual calendar for user_id= " + userId);
                 ps.setInt(1, userId);
             } else {
                 ps = conn.prepareStatement(
@@ -64,18 +63,28 @@ public class CalendarPermissionServlet extends HttpServlet {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(endDate);
                     cal.add(Calendar.DATE, 1);
+                    
+                    String date = rs.getString("start_date"); 
+                    String startTime = rs.getString("start_time");
+                    String endTime = rs.getString("end_time");
+                    
                     event.put("title", "Permission");
-                    event.put("start", sdf.format(rs.getDate("start_date")));
-                    event.put("end", sdf.format(cal.getTime()));
+                    //event.put("start", sdf.format(rs.getDate("start_date")));
+                    //event.put("end", sdf.format(cal.getTime()));
+                    
+                    event.put("start", date + "T" + startTime);
+                    event.put("end", date + "T" + endTime);
+                    
                     /**event.put("startTime", rs.getString("start_time"));
                     event.put("endTime", rs.getString("end_time"));*/
-                    event.put("allDay", true);
+                    event.put("allDay", false);
                     event.put("motif", rs.getString("motif"));
                     event.put("responseMessage", rs.getString("response_message"));
                     event.put("leaveId", rs.getInt("permission_id"));
                     event.put("userId", rs.getInt("user_id"));
                     event.put("fullName", rs.getString("fullname"));
                     event.put("email", rs.getString("email"));
+                    
                     String status = rs.getString("status");
                     event.put("status", rs.getString("status"));
                     if ("approved".equalsIgnoreCase(status)) {

@@ -564,7 +564,7 @@
                                         }, {once: true});
                                     }
         </script>
-        <script>
+        <!--<script>
             let sortAsc = false;
 
             document.getElementById('dateHeader').addEventListener('click', function () {
@@ -585,6 +585,47 @@
 
                 currentPage = 1;
                 paginateTable();
+            });
+        </script>-->
+        <script>
+            const dateHeader = document.getElementById("dateHeader");
+            const tbody = document.querySelector("tbody");
+
+            let newestFirst = true;
+
+            function sortRows() {
+                const rows = Array.from(tbody.querySelectorAll("tr"));
+                rows.sort((a, b) => {
+
+                    const dateA = Number(a.children[1].dataset.date);
+                    const dateB = Number(b.children[1].dataset.date);
+
+                    return newestFirst
+                            ? dateB - dateA
+                            : dateA - dateB;
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+            }
+
+            function updateDateHeader() {
+                dateHeader.textContent = newestFirst
+                        ? "Period ↓"
+                        : "Period ↑";
+            }
+
+            dateHeader.addEventListener("click", () => {
+                newestFirst = !newestFirst;
+                sortRows();
+                updateDateHeader();
+                currentPage = 1;
+                paginateTable();
+            });
+
+            window.addEventListener("load", () => {
+                newestFirst = true;
+                sortRows();
+                updateDateHeader();
             });
         </script>
         <script>
@@ -660,7 +701,10 @@
             }
 
             // Init on load
-            document.addEventListener('DOMContentLoaded', paginateTable);
+            document.addEventListener('DOMContentLoaded', () => {
+                sortRows();
+                paginateTable();
+            });
         </script>
         <script>
             function applyFilters() {

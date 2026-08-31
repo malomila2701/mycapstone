@@ -174,7 +174,7 @@
                                         <span class="icon-btn-modal icon-home-modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#0078d7" class="size-5">
                                             <path fill-rule="evenodd" d="M5.75 2a.75.75 0 0 1 .75.75V4h7V2.75a.75.75 0 0 1 1.5 0V4h.25A2.75 2.75 0 0 1 18 6.75v8.5A2.75 2.75 0 0 1 15.25 18H4.75A2.75 2.75 0 0 1 2 15.25v-8.5A2.75 2.75 0 0 1 4.75 4H5V2.75A.75.75 0 0 1 5.75 2Zm-1 5.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h10.5c.69 0 1.25-.56 1.25-1.25v-6.5c0-.69-.56-1.25-1.25-1.25H4.75Z" clip-rule="evenodd" />
                                             </svg></span>
-                                        <label id="modalEndDate" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label> 
+                                        <label id="modalEndDatePerm" style="margin-left: 0; font-size: 0.8rem; font-weight: normal; color: #333;"></label> 
                                     </div>
 
                                 </div>
@@ -253,15 +253,17 @@
                            font-weight: 600;
                            text-transform: uppercase;
                            color: lightslategray;
-                           white-space: nowrap;" 
-                           for="modalMotif"> 
+                           white-space: nowrap;
+                           display:block;" 
+                           for="modalResponseMessage"> 
                         HR Note: </label> 
                     <div style="
                          background: #f3f6fa;
                          padding: 5px;
                          border: 1px solid #444;
                          border-radius: 20px;
-                         margin-top: 5px;">
+                         margin-top: 5px;
+                         display:block;">
                         <textarea id="modalResponseMessage" readonly></textarea>
                     </div>
                 </main>
@@ -314,6 +316,7 @@
                     <input type="hidden" name="user_id" id="leaveUserId">
                     <input type="hidden" name="status" id="leaveStatus">
                     <input type="hidden" name="admin_message" id="leaveAdminMessage">
+                    <input type="hidden" name="returnUrl" value="<%= request.getContextPath()%>/admin/calendar.jsp">
                 </form>
 
 
@@ -363,6 +366,7 @@
                     <input type="hidden" name="user_id" id="permissionUserId">
                     <input type="hidden" name="status" id="permissionStatus">
                     <input type="hidden" name="admin_message" id="permissionAdminMessage">
+                    <input type="hidden" name="returnUrl" value="<%= request.getContextPath()%>/admin/calendar.jsp">
                 </form>
 
             </div>
@@ -375,7 +379,15 @@
                 <input type="hidden" id="pendingStatus">
                 <div style="display:flex; gap:8px; justify-content:flex-end;">
                     <button class="modal-btn" onclick="closeConfirmPopup()">Cancel</button>
-                    <button class="modal-btn" onclick="submitWithMessage()">Submit</button>
+                    <button class="submit modal-btn" id="submitBtnModal" onclick="submitWithMessage()">
+                        <span class="btn-label">
+                            Submit
+                        </span>
+                        <span class="btn-spinner">
+                            Submitting
+                            <span class="dot-pulse"><span></span><span></span><span></span></span>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -489,6 +501,11 @@
                                       
                                       
                                       
+                                      
+                                      
+                                      
+                                      
+                                      
                                     y) -> {
                                     if (x.getStartDate() == null) {
                                         return 1;
@@ -519,11 +536,66 @@
         </div>
 
         <script>
+            function openModal() {
+                const modal = document.getElementById('leaveModal');
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        modal.classList.add('visible');
+                    });
+                });
+            }
+
+            // Pour fermer
+            function closeModal() {
+                const modal = document.getElementById('leaveModal');
+                modal.classList.remove('visible');
+                document.body.style.overflow = '';
+                modal.addEventListener('transitionend', () => {
+                    modal.classList.remove('active');
+                }, {once: true});
+            }
+        </script>
+        <script>
             function formatDate(date) {
                 const y = date.getFullYear();
                 const m = String(date.getMonth() + 1).padStart(2, '0');
                 const d = String(date.getDate()).padStart(2, '0');
                 return y + '-' + m + '-' + d;
+            }
+
+            function buildStatusBadge(status) {
+                let cssClass = '';
+                let cssIconStatus = '';
+
+                if (status.toLowerCase() === 'rejected') {
+                    cssClass = 'status-rejected';
+                    cssIconStatus = 'status-home-rejected';
+                } else if (status.toLowerCase() === 'approved') {
+                    cssClass = 'status-approved';
+                    cssIconStatus = 'status-home-approved';
+                } else if (status.toLowerCase() === 'pending') {
+                    cssClass = 'status-pending';
+                    cssIconStatus = 'status-home-pending';
+                }
+
+                const badge = document.createElement('div');
+                badge.className = 'status ' + cssClass;
+
+                const icon = document.createElement('div');
+                icon.className = 'icon-home ' + cssIconStatus;
+                icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+        <path fill-rule="evenodd" d="M12 3.75a6.715 6.715 0 0 0-3.722 1.118.75.75 0 1 1-.828-1.25 8.25 8.25 0 0 1 12.8 6.883c0 3.014-.574 5.897-1.62 8.543a.75.75 0 0 1-1.395-.551A21.69 21.69 0 0 0 18.75 10.5 6.75 6.75 0 0 0 12 3.75ZM6.157 5.739a.75.75 0 0 1 .21 1.04A6.715 6.715 0 0 0 5.25 10.5c0 1.613-.463 3.12-1.265 4.393a.75.75 0 0 1-1.27-.8A6.715 6.715 0 0 0 3.75 10.5c0-1.68.503-3.246 1.367-4.55a.75.75 0 0 1 1.04-.211ZM12 7.5a3 3 0 0 0-3 3c0 3.1-1.176 5.927-3.105 8.056a.75.75 0 1 1-1.112-1.008A10.459 10.459 0 0 0 7.5 10.5a4.5 4.5 0 1 1 9 0c0 .547-.022 1.09-.067 1.626a.75.75 0 0 1-1.495-.123c.041-.495.062-.996.062-1.503a3 3 0 0 0-3-3Zm0 2.25a.75.75 0 0 1 .75.75c0 3.908-1.424 7.485-3.781 10.238a.75.75 0 0 1-1.14-.975A14.19 14.19 0 0 0 11.25 10.5a.75.75 0 0 1 .75-.75Zm3.239 5.183a.75.75 0 0 1 .515.927 19.417 19.417 0 0 1-2.585 5.544.75.75 0 0 1-1.243-.84 17.915 17.915 0 0 0 2.386-5.116.75.75 0 0 1 .927-.515Z" clip-rule="evenodd" />
+    </svg>`;
+
+                const label = document.createElement('span');
+                label.textContent = status;
+
+                badge.appendChild(icon);
+                badge.appendChild(label);
+
+                return badge;
             }
 
 
@@ -532,8 +604,9 @@
             let hasBlockEvent;
             let start;
             let end;
-            let currentUserId = <%= session.getAttribute("user_id")%>;
+            let currentUserId;
             let selectedEventId;
+            let currentModalType = 'leave';
             const loader = document.getElementById("loader");
             document.addEventListener('DOMContentLoaded', function () {
                 var calendarEl = document.getElementById('calendar');
@@ -592,6 +665,10 @@
                         const event = info.event;
                         const props = event.extendedProps;
 
+                        const sourceUrl = event.source ? event.source.url : '';
+                        const isLeave = sourceUrl.includes('CalendarHolidaysServlet');
+                        const isPermission = sourceUrl.includes('CalendarPermissionServlet');
+
                         const leaveActions = document.getElementById('actionsDivLeave');
                         const leaveForm = document.getElementById('statusFormLeave');
 
@@ -605,15 +682,22 @@
                         permissionForm.style.display = 'none';
 
 
-                        if (event.classNames.includes('event-block')) {
+                        if (isLeave) {
+
+                            //For updating form
+                            currentModalType = 'leave';
+                            selectedEventId = props.leaveId;
+
+                            document.getElementById('LeaveDetails').style.display = 'flex';
+                            document.getElementById('PermissionDetails').style.display = 'none';
+
                             leaveActions.style.display = 'block';
                             leaveForm.style.display = 'block';
 
-                            selectedEventId = props.leaveId;
                             currentUserId = props.userId;
 
                             // IDs & identity
-                            document.getElementById('modalreqID').textContent = "REQ-2026-00" + selectedEventId || "Unknown";
+                            document.getElementById('modalreqID').textContent = "REQ-2026-00" + props.leaveId || "Unknown";
                             document.getElementById('modalUsername').textContent = props.fullName || 'Unknown';
                             document.getElementById('modalUserEmail').textContent = props.email || '';
                             document.getElementById('modalMotif').textContent = props.motif || 'N/A';
@@ -637,45 +721,56 @@
                             const status = (props.status || '').trim();
                             const modalStatusContainer = document.getElementById('modalStatusContainer');
                             modalStatusContainer.innerHTML = '';
-                            const badge = document.createElement('div');
-                            badge.className = 'status ' + status.toLowerCase(); // e.g. "status pending"
-                            badge.textContent = status;
-                            modalStatusContainer.appendChild(badge);
+                            modalStatusContainer.appendChild(buildStatusBadge(status));
 
                             // Hidden form fields
                             document.getElementById('leaveId').value = props.leaveId;
                             document.getElementById('leaveUserId').value = props.userId;
                             document.getElementById('leaveStatus').value = status;
+                            document.getElementById('leaveAdminMessage').value = props.responseMessage;
 
                             // Action buttons
                             document.querySelectorAll('#actionsDivLeave > div').forEach(d => d.style.display = 'none');
                             if (status === 'Pending') {
                                 document.getElementById('actions-pending').style.display = 'flex';
-                                document.getElementById('modalResponseMessage').style.display = 'none';
                             } else if (status === 'Approved' || status === 'Rejected') {
                                 document.getElementById('actions-reviewed').style.display = 'flex';
                             } else {
                                 document.getElementById('actions-none').style.display = 'flex';
                             }
 
+                            openModal();
                             return;
                         }
-                        
-                        openModal();
+
 
                         //ELSE 
                         //FOR 
                         //PERMISSION 
                         //MODAL
-                        if (event.classNames.includes('event-list')) {
+                        if (isPermission) {
+
+                            //For updating form
+                            currentModalType = 'permission';
+                            selectedEventId = props.leaveId;
+
+                            function formatTimeFromDate(date) {
+                                if (!date)
+                                    return '';
+                                return date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+                            }
+
+                            document.getElementById('LeaveDetails').style.display = 'none';
+                            document.getElementById('PermissionDetails').style.display = 'block';
+
                             permissionActions.style.display = 'block';
                             permissionForm.style.display = 'block';
 
                             currentUserId = props.userId;
 
                             //Populate times
-                            /**document.getElementById('modalStartTime').textContent = props.startTime || ' N/A ';
-                            document.getElementById('modalEndTime').textContent = props.endTime || ' N/A ';*/
+                            document.getElementById('modalStartTime').textContent = formatTimeFromDate(event.start) || ' N/A ';
+                            document.getElementById('modalEndTime').textContent = formatTimeFromDate(event.end) || ' N/A ';
 
                             // IDs & identity
                             document.getElementById('modalreqID').textContent = "REQ-2026-00" + props.leaveId || "Unknown";
@@ -683,13 +778,11 @@
                             document.getElementById('modalUserEmail').textContent = props.email || '';
                             document.getElementById('modalMotif').textContent = props.motif || 'N/A';
                             document.getElementById('modalResponseMessage').textContent = props.responseMessage || 'N/A';
+                            document.getElementById('modalLeaveType').textContent = 'Permission';
 
                             // Dates
-                            const endDisplay = event.end
-                                    ? new Date(event.end.getTime() - 86400000)
-                                    : event.start;
-                            document.getElementById('modalStartDate').textContent = formatDate(event.start);
-                            document.getElementById('modalEndDate').textContent = formatDate(endDisplay);
+                            document.getElementById('modalStartDatePerm').textContent = formatDate(event.start);
+                            document.getElementById('modalEndDatePerm').textContent = formatDate(event.start);
 
                             //Time
 
@@ -703,47 +796,127 @@
                             const status = (props.status || '').trim();
                             const modalStatusContainer = document.getElementById('modalStatusContainer');
                             modalStatusContainer.innerHTML = '';
-                            const badge = document.createElement('div');
-                            badge.className = 'status ' + status.toLowerCase(); // e.g. "status pending"
-                            badge.textContent = status;
-                            modalStatusContainer.appendChild(badge);
+                            modalStatusContainer.appendChild(buildStatusBadge(status));
 
                             // Hidden form fields
                             document.getElementById('permissionId').value = props.leaveId;
                             document.getElementById('permissionUserId').value = props.userId;
-                            document.getElementById('leaveStatus').value = status;
+                            document.getElementById('permissionStatus').value = status;
+                            document.getElementById('permissionAdminMessage').value = props.responseMessage;
 
                             // Action buttons
                             document.querySelectorAll('#actionsDivPermission > div').forEach(d => d.style.display = 'none');
                             if (status === 'Pending') {
                                 document.getElementById('perm-actions-pending').style.display = 'flex';
-                                document.getElementById('modalResponseMessage').style.display = 'none';
                             } else if (status === 'Approved' || status === 'Rejected') {
                                 document.getElementById('perm-actions-reviewed').style.display = 'flex';
                             } else {
                                 document.getElementById('perm-actions-none').style.display = 'flex';
                             }
-                            
+
+                            openModal();
                             return;
                         }
-                        openModal();
                     },
                     eventDidMount: function (info) {
-                        info.el.setAttribute('data-event-id', info.leaveId);
+                        const props = info.event.extendedProps;
+                        const id = props.leaveId;
+                        info.el.setAttribute('data-event-id', id);
                     }/**,
-                    loading: function (isLoading) {
-
-                        if (isLoading) {
-                            loader.style.display = "block";
-                            document.getElementById('calendar').style.visibility = 'hidden';
-                        } else {
-                            loader.style.display = "none";
-                            document.getElementById('calendar').style.visibility = 'visible';
-                        }
-                    }*/
+                     loading: function (isLoading) {
+                     
+                     if (isLoading) {
+                     loader.style.display = "block";
+                     document.getElementById('calendar').style.visibility = 'hidden';
+                     } else {
+                     loader.style.display = "none";
+                     document.getElementById('calendar').style.visibility = 'visible';
+                     }
+                     }*/
                 });
                 calendar.render();
             });
+
+
+            function openConfirmPopup(newStatus) {
+                document.getElementById('confirmPopupStatus').textContent = newStatus;
+                document.getElementById('adminMessageInput').value = '';
+                document.getElementById('pendingStatus').value = newStatus;
+                document.getElementById('confirmPopup').style.display = 'flex';
+            }
+
+            function closeConfirmPopup() {
+                document.getElementById('confirmPopup').style.display = 'none';
+            }
+
+            function submitWithMessage() {
+
+                const message = document.getElementById('adminMessageInput').value.trim();
+                const newStatus = document.getElementById('pendingStatus').value;
+
+                const btn = document.getElementById("submitBtnModal");
+
+                let form;
+                if (currentModalType === 'leave') {
+                    form = document.getElementById("statusFormLeave");
+                    document.getElementById('leaveId').value = selectedEventId;
+                    document.getElementById('leaveStatus').value = newStatus;
+                    document.getElementById('leaveUserId').value = currentUserId;
+                    document.getElementById('leaveAdminMessage').value = message;
+                } else {
+                    form = document.getElementById("statusFormPermission");
+                    document.getElementById('permissionId').value = selectedEventId;
+                    document.getElementById('permissionStatus').value = newStatus;
+                    document.getElementById('permissionUserId').value = currentUserId;
+                    document.getElementById('permissionAdminMessage').value = message;
+                }
+
+                // ripple
+                const ripple = document.createElement("span");
+                ripple.className = "ripple";
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+
+                ripple.style.cssText = `
+        width:${size}px;
+        height:${size}px;
+        left:${rect.width / 2 - size / 2}px;
+        top:${rect.height / 2 - size / 2}px;
+    `;
+
+                btn.classList.add("loading");
+                btn.appendChild(ripple);
+                ripple.addEventListener("animationend", () => ripple.remove());
+
+                setTimeout(() => {
+                    btn.classList.remove("loading");
+                    btn.classList.add("done");
+
+                    btn.querySelector(".btn-label").innerHTML = `
+            Submitted!
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 20 20"
+                 fill="currentColor"
+                 width="16"
+                 height="16"
+                 style="vertical-align:-3px;margin-right:6px;">
+                <path fill-rule="evenodd"
+                      d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
+                      clip-rule="evenodd" />
+            </svg>`;
+
+                    setTimeout(() => {
+                        document.body.classList.add("fade-out");
+
+                        setTimeout(() => {
+                            form.submit(); // <- submit your actual form
+                        }, 400);
+
+                    }, 600);
+
+                }, 800);
+            }
+
         </script>
         <script>
             function submitHoliday() {
@@ -916,28 +1089,6 @@
                 if (e.target === this)
                     closeAgendaModal();
             });
-        </script>
-        <script>
-            function openModal() {
-                const modal = document.getElementById('leaveModal');
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        modal.classList.add('visible');
-                    });
-                });
-            }
-
-            // Pour fermer
-            function closeModal() {
-                const modal = document.getElementById('leaveModal');
-                modal.classList.remove('visible');
-                document.body.style.overflow = '';
-                modal.addEventListener('transitionend', () => {
-                    modal.classList.remove('active');
-                }, {once: true});
-            }
         </script>
     </body>
 </html>

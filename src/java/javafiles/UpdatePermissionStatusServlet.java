@@ -57,6 +57,10 @@ public class UpdatePermissionStatusServlet extends HttpServlet {
         }
 
         // redirect back (important)
-        response.sendRedirect(request.getContextPath() + "/admin/permissions.jsp");
+        String returnUrl = request.getParameter("returnUrl");
+            if (returnUrl == null || returnUrl.isBlank()) {
+            returnUrl = request.getContextPath() + "/admin/permissions.jsp"; // fallback par défaut
+        }
+        response.sendRedirect(returnUrl);
     }
 }

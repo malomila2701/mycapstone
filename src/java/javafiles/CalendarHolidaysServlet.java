@@ -78,11 +78,13 @@ public class CalendarHolidaysServlet extends HttpServlet {
                     event.put("leaveType", rs.getString("type"));
                     event.put("responseMessage", rs.getString("response_message"));
 
+                    event.put("leaveId", rs.getInt("holidays_id"));
                     event.put("fullName", rs.getString("fullname")); // JOIN users table
                     event.put("email", rs.getString("email"));        // JOIN users table
 
                     // color by status
                     String status = rs.getString("status");
+                    event.put("status", rs.getString("status"));
                     if ("approved".equalsIgnoreCase(status)) {
                         event.put("color", "green");
                     } else if ("pending".equalsIgnoreCase(status)) {

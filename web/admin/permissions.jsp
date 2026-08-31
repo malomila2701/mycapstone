@@ -269,6 +269,7 @@
                     <input type="hidden" name="user_id" id="leaveUserId">
                     <input type="hidden" name="status" id="leaveStatus">
                     <input type="hidden" name="admin_message" id="leaveAdminMessage">
+                    <input type="hidden" name="returnUrl" value="<%= request.getContextPath()%>/admin/permissions.jsp">
                 </form>
 
             </div>
@@ -663,7 +664,11 @@
             }
 
             // Init on load
-            document.addEventListener('DOMContentLoaded', paginateTable);
+            document.addEventListener('DOMContentLoaded', () => {
+                sortRows();
+                updateDateHeader();
+                paginateTable();
+            });
         </script>
         <script>
             const dateHeader = document.getElementById("dateHeader");
@@ -696,6 +701,8 @@
                 newestFirst = !newestFirst;
                 sortRows();
                 updateDateHeader();
+                currentPage = 1;
+                paginateTable();
             });
 
             window.addEventListener("load", () => {
@@ -864,6 +871,7 @@
                     document.getElementById('modalStartDate').textContent = btn.dataset.startdate || "";
                     document.getElementById('modalStartTime').textContent = btn.dataset.starttime || '—';
                     document.getElementById('modalEndTime').textContent = btn.dataset.endtime || '—';
+                    document.getElementById('modalLeaveType').textContent = 'Permission';
 
                     // Récupère la div.status de la même ligne 
                     const row = btn.closest('tr');
